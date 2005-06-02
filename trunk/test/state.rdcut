@@ -1,0 +1,59 @@
+//R preamble
+#include "../luastate.h"
+using namespace cpplua;
+LuaState L;
+//R setup
+//R teardown
+
+//R test Basic stack operations
+int n = L.getTop();
+L.pushNumber(7);
+rassert(L.toNumber<int>() == 7);
+L.pop();
+rassert(n == L.getTop());
+
+//R test Pushing userdata
+int a = 4;
+int* x = &a;
+int n = L.getTop();
+L.pushLightUserdata<int>(x);
+rassert(L.toUserdata<int>() == x);
+L.pop();
+rassert(n == L.getTop());
+
+//R test Working with tables
+int N = 10;
+int n = L.getTop();
+L.newTable();
+for(int i=0; i<N; i++) {
+  L.pushNumber(i);
+  L.pushNumber(i);
+  L.setTable();
+}
+
+L.pushNil();
+while(L.next()) {
+  rassert(L.toNumber<int>(-1) == L.toNumber<int>(-2));
+  L.pop();
+}
+L.pop();
+rassert(n == L.getTop());
+
+//R test Type checking
+L.pushString("hello world");
+rassert(L.type() == StringType, "checking string type");
+rassert(L.isString());
+rassert(!L.isNumber());
+L.pop();
+
+L.pushNumber(6);
+rassert(L.type() == NumberType, "checking integer type");
+rassert(L.isNumber());
+rassert(!L.isNil());
+rassert(L.isString()); // an integer is a string, too
+L.pop();
+
+L.pushNil();
+rassert(L.type() == NilType, "checking nil type");
+rassert(L.isNil());
+L.pop();
