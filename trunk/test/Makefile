@@ -1,3 +1,6 @@
+# CppLua test makefile
+# see copyright notice in luastate.h
+
 RDCUTC="../rdcut/rdcut.rb"
 CC=g++
 CFLAGS=-g -ggdb -Wall -I/usr/include/lua50

@@ -1,3 +1,6 @@
+# CppLua Makefile
+# see copyright notice in luastate.h
+
 CC=g++
 CFLAGS=-g -ggdb -Wall -I/usr/include/lua50
 LDFLAGS=-ldl -llua50 -llualib50
