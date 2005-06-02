@@ -1,4 +1,4 @@
-RDCUTC=rdcut
+RDCUTC="../rdcut/rdcut.rb"
 CC=g++
 CFLAGS=-g -ggdb -Wall -I/usr/include/lua50
 LDFLAGS=-L.. -lcpplua
@@ -10,7 +10,7 @@ TARGET=test
 all: check
 
 check: $(TARGET)
-	./$(TARGET)
+	LD_LIBRARY_PATH=".." ./$(TARGET)
 
 clean:
 	rm -f *.o *~ *.cpp

@@ -101,6 +101,10 @@ public:
     return lua_tostring(L, index);
   }
 
+  inline void pushCFunction(lua_CFunction f) {
+    lua_pushcfunction(L, f);
+  }
+
   inline void newTable() {
     lua_newtable(L);
   }
@@ -154,6 +158,15 @@ public:
     return lua_isnil(L, index);
   }
 
+  inline bool isFunction(int index = -1) {
+    return lua_isfunction(L, index);
+  }
+  
+
+  inline int pcall(int nArgs, int nRes, int errFunction) {
+    return lua_pcall(L, nArgs, nRes, errFunction);
+  }
+  
 };
 
 }
