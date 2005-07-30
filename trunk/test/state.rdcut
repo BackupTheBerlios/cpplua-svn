@@ -14,6 +14,7 @@ int square(lua_State* L) {
 
 //R setup
 //R teardown
+//R include object.rdcinc
 
 //R test Basic stack operations
 int n = L.getTop();

@@ -3,8 +3,6 @@
 # Ruby Driven C++ Unit Testing
 # The following code is hereby released into the public domain
 
-INDENT = 2
-
 def get_command(line)
   if line =~ /^\/\/R\s*(.*)(\s*)$/
     $1
@@ -18,6 +16,7 @@ class Generator
     @tests = []
     @test_count = 0
     @code = ""
+    @preamble = ""
   end
 
   def process_command(name, body, args, line)
@@ -32,6 +31,8 @@ class Generator
       generate_method("setUp", body, line)
     when "preamble"
       prepend body + "\n"
+    when "include"
+      $files << args
     else
       return
     end    
@@ -46,7 +47,7 @@ class Generator
   end
 
   def generate_all
-    prepend <<-EOF
+    text =  <<-EOF
 #include <iostream>
 #include <vector>
 #include <string>
@@ -78,7 +79,7 @@ int main() {
   // fixture initialization
   setUp();
 
-#{generate_test_calls(" "*INDENT)}
+#{generate_test_calls("  ")}
   // fixture destruction
   tearDown();
 
@@ -89,6 +90,7 @@ int main() {
   return 0;
 }
 EOF
+    @code = text + @preamble + @code
   end
 
   private
@@ -97,7 +99,7 @@ EOF
   end
 
   def prepend(text)
-    @code = text + @code
+    @preamble += text
   end
 
   def generate_test_calls(ind)
@@ -134,14 +136,14 @@ void rassert(bool condition, const char* message, bool msg_on_pass) {
 template <typename T1, typename T2>
 void rassert_equal(const T1& x1, const T2& x2) {
   ostringstream msg;
-  msg << "expected " << x1 << ", got " << x2;
+  msg << "expected " << x2 << ", got " << x1;
   rassert(x1 == x2, msg.str().c_str(), false);
 }
 
 template <typename T1, typename T2>
 void rassert_equal_float(const T1& x1, const T2& x2, double epsilon) {
   ostringstream msg;
-  msg << "expected " << x1 << ", got " << x2;
+  msg << "expected " << x2 << ", got " << x1;
   rassert(abs(x1-x2) < epsilon, msg.str().c_str(), false);
 }
 
@@ -157,9 +159,7 @@ EOF
   end
 end
 
-
 file = ARGV[0]
-$filename = file
 unless file
   STDERR.puts "usage: rdcut FILENAME"
   exit 1
@@ -173,21 +173,34 @@ args = nil
 gen = Generator.new
 lineno = 1
 method_line = 1
-File.new(file,'r').each_line do |line|
-  if cmd = get_command(line)
-    gen.process_command(method_name, content, args, method_line)
-    method_line = lineno
-    content = ""
-    cmd.chomp =~ /^(\w*)\s*(.*)$/
-    method_name = $1
-    args = $2
-  else
-    # check assertion
-    content += line
+
+$files = [file]
+file_index = 0
+while $files[file_index]
+  $filename = $files[file_index]
+  File.new($filename).each_line do |line|
+    if cmd = get_command(line)
+      gen.process_command(method_name, content, args, method_line)
+      method_line = lineno
+      content = ""
+      cmd.chomp =~ /^(\w*)\s*(.*)$/
+      method_name = $1
+      args = $2
+    else
+      # check assertion
+      content += line
+    end
+    lineno += 1
   end
-  lineno += 1
+  gen.process_command(method_name, content, args, method_line)
+  content = ""
+  method_name = nil
+  args = nil
+  lineno = 1
+  method_line = 1
+
+  file_index += 1
 end
-gen.process_command(method_name, content, args, method_line)
 
 gen.generate_all
 puts gen.code
