@@ -1,2 +1,1 @@
-luastate.o: luastate.cpp luastate.h common.h /usr/include/lua50/lua.h \
-  /usr/include/lua50/lualib.h /usr/include/lua50/lauxlib.h
+luastate.o: luastate.cpp luastate.h common.h

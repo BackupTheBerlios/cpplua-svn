@@ -23,6 +23,8 @@ SOFTWARE.
 #ifndef LUAIOBJECT_H
 #define LUAIOBJECT_H
 
+#include "luastate.h"
+
 namespace cpplua {
 
 /**
