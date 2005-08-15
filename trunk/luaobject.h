@@ -24,6 +24,7 @@ SOFTWARE.
 #define LUAOBJECT_H
 
 #include "luaiobject.h"
+#include "luabracket.h"
 
 namespace cpplua {
 
@@ -31,7 +32,14 @@ class LuaState;
 
 class LuaObject : public LuaIObject {
 public:
-  explicit LuaObject(LuaState& L) : LuaIObject(L) {}
+  explicit LuaObject(LuaState& L);
+  LuaObject(const LuaObject&);
+  void push() const;
+  
+  template <typename T>
+  LuaBracket<LuaObject, T> operator[](const T& index) const {
+    return LuaBracket<LuaObject, T>(&getState(), *this, index);
+  }
 };
 
 };

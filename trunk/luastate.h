@@ -32,6 +32,9 @@ using namespace std;
 
 namespace cpplua {
 
+class LuaIObject;
+class LuaObject;
+
 class LuaState {
   bool collectState;
   lua_State* L;
@@ -43,8 +46,11 @@ public:
   LuaState();
   ~LuaState();
 
-  // debug
   lua_State* getInternalState() { return L; }
+
+  void duplicateObject(const LuaIObject* src, const LuaIObject* dest);
+  LuaObject global(const char* name);
+  void pushObject(const LuaIObject*);
   
   // basic libraries
   inline void openBase() {
@@ -119,6 +125,11 @@ public:
   inline void setTable(int index = -3) {
     lua_settable(L, index);
   }
+  
+  inline void getGlobal(const char* name) {
+    lua_pushstring(L, name);
+    lua_gettable(L, LUA_GLOBALSINDEX);
+  }
 
   inline void pop(int count = 1) {
     lua_pop(L, count);
@@ -165,9 +176,25 @@ public:
     return lua_isfunction(L, index);
   }
   
+  inline bool isTable(int index = -1) {
+    return lua_istable(L, index);
+  }
+  
+  inline const char* typeName(int index = -1) {
+    return lua_typename(L, lua_type(L, index));
+  }
+  
+  inline bool equal(int index1 = -2, int index2 = -1) {
+    return lua_equal(L, index1, index2);
+  }
+  
 
   inline int pcall(int nArgs, int nRes, int errFunction) {
     return lua_pcall(L, nArgs, nRes, errFunction);
+  }
+  
+  inline int doString(const char* str) {
+    return lua_dostring(L, str);
   }
   
 };

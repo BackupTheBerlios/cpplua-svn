@@ -24,6 +24,7 @@ SOFTWARE.
 #define LUAIOBJECT_H
 
 #include "luastate.h"
+#include "luatraits.h"
 
 namespace cpplua {
 
@@ -32,11 +33,48 @@ namespace cpplua {
  */
 class LuaIObject {
   LuaState& L;
+protected:
+  inline LuaState& getState() const {
+    return L;
+  }
 public:
   explicit LuaIObject(LuaState& L) : L(L) {}
   virtual void push() const = 0;
+  
+  /**
+  * Default implementation for equality
+  */
+  template <typename T>
+  bool operator==(const T& obj) const {
+    push();
+    LuaTraits<T>::push(&getState(), obj);
+    
+    bool res = getState().equal();    
+        
+    getState().pop();
+    getState().pop();
+    
+    return res;
+  }
+  
+  bool isFunction() const;
+  bool isNumber() const;
+  bool isString() const;
+  bool isNil() const;
+  bool isUserdata() const;
+  
+  LuaType type() const;
+  const char* typeName() const;
+  
+  template <typename T>
+  T toNumber() const {
+    push();
+    T res = getState().toNumber<T>();
+    getState().pop();
+    return res;
+  }
 };
 
-};
 
+};
 #endif

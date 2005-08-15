@@ -1,0 +1,2 @@
+object.o: object.cpp object.h ../cpplua.h ../common.h ../luastate.h \
+  ../luaobject.h ../luaiobject.h ../luatraits.h ../luabracket.h

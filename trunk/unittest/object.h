@@ -13,6 +13,9 @@ using namespace cpplua;
 
 class ObjectTest : public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE(ObjectTest);
+  CPPUNIT_TEST(globalsAccess);
+  CPPUNIT_TEST(tableLookup);
+  CPPUNIT_TEST(proxyObjects);
   CPPUNIT_TEST_SUITE_END();
 private:
   LuaState* L;

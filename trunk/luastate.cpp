@@ -19,11 +19,15 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #ifdef _DEBUG
 #include <cassert>
+#include <iostream>
+using namespace std;
 #endif // _DEBUG
 
 #include "luastate.h"
+#include "luaobject.h"
 
 namespace cpplua {
 
@@ -68,6 +72,35 @@ LuaState::~LuaState() {
 
   if (collectState)
     lua_close(L);
+}
+
+/**
+  * Add an object to the CppLua table
+  */
+void LuaState::duplicateObject(const LuaIObject* src, const LuaIObject* dest) {
+  pushLightUserdata<LuaIObject>(const_cast<LuaIObject*>(dest));
+  src->push();
+  setTable(cpptableIndex);
+}
+
+/**
+  * Retrieve a global object
+  */
+LuaObject LuaState::global(const char* name) {
+  LuaObject res(*this);
+  pushLightUserdata<LuaObject>(&res);
+  getGlobal(name);  
+  setTable(cpptableIndex);
+  
+  return res;
+}
+
+/**
+  * Push a registered LuaIObject on the stack
+  */
+void LuaState::pushObject(const LuaIObject* obj) {
+  pushLightUserdata<LuaIObject>(const_cast<LuaIObject*>(obj));
+  getTable(cpptableIndex);
 }
 
 };

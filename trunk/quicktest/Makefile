@@ -20,27 +20,22 @@
 
 CC=g++
 CFLAGS=-g -ggdb -Wall 
-LDFLAGS=-ldl -llua -llualib
+LDFLAGS=-L.. -lcpplua -lcppunit
 SRC=$(wildcard *.cpp)
 OBJ=$(SRC:%.cpp=%.o)
 DEPS=$(SRC:%.cpp=.%.dep)
-TARGET=libcpplua.so
+TARGET=test
 
 all: $(TARGET)
-	cd unittest; $(MAKE) $@
-
-check: all
-	./test
 
 clean:
 	-rm -f *.o *.so *~
-	cd unittest; $(MAKE) $@
 
 distclean:
 	-rm -f *.o *.so .*.dep *~ *.s $(TARGET) depend
 
 $(TARGET): $(OBJ)
-	$(CC) -shared -o $@ $(OBJ) $(LDFLAGS)
+	$(CC) -o $@ $(OBJ) $(LDFLAGS)
 
 %.o : %.cpp
 	$(CC) $(DEBUG) $(CFLAGS) -c -o $@ $<

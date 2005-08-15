@@ -24,6 +24,7 @@ SOFTWARE.
 #define LUABRACKET_H
 
 #include "luaiobject.h"
+#include "luatraits.h"
 
 namespace cpplua {
 
@@ -32,14 +33,31 @@ class LuaBracket : public LuaIObject {
   const Table& table;
   const Key& key;
 public:
-  explicit LuaBracket(const Table& table, const Key& key) :
+  explicit LuaBracket(LuaState* L, const Table& table, const Key& key) : 
+    LuaIObject(*L),
     table(table),
-    key(key),
-    LuaIObject(table.getState())
+    key(key)
   {}
 
-  void push() const;
+  void push() const {
+    LuaTraits<Table>::push(&getState(), table);
+    LuaTraits<Key>::push(&getState(), key);
+    getState().getTable();
+    getState().remove(-2);
+  }
   
+  
+  template <typename T>
+  LuaBracket<Table, Key> operator=(const T& obj) {
+    LuaTraits<Table>::push(&getState(), table);
+    LuaTraits<Key>::push(&getState(), key);
+    LuaTraits<T>::push(&getState(), obj);
+    getState().setTable();
+    getState().pop();
+    
+    return *this;
+  }
+   
 };
 
 };
