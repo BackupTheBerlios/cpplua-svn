@@ -53,3 +53,10 @@ void ObjectTest::basicTable() {
   CPPUNIT_ASSERT(x[y] == "another table");
   CPPUNIT_ASSERT(x["test"] == -5);
 }
+
+void ObjectTest::primitive() {
+  LuaObject x = L->primitive(5);
+  CPPUNIT_ASSERT(x == 5);
+  x = "hello";
+  CPPUNIT_ASSERT(x == "hello");
+}

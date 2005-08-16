@@ -17,6 +17,7 @@ class ObjectTest : public CppUnit::TestFixture {
   CPPUNIT_TEST(tableLookup);
   CPPUNIT_TEST(proxyObjects);
   CPPUNIT_TEST(basicTable);
+  CPPUNIT_TEST(primitive);
   CPPUNIT_TEST_SUITE_END();
 private:
   LuaState* L;
@@ -35,6 +36,9 @@ public:
   
   // Basic table manipulation
   void basicTable();
+  
+  // Interaction with primitive types
+  void primitive();
 };
 
 #endif

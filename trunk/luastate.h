@@ -36,6 +36,7 @@ class LuaIObject;
 class LuaObject;
 class LuaProxyGlobal;
 class LuaProxyEmptyTable;
+template <typename T> class LuaProxyPrimitive;
 
 class LuaState {
   bool collectState;
@@ -53,6 +54,8 @@ public:
   LuaProxyGlobal global(const char* name);
   void pushObject(const LuaIObject*);
   LuaProxyEmptyTable emptyTable();
+  // implementation after class definition
+  template <typename T> LuaProxyPrimitive<T> primitive(const T& val);
 
   void printTop() {
     lua_getglobal(L, "print");
@@ -207,6 +210,12 @@ public:
   
 };
 
+// template implementations
+template <typename T>
+LuaProxyPrimitive<T> LuaState::primitive(const T& val) {
+  return LuaProxyPrimitive<T>(this, val);
 }
+
+};
 
 #endif

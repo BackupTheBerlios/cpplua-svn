@@ -20,6 +20,24 @@ public:
   virtual void push() const;
 };
 
+template <typename T>
+class LuaProxyPrimitive : public LuaIObject {
+  T data;
+public:
+  LuaProxyPrimitive(LuaState* L, const T& data);
+  virtual void push() const;
+};
+
+template <typename T>
+LuaProxyPrimitive<T>::LuaProxyPrimitive(LuaState* L, const T& data)
+: LuaIObject(L) 
+, data(data) {}
+
+template <typename T>
+void LuaProxyPrimitive<T>::push() const {
+  LuaTraits<T>::push(getState(), data);
+}
+
 };
 
 #endif

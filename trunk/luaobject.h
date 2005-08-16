@@ -39,7 +39,7 @@ class LuaObject : public LuaIObject {
 public:
   explicit LuaObject(LuaState* L);
   LuaObject(const LuaIObject&);
- 
+  
   template <typename T>
   LuaObject& operator=(const T& obj) {
     duplicate(obj);
