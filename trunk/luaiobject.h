@@ -37,20 +37,21 @@ namespace cpplua {
  * LuaIObject is a common interface for all Lua objects handled by cpplua.
  */
 class LuaIObject {
-  LuaState& L;
+  LuaState* L;
 protected:
-  inline LuaState& getState() const {
+  inline LuaState* getState() const {
     return L;
   }
 
   template <typename T>
   void duplicate(const T& src) {
-    getState().template pushLightUserdata<LuaIObject>(this);  
-    LuaTraits<T>::push(&getState(), src);
-    getState().setTable(LuaState::cpptableIndex);
+    getState()->template pushLightUserdata<LuaIObject>(this);  
+    LuaTraits<T>::push(getState(), src);
+    getState()->setTable(LuaState::cpptableIndex);
   }  
 public:
-  explicit LuaIObject(LuaState& L) : L(L) {}
+  explicit LuaIObject(LuaState* L);
+  LuaIObject(const LuaIObject&);
   virtual void push() const = 0;
 
   LuaIObject& operator=(const LuaIObject&) {
@@ -63,12 +64,12 @@ public:
   template <typename T>
   bool operator==(const T& obj) const {
     push();
-    LuaTraits<T>::push(&getState(), obj);
+    LuaTraits<T>::push(getState(), obj);
     
-    bool res = getState().equal();    
+    bool res = getState()->equal();    
         
-    getState().pop();
-    getState().pop();
+    getState()->pop();
+    getState()->pop();
     
     return res;
   }
@@ -78,6 +79,7 @@ public:
   bool isString() const;
   bool isNil() const;
   bool isUserdata() const;
+  bool isTable() const;
   
   LuaType type() const;
   const char* typeName() const;
@@ -85,8 +87,8 @@ public:
   template <typename T>
   T toNumber() const {
     push();
-    T res = getState().toNumber<T>();
-    getState().pop();
+    T res = getState()->toNumber<T>();
+    getState()->pop();
     return res;
   }
 };

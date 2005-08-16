@@ -34,6 +34,8 @@ namespace cpplua {
 
 class LuaIObject;
 class LuaObject;
+class LuaProxyGlobal;
+class LuaProxyEmptyTable;
 
 class LuaState {
   bool collectState;
@@ -48,8 +50,9 @@ public:
 
   lua_State* getInternalState() { return L; }
   
-  LuaObject global(const char* name);
+  LuaProxyGlobal global(const char* name);
   void pushObject(const LuaIObject*);
+  LuaProxyEmptyTable emptyTable();
 
   void printTop() {
     lua_getglobal(L, "print");

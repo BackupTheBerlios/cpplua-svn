@@ -37,9 +37,9 @@ class LuaState;
 
 class LuaObject : public LuaIObject {
 public:
-  explicit LuaObject(LuaState& L);
-  LuaObject(const LuaObject&);
-  
+  explicit LuaObject(LuaState* L);
+  LuaObject(const LuaIObject&);
+ 
   template <typename T>
   LuaObject& operator=(const T& obj) {
     duplicate(obj);
@@ -58,7 +58,7 @@ public:
   
   template <typename T>
   LuaBracket<LuaObject, T> operator[](const T& index) const {
-    return LuaBracket<LuaObject, T>(&getState(), *this, index);
+    return LuaBracket<LuaObject, T>(getState(), *this, index);
   }
 };
 

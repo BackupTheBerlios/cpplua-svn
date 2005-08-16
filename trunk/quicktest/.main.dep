@@ -1,2 +1,2 @@
 main.o: main.cpp ../cpplua.h ../common.h ../luastate.h ../luaobject.h \
-  ../luaiobject.h ../luatraits.h ../luabracket.h
+  ../luaiobject.h ../luatraits.h ../luabracket.h ../luaproxy.h

@@ -12,18 +12,17 @@ namespace cpplua {
   * This constructor whould only be used
   * internally by cpplua.
   */
-LuaObject::LuaObject(LuaState& L)
+LuaObject::LuaObject(LuaState* L)
   : LuaIObject(L) {
 }
 
-LuaObject::LuaObject(const LuaObject& obj) 
-  : LuaIObject(obj.getState()) {
+LuaObject::LuaObject(const LuaIObject& obj) 
+  : LuaIObject(obj) {
   duplicate(obj);
 }
 
 void LuaObject::push() const {
-  getState().pushObject(this);
-  getState().printTop();
+  getState()->pushObject(this);
 }
 
 

@@ -28,6 +28,7 @@ using namespace std;
 
 #include "luastate.h"
 #include "luaobject.h"
+#include "luaproxy.h"
 
 namespace cpplua {
 
@@ -77,13 +78,18 @@ LuaState::~LuaState() {
 /**
   * Retrieve a global object
   */
-LuaObject LuaState::global(const char* name) {
-  LuaObject res(*this);
-  pushLightUserdata<LuaObject>(&res);
-  getGlobal(name);  
-  setTable(cpptableIndex);
-  
-  return res;
+LuaProxyGlobal LuaState::global(const char* name) {
+//   LuaObject res(this);
+//   pushLightUserdata<LuaObject>(&res);
+//   getGlobal(name);  
+//   setTable(cpptableIndex);
+//   
+//   return res;
+  return LuaProxyGlobal(this, name);
+}
+
+LuaProxyEmptyTable LuaState::emptyTable() {
+  return LuaProxyEmptyTable(this);
 }
 
 /**

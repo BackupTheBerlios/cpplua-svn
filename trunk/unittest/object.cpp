@@ -17,6 +17,7 @@ void ObjectTest::globalsAccess() {
   x = L->global("x");
   CPPUNIT_ASSERT(x.isNumber());
   CPPUNIT_ASSERT(x.toNumber<int>() == 3);
+  CPPUNIT_ASSERT(x == 3);
 }
 
 void ObjectTest::tableLookup() {
@@ -36,4 +37,19 @@ void ObjectTest::proxyObjects() {
   CPPUNIT_ASSERT(t["hello"] == "world");
   CPPUNIT_ASSERT(t[7].isNumber());
   CPPUNIT_ASSERT(t["hello"].type() == StringType);
+}
+
+void ObjectTest::basicTable() {
+  LuaObject x = L->emptyTable();
+  x[4] = "hello world";
+  LuaObject y = L->emptyTable();
+  x[y] = "another table";
+  x["test"] = -5;
+  
+  CPPUNIT_ASSERT(x.isTable());
+  CPPUNIT_ASSERT(x.type() == TableType);
+  CPPUNIT_ASSERT(x[1].isNil());
+  CPPUNIT_ASSERT(x[4] == "hello world");
+  CPPUNIT_ASSERT(x[y] == "another table");
+  CPPUNIT_ASSERT(x["test"] == -5);
 }

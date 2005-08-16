@@ -34,26 +34,26 @@ class LuaBracket : public LuaIObject {
   const Key& key;
 public:
   explicit LuaBracket(LuaState* L, const Table& table, const Key& key) : 
-    LuaIObject(*L),
+    LuaIObject(L),
     table(table),
     key(key)
   {}
 
   void push() const {
-    LuaTraits<Table>::push(&getState(), table);
-    LuaTraits<Key>::push(&getState(), key);
-    getState().getTable();
-    getState().remove(-2);
+    LuaTraits<Table>::push(getState(), table);
+    LuaTraits<Key>::push(getState(), key);
+    getState()->getTable();
+    getState()->remove(-2);
   }
   
   
   template <typename T>
   LuaBracket<Table, Key> operator=(const T& obj) {
-    LuaTraits<Table>::push(&getState(), table);
-    LuaTraits<Key>::push(&getState(), key);
-    LuaTraits<T>::push(&getState(), obj);
-    getState().setTable();
-    getState().pop();
+    LuaTraits<Table>::push(getState(), table);
+    LuaTraits<Key>::push(getState(), key);
+    LuaTraits<T>::push(getState(), obj);
+    getState()->setTable();
+    getState()->pop();
     
     return *this;
   }

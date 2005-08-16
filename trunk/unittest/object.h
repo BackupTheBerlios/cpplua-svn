@@ -16,6 +16,7 @@ class ObjectTest : public CppUnit::TestFixture {
   CPPUNIT_TEST(globalsAccess);
   CPPUNIT_TEST(tableLookup);
   CPPUNIT_TEST(proxyObjects);
+  CPPUNIT_TEST(basicTable);
   CPPUNIT_TEST_SUITE_END();
 private:
   LuaState* L;
@@ -31,6 +32,9 @@ public:
   
   // Proxy objects
   void proxyObjects();
+  
+  // Basic table manipulation
+  void basicTable();
 };
 
 #endif

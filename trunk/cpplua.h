@@ -5,5 +5,6 @@
 #include "luastate.h"
 #include "luaobject.h"
 #include "luabracket.h"
+#include "luaproxy.h"
 
 #endif
