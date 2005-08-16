@@ -47,10 +47,15 @@ public:
   ~LuaState();
 
   lua_State* getInternalState() { return L; }
-
-  void duplicateObject(const LuaIObject* src, const LuaIObject* dest);
+  
   LuaObject global(const char* name);
   void pushObject(const LuaIObject*);
+
+  void printTop() {
+    lua_getglobal(L, "print");
+    lua_pushvalue(L, -2);
+    lua_pcall(L, 1, 0, 0);
+  }  
   
   // basic libraries
   inline void openBase() {

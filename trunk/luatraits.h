@@ -2,6 +2,7 @@
 #define LUATRAITS_H
 
 #include "luaiobject.h"
+#include "luastate.h"
 
 namespace cpplua {
 

@@ -1,5 +1,10 @@
 #include "luaobject.h"
 
+#ifdef _DEBUG
+#include <iostream>
+using namespace std;
+#endif
+
 namespace cpplua {
 
 /**
@@ -13,11 +18,12 @@ LuaObject::LuaObject(LuaState& L)
 
 LuaObject::LuaObject(const LuaObject& obj) 
   : LuaIObject(obj.getState()) {
-  getState().duplicateObject(&obj, this);
+  duplicate(obj);
 }
 
 void LuaObject::push() const {
   getState().pushObject(this);
+  getState().printTop();
 }
 
 

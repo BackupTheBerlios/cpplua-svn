@@ -75,15 +75,6 @@ LuaState::~LuaState() {
 }
 
 /**
-  * Add an object to the CppLua table
-  */
-void LuaState::duplicateObject(const LuaIObject* src, const LuaIObject* dest) {
-  pushLightUserdata<LuaIObject>(const_cast<LuaIObject*>(dest));
-  src->push();
-  setTable(cpptableIndex);
-}
-
-/**
   * Retrieve a global object
   */
 LuaObject LuaState::global(const char* name) {

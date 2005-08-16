@@ -13,6 +13,10 @@ void ObjectTest::tearDown() {
 void ObjectTest::globalsAccess() {
   LuaObject x = L->global("print");
   CPPUNIT_ASSERT(x.isFunction());
+  L->doString("x = 3");
+  x = L->global("x");
+  CPPUNIT_ASSERT(x.isNumber());
+  CPPUNIT_ASSERT(x.toNumber<int>() == 3);
 }
 
 void ObjectTest::tableLookup() {

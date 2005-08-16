@@ -26,6 +26,11 @@ SOFTWARE.
 #include "luaiobject.h"
 #include "luabracket.h"
 
+#ifdef _DEBUG
+#include <iostream>
+using namespace std;
+#endif
+
 namespace cpplua {
 
 class LuaState;
@@ -34,6 +39,21 @@ class LuaObject : public LuaIObject {
 public:
   explicit LuaObject(LuaState& L);
   LuaObject(const LuaObject&);
+  
+  template <typename T>
+  LuaObject& operator=(const T& obj) {
+    duplicate(obj);
+    return *this;
+  }
+  // for some reasons I'd like to understand
+  // the compiler doesn't call the template
+  // assignment operator when T = LuaObject
+  LuaObject& operator=(const LuaObject& obj) {
+    duplicate(obj);
+    return *this;
+  }
+  
+  
   void push() const;
   
   template <typename T>

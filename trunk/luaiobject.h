@@ -26,6 +26,11 @@ SOFTWARE.
 #include "luastate.h"
 #include "luatraits.h"
 
+#ifdef _DEBUG
+#include <iostream>
+using namespace std;
+#endif
+
 namespace cpplua {
 
 /**
@@ -37,10 +42,21 @@ protected:
   inline LuaState& getState() const {
     return L;
   }
+
+  template <typename T>
+  void duplicate(const T& src) {
+    getState().template pushLightUserdata<LuaIObject>(this);  
+    LuaTraits<T>::push(&getState(), src);
+    getState().setTable(LuaState::cpptableIndex);
+  }  
 public:
   explicit LuaIObject(LuaState& L) : L(L) {}
   virtual void push() const = 0;
-  
+
+  LuaIObject& operator=(const LuaIObject&) {
+    return *this;
+  }
+    
   /**
   * Default implementation for equality
   */
