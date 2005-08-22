@@ -1,5 +1,11 @@
 #include "state.h"
 
+#ifdef _DEBUG
+#include <iostream>
+using namespace std;
+#endif
+
+// an old-fashioned Lua C function
 int square(lua_State* L) {
   double x = static_cast<double>(lua_tonumber(L, -1));
   lua_pop(L, 1);
@@ -31,7 +37,7 @@ void StateTest::userdataPush() {
   int a = 4;
   int* x = &a;
   int n = L->getTop();
-  L->pushLightUserdata<int>(x);
+  L->pushLightUserdata(x);
   
   CPPUNIT_ASSERT(L->toUserdata<int>() == x);
   L->pop();

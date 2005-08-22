@@ -21,6 +21,7 @@
 CC=g++
 CFLAGS=-g -ggdb -Wall 
 LDFLAGS=-L.. -lcpplua -lcppunit
+DEBUG=-D_DEBUG
 SRC=$(wildcard *.cpp)
 OBJ=$(SRC:%.cpp=%.o)
 DEPS=$(SRC:%.cpp=.%.dep)

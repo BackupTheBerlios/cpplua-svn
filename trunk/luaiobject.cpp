@@ -16,10 +16,7 @@ LuaIObject::LuaIObject(const LuaIObject& obj)
 
 #define IS(something) \
   bool LuaIObject::is##something() const { \
-    push(); \
-    bool res = getState()->is##something(); \
-    getState()->pop(); \
-    return res; \
+    STACK_OPERATION(bool, getState()->is##something()); \
   }
 IS(Function)
 IS(Number)
@@ -30,17 +27,15 @@ IS(Table)
 #undef IS
 
 LuaType LuaIObject::type() const {
-  push();
-  LuaType res = getState()->type();
-  getState()->pop();
-  return res;
+  STACK_OPERATION(LuaType, getState()->type());
 }
 
 const char* LuaIObject::typeName() const {
-  push();
-  const char* res = getState()->typeName();
-  getState()->pop();
-  return res;
+  STACK_OPERATION(const char*, getState()->typeName());
+}
+
+const char* LuaIObject::toString() const {
+  STACK_OPERATION(const char*, getState()->toString());
 }
 
 };

@@ -18,6 +18,7 @@ class ObjectTest : public CppUnit::TestFixture {
   CPPUNIT_TEST(proxyObjects);
   CPPUNIT_TEST(basicTable);
   CPPUNIT_TEST(primitive);
+  CPPUNIT_TEST(conversions);
   CPPUNIT_TEST_SUITE_END();
 private:
   LuaState* L;
@@ -39,6 +40,9 @@ public:
   
   // Interaction with primitive types
   void primitive();
+  
+  // Conversion to primitive data types
+  void conversions();
 };
 
 #endif

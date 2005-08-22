@@ -21,6 +21,7 @@
 CC=g++
 CFLAGS=-g -ggdb -Wall 
 LDFLAGS=-ldl -llua -llualib
+DEBUG=-D_DEBUG
 SRC=$(wildcard *.cpp)
 OBJ=$(SRC:%.cpp=%.o)
 DEPS=$(SRC:%.cpp=.%.dep)
@@ -30,7 +31,7 @@ all: $(TARGET)
 	cd unittest; $(MAKE) $@
 
 check: all
-	./test
+	LD_LIBRARY_PATH="." unittest/test
 
 clean:
 	-rm -f *.o *.so *~

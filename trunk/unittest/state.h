@@ -10,9 +10,6 @@
 #include "../luastate.h"
 using namespace cpplua;
 
-// an old-fashioned Lua C function
-int square(lua_State*);
-
 class StateTest : public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE(StateTest);
   CPPUNIT_TEST(basic);

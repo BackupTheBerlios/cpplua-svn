@@ -6,5 +6,8 @@
 #include "luaobject.h"
 #include "luabracket.h"
 #include "luaproxy.h"
+#include "luamethod.h"
+
+#include "functionfactory.h"
 
 #endif

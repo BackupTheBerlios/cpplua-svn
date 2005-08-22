@@ -57,6 +57,15 @@ public:
     
     return *this;
   }
+  
+  template <typename Key2>
+  LuaBracket <
+    LuaBracket<Table, Key>,
+    Key2
+  > 
+  operator[](const Key2& key2) {
+    return LuaBracket< LuaBracket<Table, Key>, Key2 >(getState(), *this, key2);
+  }
    
 };
 

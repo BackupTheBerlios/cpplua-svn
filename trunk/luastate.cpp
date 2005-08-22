@@ -32,13 +32,25 @@ using namespace std;
 
 namespace cpplua {
 
+#ifdef _DEBUG
+std::ostream* LuaState::loggerStream = &std::cerr;
+#endif
+
 void LuaState::init() {
   // this table stays at the bottom of lua stack
   newTable();
   insert(1);
 }
 
-LuaState::LuaState() {
+LuaState::LuaState() 
+#ifdef _DEBUG
+  : logger(*loggerStream)
+#endif
+{
+  #ifdef _DEBUG
+    logger << " ---\n";
+    logger << "new LuaState at " << this << "\n";
+  #endif
   // states created with the default constructor
   // must be closed at destruction time.
   L = lua_open();
@@ -52,7 +64,16 @@ LuaState::LuaState() {
  * This constructor is only used internally by cpplua
  * to provide a wrapper to a lua_State.
  */
-LuaState::LuaState(lua_State* L) : L(L) {
+LuaState::LuaState(lua_State* L) 
+  : L(L) 
+#ifdef _DEBUG
+  , logger(*loggerStream)
+#endif
+{
+  #ifdef _DEBUG
+    logger << " ---\n";
+    logger << "new LuaState at " << this << " from lua_State " << L << "\n";
+  #endif
   collectState = false;
   init();
 }
@@ -61,18 +82,22 @@ LuaState::LuaState(lua_State* L) : L(L) {
  * Destroy all cpplua objects and close the state (if needed).
  */
 LuaState::~LuaState() {
-  /*  luaPushNil();
-  // FIXME
-  while (luaNext(cppluaTableIndex)) {
-    LuaObject* obj = luaToUserdata<LuaObject*>(-2);
-    delete obj;
-    luaPop();
-    }*/
+// FIXME
+//   luaPushNil();
+//   while (luaNext(cppluaTableIndex)) {
+//     LuaObject* obj = luaToUserdata<LuaObject*>(-2);
+//     delete obj;
+//     luaPop();
+//   }
   
-  pop(); // pop cppluaTableIndex
+   remove(cpptableIndex);
 
   if (collectState)
     lua_close(L);
+  
+#ifdef _DEBUG
+  logger << "LuaState " << this << " destroyed\n\n";
+#endif
 }
 
 /**
@@ -96,8 +121,10 @@ LuaProxyEmptyTable LuaState::emptyTable() {
   * Push a registered LuaIObject on the stack
   */
 void LuaState::pushObject(const LuaIObject* obj) {
-  pushLightUserdata<LuaIObject>(const_cast<LuaIObject*>(obj));
+  pushLightUserdata(const_cast<LuaIObject*>(obj));
   getTable(cpptableIndex);
 }
+
+
 
 };

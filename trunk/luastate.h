@@ -30,6 +30,26 @@ using namespace std;
 
 #include "common.h"
 
+#ifdef _DEBUG
+#define LOG(x) logger << #x << "\n"; x;
+
+class Logger {
+private:
+  std::ostream& os;
+public:
+  Logger(std::ostream& os)
+    : os(os) {}
+  template <typename T>
+  Logger& operator<<(const T& obj) {
+    os << obj;
+    return *this;
+  }
+};
+
+#else
+#define LOG(x) x;
+#endif
+
 namespace cpplua {
 
 class LuaIObject;
@@ -37,16 +57,26 @@ class LuaObject;
 class LuaProxyGlobal;
 class LuaProxyEmptyTable;
 template <typename T> class LuaProxyPrimitive;
+template <typename T, typename Function> class FunctionFactory;
+template <typename T, typename Function> class LuaMethod;
 
 class LuaState {
   bool collectState;
   lua_State* L;
-  LuaState(lua_State*);
   void init();
-  
+#ifdef _DEBUG
+  Logger logger;
+  static std::ostream* loggerStream;
+#endif  
 public:
+#ifdef _DEBUG
+  static void setLoggerStream(std::ostream* stream) {
+    loggerStream = stream;
+  }
+#endif
   static const int cpptableIndex = 1;
   LuaState();
+  LuaState(lua_State*);
   ~LuaState();
 
   lua_State* getInternalState() { return L; }
@@ -54,9 +84,22 @@ public:
   LuaProxyGlobal global(const char* name);
   void pushObject(const LuaIObject*);
   LuaProxyEmptyTable emptyTable();
-  // implementation after class definition
   template <typename T> LuaProxyPrimitive<T> primitive(const T& val);
-
+  // special case for string literals
+  template <size_t size>
+  LuaProxyPrimitive<const char*> primitive(const char (& val)[size]) {
+    return LuaProxyPrimitive<const char*>(this, val);
+  }
+  template <typename T, typename Function>
+  LuaMethod<T, Function> method(const T& obj, Function f) {
+    LuaMethod<T, Function> res(this);
+    pushLightUserdata(&res);
+    FunctionFactory<T, Function>::push(this, obj, f);
+    setTable(cpptableIndex);
+    return res;
+  }
+  
+  
   void printTop() {
     lua_getglobal(L, "print");
     lua_pushvalue(L, -2);
@@ -65,152 +108,161 @@ public:
   
   // basic libraries
   inline void openBase() {
-    luaopen_base(L);
+    LOG(luaopen_base(L));
   }
 
   inline void openIO() {
-    luaopen_io(L);
+    LOG(luaopen_io(L));
   }
 
   inline void openTable() {
-    luaopen_table(L);
+    LOG(luaopen_table(L));
   }
 
   inline void openString() {
-    luaopen_string(L);
+    LOG(luaopen_string(L));
   }
 
   inline void openMath() {
-    luaopen_math(L);
+    LOG(luaopen_math(L));
   }
 
   // wrappers
   inline void pushNil() {
-    lua_pushnil(L);
+    LOG(lua_pushnil(L));
   }
 
   inline int getTop() {
-    return lua_gettop(L);
+    LOG(return lua_gettop(L));
   }
 
   template <typename Number>
   inline void pushNumber(Number n) {
-    lua_pushnumber(L, static_cast<lua_Number>(n));
+    LOG(lua_pushnumber(L, static_cast<lua_Number>(n)));
   }
 
   template <typename Number>
   inline Number toNumber(int index = -1) {
-    return static_cast<Number>(lua_tonumber(L, index));
+    LOG(return static_cast<Number>(lua_tonumber(L, index)));
   }
 
   template <typename T>
   inline void pushLightUserdata(T* ud) {
-    lua_pushlightuserdata(L, static_cast<T*>(ud));
+    LOG(lua_pushlightuserdata(L, static_cast<void*>(ud)));
   }
 
   template <typename T>
   inline T* toUserdata(int index = -1) {
-    return static_cast<T*>(lua_touserdata(L, index));
+    LOG(return static_cast<T*>(lua_touserdata(L, index)));
   }
 
   inline void pushString(const char* str) {
-    lua_pushstring(L, str);
+    LOG(lua_pushstring(L, str));
   }
 
   inline const char* toString(int index = -1) {
-    return lua_tostring(L, index);
+    LOG(return lua_tostring(L, index));
   }
 
   inline void pushCFunction(lua_CFunction f) {
-    lua_pushcfunction(L, f);
+    LOG(lua_pushcfunction(L, f));
+  }
+  
+  inline void pushCClosure(lua_CFunction f, int upvalues) {
+    LOG(lua_pushcclosure(L, f, upvalues));
   }
 
   inline void newTable() {
-    lua_newtable(L);
+    LOG(lua_newtable(L));
+  }
+  
+  inline void* newUserdata(size_t size) {
+    LOG(return lua_newuserdata(L, size));
   }
 
   inline void getTable(int index = -2) {
-    lua_gettable(L, index);
+    LOG(lua_gettable(L, index));
   }
 
   inline void setTable(int index = -3) {
-    lua_settable(L, index);
+    LOG(lua_settable(L, index));
   }
   
   inline void getGlobal(const char* name) {
-    lua_pushstring(L, name);
-    lua_gettable(L, LUA_GLOBALSINDEX);
+    LOG(lua_pushstring(L, name));
+    LOG(lua_gettable(L, LUA_GLOBALSINDEX));
   }
 
   inline void pop(int count = 1) {
-    lua_pop(L, count);
+    LOG(lua_pop(L, count));
   }
 
   inline void pushValue(int index) {
-    lua_pushvalue(L, index);
+    LOG(lua_pushvalue(L, index));
   }
 
   inline void insert(int index) {
-    lua_insert(L, index);
+    LOG(lua_insert(L, index));
   }
 
   inline void remove(int index) {
-    lua_remove(L, index);
+    LOG(lua_remove(L, index));
   }
 
   inline bool next(int index = -2) {
-    return (lua_next(L, index) != 0);
+    LOG(return (lua_next(L, index) != 0));
   }
 
   
   inline LuaType type(int index = -1) {
-    return static_cast<LuaType>(lua_type(L, index));
+    LOG(return static_cast<LuaType>(lua_type(L, index)));
   }
 
   inline bool isNumber(int index = -1) {
-    return lua_isnumber(L, index);
+    LOG(return lua_isnumber(L, index));
   }
   
   inline bool isUserdata(int index = -1) {
-    return lua_isuserdata(L, index);
+    LOG(return lua_isuserdata(L, index));
   }
   
   inline bool isString(int index = -1) {
-    return lua_isstring(L, index);
+    LOG(return lua_isstring(L, index));
   }
 
   inline bool isNil(int index = -1) {
-    return lua_isnil(L, index);
+    LOG(return lua_isnil(L, index));
   }
 
   inline bool isFunction(int index = -1) {
-    return lua_isfunction(L, index);
+    LOG(return lua_isfunction(L, index));
   }
   
   inline bool isTable(int index = -1) {
-    return lua_istable(L, index);
+    LOG(return lua_istable(L, index));
   }
   
   inline const char* typeName(int index = -1) {
-    return lua_typename(L, lua_type(L, index));
+    LOG(return lua_typename(L, lua_type(L, index)));
   }
   
   inline bool equal(int index1 = -2, int index2 = -1) {
-    return lua_equal(L, index1, index2);
+    LOG(return lua_equal(L, index1, index2));
   }
   
 
   inline int pcall(int nArgs, int nRes, int errFunction) {
-    return lua_pcall(L, nArgs, nRes, errFunction);
+    LOG(return lua_pcall(L, nArgs, nRes, errFunction));
   }
   
   inline int doString(const char* str) {
-    return lua_dostring(L, str);
+    LOG(return lua_dostring(L, str));
   }
   
 };
 
 // template implementations
+
 template <typename T>
 LuaProxyPrimitive<T> LuaState::primitive(const T& val) {
   return LuaProxyPrimitive<T>(this, val);

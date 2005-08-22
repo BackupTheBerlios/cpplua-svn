@@ -21,6 +21,7 @@
 CC=g++
 CFLAGS=-g -ggdb -Wall 
 LDFLAGS=-L.. -lcpplua -lcppunit
+DEBUG=-D_DEBUG
 SRC=$(wildcard *.cpp)
 OBJ=$(SRC:%.cpp=%.o)
 DEPS=$(SRC:%.cpp=.%.dep)
@@ -38,7 +39,7 @@ $(TARGET): $(OBJ)
 	$(CC) -o $@ $(OBJ) $(LDFLAGS)
 
 %.o : %.cpp
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(DEBUG) $(CFLAGS) -c -o $@ $<
 
 .%.dep: %.cpp
 	$(CC) -MM $(CFLAGS) $< >$@

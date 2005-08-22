@@ -31,6 +31,14 @@ SOFTWARE.
 using namespace std;
 #endif
 
+#define STACK_OPERATION(T, operation) \
+{ \
+  push(); \
+  T res = operation; \
+  getState()->pop(); \
+  return res; \
+}
+
 namespace cpplua {
 
 /**
@@ -45,7 +53,7 @@ protected:
 
   template <typename T>
   void duplicate(const T& src) {
-    getState()->template pushLightUserdata<LuaIObject>(this);  
+    getState()->pushLightUserdata(this);  
     LuaTraits<T>::push(getState(), src);
     getState()->setTable(LuaState::cpptableIndex);
   }  
@@ -61,18 +69,7 @@ public:
   /**
   * Default implementation for equality
   */
-  template <typename T>
-  bool operator==(const T& obj) const {
-    push();
-    LuaTraits<T>::push(getState(), obj);
-    
-    bool res = getState()->equal();    
-        
-    getState()->pop();
-    getState()->pop();
-    
-    return res;
-  }
+  template <typename T> bool operator==(const T& obj) const;
   
   bool isFunction() const;
   bool isNumber() const;
@@ -84,15 +81,36 @@ public:
   LuaType type() const;
   const char* typeName() const;
   
-  template <typename T>
-  T toNumber() const {
-    push();
-    T res = getState()->toNumber<T>();
-    getState()->pop();
-    return res;
-  }
+  // conversion operators
+  template <typename T> T toNumber() const;
+  const char* toString() const;
+  template <typename T> T* toUserdata() const;
 };
 
+// template implementations
+
+template <typename T>
+bool LuaIObject::operator==(const T& obj) const {
+  push();
+  LuaTraits<T>::push(getState(), obj);
+  
+  bool res = getState()->equal();    
+      
+  getState()->pop();
+  getState()->pop();
+  
+  return res;
+}
+
+template <typename T>
+T LuaIObject::toNumber() const {
+  STACK_OPERATION(T, getState()->toNumber<T>());
+}
+
+template <typename T>
+T* LuaIObject::toUserdata() const {
+  STACK_OPERATION(T*, getState()->toUserdata<T>());
+}
 
 };
 #endif
