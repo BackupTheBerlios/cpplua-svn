@@ -19,6 +19,7 @@ class ObjectTest : public CppUnit::TestFixture {
   CPPUNIT_TEST(basicTable);
   CPPUNIT_TEST(primitive);
   CPPUNIT_TEST(conversions);
+  CPPUNIT_TEST(numbers);
   CPPUNIT_TEST_SUITE_END();
 private:
   LuaState* L;
@@ -43,6 +44,9 @@ public:
   
   // Conversion to primitive data types
   void conversions();
+  
+  // Working with numeric types
+  void numbers();
 };
 
 #endif

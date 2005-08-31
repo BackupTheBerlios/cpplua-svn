@@ -85,6 +85,7 @@ public:
   template <typename T> T toNumber() const;
   const char* toString() const;
   template <typename T> T* toUserdata() const;
+  template <typename T> T toPrimitive() const;
 };
 
 // template implementations
@@ -110,6 +111,11 @@ T LuaIObject::toNumber() const {
 template <typename T>
 T* LuaIObject::toUserdata() const {
   STACK_OPERATION(T*, getState()->toUserdata<T>());
+}
+
+template <typename T>
+T LuaIObject::toPrimitive() const {
+  STACK_OPERATION(T, LuaTraits<T>::pop(getState()));
 }
 
 };

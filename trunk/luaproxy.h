@@ -9,16 +9,40 @@ class LuaState;
 
 class LuaProxyGlobal : public LuaIObject {
   const char* name;
+private:
+  template <typename T>
+  void assign(const T& other);
 public:
   LuaProxyGlobal(LuaState* L, const char* name);
   virtual void push() const;
+  
+  LuaProxyGlobal& operator=(const LuaProxyGlobal& other);
+  template <typename T>
+  LuaProxyGlobal& operator=(const T& other);
 };
+
+template <typename T>
+void LuaProxyGlobal::assign(const T& other) {
+  getState()->pushString(name);
+  LuaTraits<T>::push(getState(), other);
+  getState()->setTable(LUA_GLOBALSINDEX);
+}
+
+template <typename T>
+LuaProxyGlobal& LuaProxyGlobal::operator=(const T& other) {
+  assign(other);
+  return *this;
+}
+
+/**********/
 
 class LuaProxyEmptyTable : public LuaIObject {
 public:
   LuaProxyEmptyTable(LuaState* L);
   virtual void push() const;
 };
+
+/**********/
 
 template <typename T>
 class LuaProxyPrimitive : public LuaIObject {

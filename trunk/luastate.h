@@ -98,8 +98,11 @@ public:
     setTable(cpptableIndex);
     return res;
   }
-  
-  
+  template <typename T, typename Function>
+  void registerMethod(const char* name, const T& obj, Function f) {
+    global(name) = method(obj, f);
+  }
+    
   void printTop() {
     lua_getglobal(L, "print");
     lua_pushvalue(L, -2);

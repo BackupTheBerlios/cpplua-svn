@@ -49,6 +49,19 @@ struct LuaTraits<int> {
   }
 };
 
+// double specialization
+template <>
+struct LuaTraits<double> {
+  static void push(LuaState* L, const double& n) {
+    L->pushNumber<double>(n);
+  }
+  static double pop(LuaState* L) {
+    double res = L->toNumber<double>();
+    L->pop();
+    return res;
+  }
+};
+
 // string specialization
 template<size_t size>
 struct LuaTraits<char[size]> {

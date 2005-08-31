@@ -88,3 +88,9 @@ void ObjectTest::conversions() {
   CPPUNIT_ASSERT(*a == a2);
   delete a;
 }
+
+void ObjectTest::numbers() {
+  LuaObject x = L->primitive(4.5);
+  double y = x.toNumber<double>();
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(4.5, y, 1e-10);
+}

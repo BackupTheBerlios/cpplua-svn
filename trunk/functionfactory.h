@@ -75,7 +75,7 @@ template <typename T, typename Function> struct GeneralMethod {};
 
 template <typename RetVal, typename T>
 struct GeneralMethod<T, RetVal(T::*)()> {
-  static int apply(lua_State*) {
+  static int apply(lua_State* l) {
     LuaState L(l);
     T* obj = L.template toUserdata<T>(lua_upvalueindex(1));
     RetVal(T::*f)() = *(L.template toUserdata<RetVal(T::*)()>(lua_upvalueindex(2)));

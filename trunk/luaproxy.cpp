@@ -13,6 +13,11 @@ void LuaProxyGlobal::push() const {
   getState()->getGlobal(name);
 }
 
+LuaProxyGlobal& LuaProxyGlobal::operator=(const LuaProxyGlobal& other) {
+  assign(other);
+  return *this;
+}
+
 // LuaProxyEmptyTable
 
 LuaProxyEmptyTable::LuaProxyEmptyTable(LuaState* L)

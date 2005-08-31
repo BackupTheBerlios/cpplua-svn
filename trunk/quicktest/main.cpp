@@ -15,6 +15,10 @@ public:
   }
 };
 
+int square(int x) {
+  return x * x;
+}
+
 int main(int argc, char** argv) {
   ofstream* stream = 0;
   if (argc > 1) {
@@ -26,8 +30,9 @@ int main(int argc, char** argv) {
     LuaState L;
     A a(9);
       
-    LuaMethod<A, int(A::*)(int)> x = L.method(a, &A::sum);
-    cout << x(5) << endl;
+    L.global("f") = L.method(a, &A::sum);
+    L.doString("temp = f(5)");
+    assert(L.global("temp") == 14);
   }
   
   delete stream;
