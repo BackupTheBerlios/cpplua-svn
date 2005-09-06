@@ -70,6 +70,7 @@ public:
   * Default implementation for equality
   */
   template <typename T> bool operator==(const T& obj) const;
+  template <typename T> bool operator!=(const T& obj) const;
   
   bool isFunction() const;
   bool isNumber() const;
@@ -104,6 +105,11 @@ bool LuaIObject::operator==(const T& obj) const {
 }
 
 template <typename T>
+bool LuaIObject::operator!=(const T& obj) const {
+  return !(*this == obj);
+}
+
+template <typename T>
 T LuaIObject::toNumber() const {
   STACK_OPERATION(T, getState()->toNumber<T>());
 }
@@ -115,7 +121,8 @@ T* LuaIObject::toUserdata() const {
 
 template <typename T>
 T LuaIObject::toPrimitive() const {
-  STACK_OPERATION(T, LuaTraits<T>::pop(getState()));
+  push();
+  return LuaTraits<T>::pop(getState());
 }
 
 };

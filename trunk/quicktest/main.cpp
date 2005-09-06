@@ -28,11 +28,16 @@ int main(int argc, char** argv) {
 
   {
     LuaState L;
-    A a(9);
-      
-    L.global("f") = L.method(a, &A::sum);
-    L.doString("temp = f(5)");
-    assert(L.global("temp") == 14);
+    LuaObject table = L.emptyTable();
+    for(int i = 0; i < 10; i++)
+      table[i] = i*i;
+    table["hello"] = -1.8;
+    LuaObject table2 = L.emptyTable();
+    table[table2] = "A table index";
+    table["x"] = table2;
+    table2[0] = 6;
+    
+    assert(table[table["x"][0]] == 36);
   }
   
   delete stream;

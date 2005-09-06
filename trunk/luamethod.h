@@ -2,13 +2,12 @@
 #define LUAMETHOD_H
 
 #include "luaobject.h"
+#include <stdlib.h>
 
 namespace cpplua {
 
 template <typename T, typename Function>
-class LuaMethod : public LuaObject {
-  
-};
+class LuaMethod : public LuaObject {};
 
 template <typename T, typename RetVal>
 class LuaMethod<T, RetVal(T::*)()> : public LuaObject {

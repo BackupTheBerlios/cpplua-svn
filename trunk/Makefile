@@ -19,8 +19,8 @@
 # SOFTWARE.
 
 CC=g++
-CFLAGS=-g -ggdb -Wall 
-LDFLAGS=-ldl -llua -llualib
+CFLAGS=-g -ggdb -Wall -I/usr/include/lua50
+LDFLAGS=-ldl -llua50 -llualib50
 DEBUG=-D_DEBUG
 SRC=$(wildcard *.cpp)
 OBJ=$(SRC:%.cpp=%.o)

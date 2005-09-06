@@ -1,3 +1,4 @@
-main.o: main.cpp ../cpplua.h ../common.h ../luastate.h ../luaobject.h \
-  ../luaiobject.h ../luatraits.h ../luabracket.h ../luaproxy.h \
-  ../luamethod.h ../functionfactory.h
+main.o: main.cpp ../cpplua.h ../common.h /usr/include/lua50/lua.h \
+  /usr/include/lua50/lualib.h /usr/include/lua50/lauxlib.h ../luastate.h \
+  ../luaobject.h ../luaiobject.h ../luatraits.h ../luabracket.h \
+  ../luaproxy.h ../luamethod.h ../functionfactory.h

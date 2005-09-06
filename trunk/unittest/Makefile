@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 CC=g++
-CFLAGS=-g -ggdb -Wall 
+CFLAGS=-g -ggdb -Wall -I/usr/include/lua50
 LDFLAGS=-L.. -lcpplua -lcppunit
 DEBUG=-D_DEBUG
 SRC=$(wildcard *.cpp)

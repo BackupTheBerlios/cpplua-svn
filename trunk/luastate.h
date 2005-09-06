@@ -57,7 +57,7 @@ class LuaObject;
 class LuaProxyGlobal;
 class LuaProxyEmptyTable;
 template <typename T> class LuaProxyPrimitive;
-template <typename T, typename Function> class FunctionFactory;
+template <typename T, typename Function> class PushMethod;
 template <typename T, typename Function> class LuaMethod;
 
 class LuaState {
@@ -94,7 +94,7 @@ public:
   LuaMethod<T, Function> method(const T& obj, Function f) {
     LuaMethod<T, Function> res(this);
     pushLightUserdata(&res);
-    FunctionFactory<T, Function>::push(this, obj, f);
+    PushMethod<T, Function>::apply(this, obj, f);
     setTable(cpptableIndex);
     return res;
   }

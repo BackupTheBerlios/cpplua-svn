@@ -13,6 +13,7 @@ namespace cpplua {
 
 typedef std::vector<LuaObject> LuaCollection;
 template <typename T, typename Function> struct GeneralMethod;
+template <typename Function> struct GeneralFunction;
 
 // metafunctions
 
@@ -51,16 +52,15 @@ struct ReturnValues<LuaCollection> {
 
 
 
-// Function Factory
+// Push Method
 
 template <typename T, typename Function>
-struct FunctionFactory {
-  typedef Function FType;
-  static void push(LuaState* L, const T& obj, Function f);
+struct PushMethod {
+  static void apply(LuaState* L, const T& obj, Function f);
 };
 
 template <typename T, typename Function>
-void FunctionFactory<T, Function>::push(LuaState* L, const T& obj, Function f) {
+void PushMethod<T, Function>::apply(LuaState* L, const T& obj, Function f) {
   L->pushLightUserdata(const_cast<T*>(&obj));
   Function* ptmf = reinterpret_cast<Function*>(
     L->newUserdata(sizeof(Function))
@@ -69,9 +69,29 @@ void FunctionFactory<T, Function>::push(LuaState* L, const T& obj, Function f) {
   L->pushCClosure(GeneralMethod<T, Function>::apply, 2);
 }
 
+// Push Function
+
+template <typename Function>
+struct PushFunction {
+  static void apply(LuaState*, Function);
+};
+
+template <typename Function>
+void PushFunction<Function>::apply(LuaState* L, Function f) {
+  Function* ptmf = reinterpret_cast<Function*>(
+    L->newUserdata(sizeof(Function))
+  );
+  *ptmf = f;
+  L->pushCClosure(GeneralFunction<Function>::apply, 2);
+}
+
 // General Method
 
 template <typename T, typename Function> struct GeneralMethod {};
+
+template <typename T, typename Function>
+struct GeneralMethod<T, Function const> 
+  : public GeneralMethod<T, Function> {};
 
 template <typename RetVal, typename T>
 struct GeneralMethod<T, RetVal(T::*)()> {
@@ -108,6 +128,50 @@ struct GeneralMethod<T, RetVal(T::*)(Arg1, Arg2)> {
     return ReturnValues<RetVal>::apply(&L, res);  
   }
 };
+
+// General Function
+
+template <typename Function> struct GeneralFunction {};
+
+template <typename RetVal>
+struct GeneralFunction<RetVal(*)()> {
+  static int apply(lua_State* l) {
+    LuaState L(l);
+    RetVal(*f)() = *(L.template toUserdata<RetVal(*)()>(lua_upvalueindex(1)));
+    RetVal res = f();
+    return ReturnValues<RetVal>::apply(&L, res);
+  }
+};
+
+template <typename RetVal, typename Arg1>
+struct GeneralFunction<RetVal(*)(Arg1)> {
+  static int apply(lua_State* l) {
+    LuaState L(l);
+    RetVal(*f)() = *(L.template toUserdata<RetVal(*)()>(lua_upvalueindex(1)));
+    RetVal res = f();
+    return ReturnValues<RetVal>::apply(&L, res);
+  }
+};
+
+/* if C++ had variable argument list
+
+template <typename RetVal, multiple typename Args>
+struct GeneralFunction<RetVal(*)(multiple Args)> {
+  static int apply(lua_State* l) {
+    LuaState L(l);
+    multiple Args args;
+    RetVal(*f)(Args) = *(L.template toUserdata<RetVal(*)(multiple Args)>(lua_upvalueindex(1)));
+    if (sizeof(Args) > 0) {
+      args[1] = RetrieveFirstArgument<Args[1]>::apply(&L);
+      for(int i = 2; i < sizeof(Args); i++)
+        args[i] = LuaTraits<Args[i]>::pop(&L);
+    }
+    RetVal res = f(multiple args);
+    return ReturnValues<RetVal>::apply(&L, res);
+  }
+};
+
+*/
 
 };
 
