@@ -1,1 +1,0 @@
-state.o: state.cpp state.h ../luastate.h ../common.h
