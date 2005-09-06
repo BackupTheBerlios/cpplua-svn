@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'hlight'
+require 'highlighter'
 
 Dir['*.xml'].each do |doc_file|
   base = File.basename(doc_file, File.extname(doc_file))
