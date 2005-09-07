@@ -1,0 +1,1097 @@
+creating rule Region Marker, #stay
+creating rule Region Marker, #stay
+creating rule Keyword, #stay
+creating rule Extensions, #stay
+creating rule Data Type, #stay
+creating rule Float, #stay
+creating rule Octal, #stay
+creating rule Hex, #stay
+creating rule Decimal, #stay
+creating rule Char, #stay
+creating rule String, String
+creating rule Comment, Commentar 1
+creating rule Comment, Commentar 2
+creating rule Symbol, #stay
+creating rule Symbol, #stay
+creating rule Preprocessor, Outscoped
+creating rule Preprocessor, Preprocessor
+creating rule Function, #stay
+creating rule Symbol, Member
+creating rule Symbol, #stay
+creating rule String, #stay
+creating rule String Char, #stay
+creating rule String, #pop
+creating rule Function, #pop
+creating rule Comment, #pop
+creating rule Preprocessor, #stay
+creating rule Preprocessor, Define
+creating rule Preprocessor, #stay
+creating rule Prep. Lib, #stay
+creating rule Prep. Lib, #stay
+creating rule Comment, Commentar 1
+creating rule Comment, Commentar/Preprocessor
+creating rule Preprocessor, #stay
+creating rule Comment, #pop
+creating rule Comment, Commentar 2
+creating rule Comment, Outscoped intern
+creating rule Preprocessor, #pop
+creating rule Comment, Commentar 2
+creating rule Comment, Outscoped intern
+creating rule Comment, #pop
+keeping current context Normal
+rule matched #: Preprocessor HLight::Rule::Rule_RegExpr
+switching to context Preprocessor
+consuming 'i'
+consuming 'n'
+consuming 'c'
+consuming 'l'
+consuming 'u'
+consuming 'd'
+consuming 'e'
+consuming ' '
+consuming '<'
+consuming 'l'
+consuming 'u'
+consuming 'a'
+consuming 's'
+consuming 't'
+consuming 'a'
+consuming 't'
+consuming 'e'
+consuming '.'
+consuming 'h'
+consuming '>'
+switching back to context Normal
+rule matched using: Keyword HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+rule matched namespace: Keyword HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+consuming 'c'
+consuming 'p'
+consuming 'p'
+consuming 'l'
+consuming 'u'
+consuming 'a'
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+keeping current context Normal
+rule matched int: Data Type HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+rule matched main: Function HLight::Rule::Rule_RegExpr
+keeping current context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched {: Symbol HLight::Rule::Rule_DetectChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+consuming 'u'
+consuming 'a'
+consuming 'S'
+consuming 't'
+consuming 'a'
+consuming 't'
+consuming 'e'
+consuming ' '
+consuming 'L'
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched getGlobal: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ": String HLight::Rule::Rule_DetectChar
+switching to context String
+consuming 'p'
+consuming 'r'
+consuming 'i'
+consuming 'n'
+consuming 't'
+rule matched ": String HLight::Rule::Rule_DetectChar
+switching back to context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched pushString: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ": String HLight::Rule::Rule_DetectChar
+switching to context String
+consuming 'H'
+consuming 'e'
+consuming 'l'
+consuming 'l'
+consuming 'o'
+consuming ' '
+consuming 'W'
+consuming 'o'
+consuming 'r'
+consuming 'l'
+consuming 'd'
+rule matched ": String HLight::Rule::Rule_DetectChar
+switching back to context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched pcall: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched 1: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ,: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched 0: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ,: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched 0: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+rule matched return: Keyword HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+rule matched 0: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+rule matched }: Symbol HLight::Rule::Rule_DetectChar
+keeping current context Normal
+keeping current context Normal
+keeping current context Normal
+rule matched #: Preprocessor HLight::Rule::Rule_RegExpr
+switching to context Preprocessor
+consuming 'i'
+consuming 'n'
+consuming 'c'
+consuming 'l'
+consuming 'u'
+consuming 'd'
+consuming 'e'
+consuming ' '
+consuming '<'
+consuming 'i'
+consuming 'o'
+consuming 's'
+consuming 't'
+consuming 'r'
+consuming 'e'
+consuming 'a'
+consuming 'm'
+consuming '>'
+switching back to context Normal
+rule matched #: Preprocessor HLight::Rule::Rule_RegExpr
+switching to context Preprocessor
+consuming 'i'
+consuming 'n'
+consuming 'c'
+consuming 'l'
+consuming 'u'
+consuming 'd'
+consuming 'e'
+consuming ' '
+consuming '<'
+consuming 'l'
+consuming 'u'
+consuming 'a'
+consuming 's'
+consuming 't'
+consuming 'a'
+consuming 't'
+consuming 'e'
+consuming '.'
+consuming 'h'
+consuming '>'
+switching back to context Normal
+rule matched using: Keyword HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+rule matched namespace: Keyword HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+consuming 'c'
+consuming 'p'
+consuming 'p'
+consuming 'l'
+consuming 'u'
+consuming 'a'
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+keeping current context Normal
+rule matched int: Data Type HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+rule matched main: Function HLight::Rule::Rule_RegExpr
+keeping current context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched {: Symbol HLight::Rule::Rule_DetectChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+consuming 'u'
+consuming 'a'
+consuming 'S'
+consuming 't'
+consuming 'a'
+consuming 't'
+consuming 'e'
+consuming ' '
+consuming 'L'
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched newTable: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched pushNumber: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched 0: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched pushNumber: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched 15: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched setTable: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched pushNumber: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched 1: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched pushNumber: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched 30: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched setTable: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+rule matched for: Keyword HLight::Rule::Rule_keyword
+keeping current context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched int: Data Type HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+consuming 'i'
+consuming ' '
+rule matched =: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched 0: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+consuming 'i'
+consuming ' '
+rule matched <: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched 2: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+consuming 'i'
+rule matched +: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched +: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched {: Symbol HLight::Rule::Rule_DetectChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming ' '
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched pushNumber: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming 'i'
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming ' '
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched getTable: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming ' '
+consuming ' '
+consuming 's'
+consuming 't'
+consuming 'd'
+rule matched ::: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched cout: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+consuming ' '
+rule matched <: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched <: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched toNumber: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched <: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched int: Data Type HLight::Rule::Rule_keyword
+keeping current context Normal
+rule matched >: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched <: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched <: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+consuming 's'
+consuming 't'
+consuming 'd'
+rule matched ::: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched endl: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming ' '
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched pop: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+rule matched }: Symbol HLight::Rule::Rule_DetectChar
+keeping current context Normal
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+rule matched return: Keyword HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+rule matched 0: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+rule matched }: Symbol HLight::Rule::Rule_DetectChar
+keeping current context Normal
+keeping current context Normal
+keeping current context Normal
+rule matched #: Preprocessor HLight::Rule::Rule_RegExpr
+switching to context Preprocessor
+consuming 'i'
+consuming 'n'
+consuming 'c'
+consuming 'l'
+consuming 'u'
+consuming 'd'
+consuming 'e'
+consuming ' '
+consuming '<'
+consuming 'c'
+consuming 'p'
+consuming 'p'
+consuming 'l'
+consuming 'u'
+consuming 'a'
+consuming '.'
+consuming 'h'
+consuming '>'
+switching back to context Normal
+rule matched using: Keyword HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+rule matched namespace: Keyword HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+consuming 'c'
+consuming 'p'
+consuming 'p'
+consuming 'l'
+consuming 'u'
+consuming 'a'
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+keeping current context Normal
+rule matched int: Data Type HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+rule matched main: Function HLight::Rule::Rule_RegExpr
+keeping current context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched {: Symbol HLight::Rule::Rule_DetectChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+consuming 'u'
+consuming 'a'
+consuming 'S'
+consuming 't'
+consuming 'a'
+consuming 't'
+consuming 'e'
+consuming ' '
+consuming 'L'
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+consuming 'u'
+consuming 'a'
+consuming 'O'
+consuming 'b'
+consuming 'j'
+consuming 'e'
+consuming 'c'
+consuming 't'
+consuming ' '
+consuming 'l'
+consuming 'u'
+consuming 'a'
+consuming 'P'
+consuming 'r'
+rule matched int: Data Type HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+rule matched =: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched global: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ": String HLight::Rule::Rule_DetectChar
+switching to context String
+consuming 'p'
+consuming 'r'
+consuming 'i'
+consuming 'n'
+consuming 't'
+rule matched ": String HLight::Rule::Rule_DetectChar
+switching back to context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+rule matched luaPrint: Function HLight::Rule::Rule_RegExpr
+keeping current context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ": String HLight::Rule::Rule_DetectChar
+switching to context String
+consuming 'H'
+consuming 'e'
+consuming 'l'
+consuming 'l'
+consuming 'o'
+consuming ' '
+consuming 'W'
+consuming 'o'
+consuming 'r'
+consuming 'l'
+consuming 'd'
+rule matched ": String HLight::Rule::Rule_DetectChar
+switching back to context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+rule matched return: Keyword HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+rule matched 0: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+rule matched }: Symbol HLight::Rule::Rule_DetectChar
+keeping current context Normal
+keeping current context Normal
+keeping current context Normal
+rule matched #: Preprocessor HLight::Rule::Rule_RegExpr
+switching to context Preprocessor
+consuming 'i'
+consuming 'n'
+consuming 'c'
+consuming 'l'
+consuming 'u'
+consuming 'd'
+consuming 'e'
+consuming ' '
+consuming '<'
+consuming 'c'
+consuming 'p'
+consuming 'p'
+consuming 'l'
+consuming 'u'
+consuming 'a'
+consuming '.'
+consuming 'h'
+consuming '>'
+switching back to context Normal
+rule matched #: Preprocessor HLight::Rule::Rule_RegExpr
+switching to context Preprocessor
+consuming 'i'
+consuming 'n'
+consuming 'c'
+consuming 'l'
+consuming 'u'
+consuming 'd'
+consuming 'e'
+consuming ' '
+consuming '<'
+consuming 'c'
+consuming 'a'
+consuming 's'
+consuming 's'
+consuming 'e'
+consuming 'r'
+consuming 't'
+consuming '>'
+switching back to context Normal
+rule matched using: Keyword HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+rule matched namespace: Keyword HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+consuming 'c'
+consuming 'p'
+consuming 'p'
+consuming 'l'
+consuming 'u'
+consuming 'a'
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+keeping current context Normal
+rule matched int: Data Type HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+rule matched main: Function HLight::Rule::Rule_RegExpr
+keeping current context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched {: Symbol HLight::Rule::Rule_DetectChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+consuming 'u'
+consuming 'a'
+consuming 'S'
+consuming 't'
+consuming 'a'
+consuming 't'
+consuming 'e'
+consuming ' '
+consuming 'L'
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+consuming 'u'
+consuming 'a'
+consuming 'O'
+consuming 'b'
+consuming 'j'
+consuming 'e'
+consuming 'c'
+consuming 't'
+consuming ' '
+consuming 't'
+consuming 'a'
+consuming 'b'
+consuming 'l'
+consuming 'e'
+consuming ' '
+rule matched =: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched emptyTable: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+rule matched for: Keyword HLight::Rule::Rule_keyword
+keeping current context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched int: Data Type HLight::Rule::Rule_keyword
+keeping current context Normal
+consuming ' '
+consuming 'i'
+consuming ' '
+rule matched =: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched 0: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+consuming 'i'
+consuming ' '
+rule matched <: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched 10: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+consuming 'i'
+rule matched +: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched +: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming ' '
+consuming ' '
+consuming 't'
+consuming 'a'
+consuming 'b'
+consuming 'l'
+consuming 'e'
+rule matched [: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming 'i'
+rule matched ]: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched =: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+consuming 'i'
+rule matched *: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming 'i'
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 't'
+consuming 'a'
+consuming 'b'
+consuming 'l'
+consuming 'e'
+rule matched [: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ": String HLight::Rule::Rule_DetectChar
+switching to context String
+consuming 'h'
+consuming 'e'
+consuming 'l'
+consuming 'l'
+consuming 'o'
+rule matched ": String HLight::Rule::Rule_DetectChar
+switching back to context Normal
+rule matched ]: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched =: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched -: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched 1.8: Float HLight::Rule::Rule_Float
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 'L'
+consuming 'u'
+consuming 'a'
+consuming 'O'
+consuming 'b'
+consuming 'j'
+consuming 'e'
+consuming 'c'
+consuming 't'
+consuming ' '
+consuming 't'
+consuming 'a'
+consuming 'b'
+consuming 'l'
+consuming 'e'
+rule matched 2: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+consuming ' '
+rule matched =: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+consuming 'L'
+rule matched .: Symbol HLight::Rule::Rule_RegExpr
+switching to context Member
+rule matched emptyTable: Function HLight::Rule::Rule_RegExpr
+switching back to context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 't'
+consuming 'a'
+consuming 'b'
+consuming 'l'
+consuming 'e'
+rule matched [: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming 't'
+consuming 'a'
+consuming 'b'
+consuming 'l'
+consuming 'e'
+rule matched 2: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ]: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched =: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched ": String HLight::Rule::Rule_DetectChar
+switching to context String
+consuming 'A'
+consuming ' '
+consuming 't'
+consuming 'a'
+consuming 'b'
+consuming 'l'
+consuming 'e'
+consuming ' '
+consuming 'i'
+consuming 'n'
+consuming 'd'
+consuming 'e'
+consuming 'x'
+rule matched ": String HLight::Rule::Rule_DetectChar
+switching back to context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 't'
+consuming 'a'
+consuming 'b'
+consuming 'l'
+consuming 'e'
+rule matched [: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ": String HLight::Rule::Rule_DetectChar
+switching to context String
+consuming 'x'
+rule matched ": String HLight::Rule::Rule_DetectChar
+switching back to context Normal
+rule matched ]: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched =: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+consuming 't'
+consuming 'a'
+consuming 'b'
+consuming 'l'
+consuming 'e'
+rule matched 2: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+consuming 't'
+consuming 'a'
+consuming 'b'
+consuming 'l'
+consuming 'e'
+rule matched 2: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched [: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched 0: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ]: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched =: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+rule matched 3: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+consuming ' '
+consuming ' '
+keeping current context Normal
+consuming ' '
+consuming ' '
+rule matched assert: Function HLight::Rule::Rule_RegExpr
+keeping current context Normal
+rule matched (: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched 9: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+consuming ' '
+rule matched ,: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming ' '
+consuming 't'
+consuming 'a'
+consuming 'b'
+consuming 'l'
+consuming 'e'
+rule matched [: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+consuming 't'
+consuming 'a'
+consuming 'b'
+consuming 'l'
+consuming 'e'
+rule matched [: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ": String HLight::Rule::Rule_DetectChar
+switching to context String
+consuming 'x'
+rule matched ": String HLight::Rule::Rule_DetectChar
+switching back to context Normal
+rule matched ]: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched [: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched 0: Decimal HLight::Rule::Rule_Int
+keeping current context Normal
+rule matched ]: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ]: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ): Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+rule matched ;: Symbol HLight::Rule::Rule_AnyChar
+keeping current context Normal
+keeping current context Normal
+rule matched }: Symbol HLight::Rule::Rule_DetectChar
+keeping current context Normal
+keeping current context Normal

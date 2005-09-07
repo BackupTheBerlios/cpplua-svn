@@ -57,7 +57,7 @@ Almost every Lua API is wrapped in <code class="keyword">LuaState</code>.</p>
   L.<span class="dsFunction">pushNumber</span>(<span class="dsDecVal">30</span>);
   L.<span class="dsFunction">setTable</span>();
 
-  <span class="dsFunction">for</span>(<span class="dsDataType">int</span> i = <span class="dsDecVal">0</span>; i &lt; <span class="dsDecVal">2</span>; i++) {
+  <span class="dsKeyword">for</span>(<span class="dsDataType">int</span> i = <span class="dsDecVal">0</span>; i &lt; <span class="dsDecVal">2</span>; i++) {
     L.<span class="dsFunction">pushNumber</span>(i);
     L.<span class="dsFunction">getTable</span>();
     std::<span class="dsFunction">cout</span> &lt;&lt; L.<span class="dsFunction">toNumber</span>&lt;<span class="dsDataType">int</span>&gt;() &lt;&lt; std::<span class="dsFunction">endl</span>;
@@ -107,9 +107,9 @@ Instead, including the header "cpplua.h" gives you the whole CppLua framework, t
 <span class="dsDataType">int</span> <span class="dsFunction">main</span>() {
   LuaState L;
   LuaObject table = L.<span class="dsFunction">emptyTable</span>();
-  <span class="dsFunction">for</span>(<span class="dsDataType">int</span> i = <span class="dsDecVal">0</span>; i &lt; <span class="dsDecVal">10</span>; i++)
+  <span class="dsKeyword">for</span>(<span class="dsDataType">int</span> i = <span class="dsDecVal">0</span>; i &lt; <span class="dsDecVal">10</span>; i++)
     table[i] = i*i;
-  table[<span class="dsString">"hello"</span>] = -<span class="dsDecVal">1</span>.<span class="dsFunction">8</span>;
+  table[<span class="dsString">"hello"</span>] = -<span class="dsFloat">1.8</span>;
   LuaObject table<span class="dsDecVal">2</span> = L.<span class="dsFunction">emptyTable</span>();
   table[table<span class="dsDecVal">2</span>] = <span class="dsString">"A table index"</span>;
   table[<span class="dsString">"x"</span>] = table<span class="dsDecVal">2</span>;

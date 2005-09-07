@@ -49,7 +49,7 @@ Almost every Lua API is wrapped in <code>LuaState</code>.</p>
   L.<hl class='dsFunction'>pushNumber</hl>(<hl class='dsDecVal'>30</hl>);
   L.<hl class='dsFunction'>setTable</hl>();
 
-  <hl class='dsKeyword'>for</hl>(<hl class='dsDataType'>int</hl> i = <hl class='dsDecVal'>0</hl>; i &lt; <hl class='dsDecVal'>2</hl>; i++) {
+  <hl class='dsFunction'>for</hl>(<hl class='dsDataType'>int</hl> i = <hl class='dsDecVal'>0</hl>; i &lt; <hl class='dsDecVal'>2</hl>; i++) {
     L.<hl class='dsFunction'>pushNumber</hl>(i);
     L.<hl class='dsFunction'>getTable</hl>();
     std::<hl class='dsFunction'>cout</hl> &lt;&lt; L.<hl class='dsFunction'>toNumber</hl>&lt;<hl class='dsDataType'>int</hl>&gt;() &lt;&lt; std::<hl class='dsFunction'>endl</hl>;
@@ -99,9 +99,9 @@ Instead, including the header "cpplua.h" gives you the whole CppLua framework, t
 <hl class='dsDataType'>int</hl> <hl class='dsFunction'>main</hl>() {
   LuaState L;
   LuaObject table = L.<hl class='dsFunction'>emptyTable</hl>();
-  <hl class='dsKeyword'>for</hl>(<hl class='dsDataType'>int</hl> i = <hl class='dsDecVal'>0</hl>; i &lt; <hl class='dsDecVal'>10</hl>; i++)
+  <hl class='dsFunction'>for</hl>(<hl class='dsDataType'>int</hl> i = <hl class='dsDecVal'>0</hl>; i &lt; <hl class='dsDecVal'>10</hl>; i++)
     table[i] = i*i;
-  table[<hl class='dsString'>&quot;hello&quot;</hl>] = -<hl class='dsFloat'>1.8</hl>;
+  table[<hl class='dsString'>&quot;hello&quot;</hl>] = -<hl class='dsDecVal'>1</hl>.<hl class='dsFunction'>8</hl>;
   LuaObject table<hl class='dsDecVal'>2</hl> = L.<hl class='dsFunction'>emptyTable</hl>();
   table[table<hl class='dsDecVal'>2</hl>] = <hl class='dsString'>&quot;A table index&quot;</hl>;
   table[<hl class='dsString'>&quot;x&quot;</hl>] = table<hl class='dsDecVal'>2</hl>;
@@ -110,8 +110,4 @@ Instead, including the header "cpplua.h" gives you the whole CppLua framework, t
   <hl class='dsFunction'>assert</hl>(<hl class='dsDecVal'>9</hl> , table[table[<hl class='dsString'>&quot;x&quot;</hl>][<hl class='dsDecVal'>0</hl>]]);
 }
 </code>
-
-<section>Handling member functions</section>
-
-
 </documentation>

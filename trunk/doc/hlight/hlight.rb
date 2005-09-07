@@ -1,7 +1,5 @@
 require 'rexml/document'
-require 'set'
 require 'strscan'
-require 'cgi'
 
 module HLight
   extend self
@@ -21,11 +19,11 @@ module HLight
         @name = context_element.attribute("name").value
         @attribute = context_element.attribute("attribute").value
         @line_end_context = context_element.attribute("lineEndContext").value
-        @rules = Set.new
+        @rules = []
       end
       
       def add_rule(rule)
-        @rules.add(rule)
+        @rules << rule
       end
       
       def each_rule(&blk)
@@ -85,7 +83,7 @@ module HLight
       
       def scan(scanner, re)
         @match = scanner.scan(re)
-        @size = scanner.matched_size
+        @size = scanner.matched_size        
         @match
       end
     end
@@ -361,6 +359,7 @@ module HLight
           match_list.each do |match|
             matched_text = line[match.first...match.last]
             style = rules[language].itemdata[match.attribute]
+            
             if style == "dsNormal"
               hl_block.add_text(matched_text)
             else
