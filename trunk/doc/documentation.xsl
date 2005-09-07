@@ -69,4 +69,28 @@
 </a>
 </xsl:template>
 
+<xsl:template match="toc">
+<div class="toc">
+<xsl:apply-templates/>
+</div>
+</xsl:template>
+
+<xsl:template match="toc//h">
+<ul>
+<xsl:apply-templates/>
+</ul>
+</xsl:template>
+
+<xsl:template match="toc/h/label" priority="2">
+<dt><h2><a href=""><xsl:apply-templates/></a></h2></dt>
+</xsl:template>
+
+<xsl:template match="toc/h/h/label" priority="2">
+<dt><h3><xsl:apply-templates/></h3></dt>
+</xsl:template>
+
+<xsl:template match="toc//h/label">
+<li/><xsl:apply-templates/>
+</xsl:template>
+
 </xsl:stylesheet>

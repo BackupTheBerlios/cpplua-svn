@@ -1,5 +1,6 @@
 require 'rexml/document'
 require 'strscan'
+require 'yaml'
 
 module HLight
   extend self
@@ -334,19 +335,27 @@ module HLight
   end
   
   class XMLCodeHighlighter
-    def initialize(default_language)
-      @default_language = default_language
+    def initialize(config)
+      @default_language = config["default language"]
+      @syntax_dir = config["syntax dir"]
+      @custom_files = config["custom"]
+    end
+    
+    def syntax_file(language)
+      @custom_files[language] or File.join(@syntax_dir, language + ".xml")
     end
     
     def highlight!(document)
       rules = {}
       document.each_element("//code[@block=1]") do |code_block|
-        if lang_attr = code_block.attribute("lang")
-          language = lang_attr.value
+        lang_attr = code_block.attribute("lang")
+        language = if lang_attr
+          lang_attr.value
         else
-          language = @default_language
+          @default_language
         end
-        rules[language] ||= HighlightRules.new(File.new(File.join('/usr/share/apps/katepart/syntax/', language.to_s+'.xml')))
+        
+        rules[language] ||= HighlightRules.new(File.new(syntax_file(language)))
         hl_block = REXML::Element.new("code")
         hl_block.add_attributes({"lang" => language, "block" => "1"})
         code = code_block.text
@@ -376,8 +385,9 @@ module HLight
     end
   end
   
-  def main(input, output)
-    hl = XMLCodeHighlighter.new("cpp")
+  def main(input, output, config_file = 'config.yaml')
+    config = YAML.load(File.new(config_file))
+    hl = XMLCodeHighlighter.new(config)
     hl.highlight!(doc = REXML::Document.new(input))
     output.puts doc
   end

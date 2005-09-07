@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="../documentation.xsl"?>
+<documentation>
+<title>Table of contents</title>
+<toc>
+<h>
+  <label>CppLua Documentation</label>
+  <h>
+    <label>CppLua Cookbook</label>
+    <h>
+      <label>Using LuaState</label>
+    </h>
+    <h>
+      <label>Using CppLua at full power</label>
+    </h>
+  </h>
+</h>
+</toc>
+
+</documentation>
