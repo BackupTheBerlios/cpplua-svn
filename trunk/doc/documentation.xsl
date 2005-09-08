@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:output method="xml" 
+  doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" 
+  doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+  indent="yes"/>
 
 <xsl:template match="/documentation">
     <html>
@@ -17,16 +21,27 @@
     </html>
 </xsl:template>
 
+<xsl:template name="anchor">
+<a>
+<xsl:attribute name="id">
+<xsl:value-of select="translate(.,' ','_')"/>
+</xsl:attribute>
+<xsl:apply-templates/>
+</a>
+</xsl:template>
+
 <xsl:template match="title">
-<h1><xsl:apply-templates/></h1>
+<h1>
+<xsl:call-template name="anchor"/>
+</h1>
 </xsl:template>
 
 <xsl:template match="chapter">
-<h2><xsl:apply-templates/></h2>
+<h2><xsl:call-template name="anchor"/></h2>
 </xsl:template>
 
 <xsl:template match="section">
-<h3><xsl:apply-templates/></h3>
+<h3><xsl:call-template name="anchor"/></h3>
 </xsl:template>
 
 <xsl:template match="p">
@@ -67,6 +82,10 @@
 </xsl:attribute>
 <xsl:apply-templates/>
 </a>
+</xsl:template>
+
+<xsl:template match="em">
+<em><xsl:apply-templates/></em>
 </xsl:template>
 
 <xsl:template match="toc">

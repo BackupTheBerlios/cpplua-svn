@@ -1,5 +1,6 @@
 require 'rexml/document'
 require 'strscan'
+require 'yaml'
 
 module HLight
   extend self
@@ -288,13 +289,12 @@ module HLight
     def match(line)
       scanner = StringScanner.new(line)
       matches = HLMatchList.new
-      warn "processing #{line}" if $DEBUG
       until scanner.eos?
         pointer = scanner.pointer
         matched = false
         @rules.contexts[current_context].each do |rule|
           if match = rule.apply(scanner)
-            warn "rule matched #{match}: #{rule.inspect}" if $DEBUG
+            warn "rule matched #{match}: #{rule.attribute} #{rule.class.name}" if $DEBUG
             update_context(rule.context)
             matches.add_match(pointer, rule.size, rule.attribute)
             matched = true
@@ -303,11 +303,11 @@ module HLight
         end
         
         unless matched
-          # if no rule matches advance until next word boundary
-          c = scanner.scan_until(/\b|$/)
-          size = scanner.matched_size
-          warn "consuming '#{c}'" if $DEBUG
-          matches.add_match(pointer, size, @rules.contexts[current_context].attribute)
+          # if no rule matches
+          c = scanner.scan_until(/.\b|\s|$/)
+          n = c.size
+          warn "consuming '#{c}' (size = #{n})" if $DEBUG
+          matches.add_match(pointer, n, @rules.contexts[current_context].attribute)
         end
       end
       
@@ -336,19 +336,27 @@ module HLight
   end
   
   class XMLCodeHighlighter
-    def initialize(default_language)
-      @default_language = default_language
+    def initialize(config)
+      @default_language = config["default language"]
+      @syntax_dir = config["syntax dir"]
+      @custom_files = config["custom"]
+    end
+    
+    def syntax_file(language)
+      @custom_files[language] or File.join(@syntax_dir, language + ".xml")
     end
     
     def highlight!(document)
       rules = {}
       document.each_element("//code[@block=1]") do |code_block|
-        if lang_attr = code_block.attribute("lang")
-          language = lang_attr.value
+        lang_attr = code_block.attribute("lang")
+        language = if lang_attr
+          lang_attr.value
         else
-          language = @default_language
+          @default_language
         end
-        rules[language] ||= HighlightRules.new(File.new(File.join('/usr/share/apps/katepart/syntax/', language.to_s+'.xml')))
+        
+        rules[language] ||= HighlightRules.new(File.new(syntax_file(language)))
         hl_block = REXML::Element.new("code")
         hl_block.add_attributes({"lang" => language, "block" => "1"})
         code = code_block.text
@@ -378,8 +386,9 @@ module HLight
     end
   end
   
-  def main(input, output)
-    hl = XMLCodeHighlighter.new("cpp")
+  def main(input, output, config_file = 'config.yaml')
+    config = YAML.load(File.new(config_file))
+    hl = XMLCodeHighlighter.new(config)
     hl.highlight!(doc = REXML::Document.new(input))
     output.puts doc
   end

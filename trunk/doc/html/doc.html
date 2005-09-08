@@ -1,21 +1,22 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="doc.css">
-<link rel="stylesheet" type="text/css" href="code.css">
-<title>CppLua Documentation</title>
-</head>
-<body>
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="doc.css" />
+    <link rel="stylesheet" type="text/css" href="code.css" />
+    <title>CppLua Documentation</title>
+  </head>
+  <body>
 
-<h1>CppLua Documentation</h1>
+<h1><a id="CppLua_Documentation">CppLua Documentation</a></h1>
 
 <p>CppLua is a C++ framework to interoperate with Lua programming language in an expressive and object-oriented way.
 CppLua proposes itself as an alternative to code wrapper generators such as <a href="http://www.swig.org">SWIG</a> or <a href="http://www.tecgraf.puc-rio.br/~celes/tolua/">tolua</a>.
 CppLua is somewhat like a <a href="http://www.boost.org/libs/python/doc/">Boost::Python</a> for Lua, although it currently misses many advanced (and frequently used) features of the Boost library.</p>
 
-<h2>CppLua Cookbook</h2>
-<h3>Using <code class="keyword">LuaState</code>
-</h3>
+<h2><a id="CppLua_Cookbook">CppLua Cookbook</a></h2>
+<h3><a id="Using_LuaState">Using <code class="keyword">LuaState</code></a></h3>
 
 <p>CppLua can be used at two levels. At the first level it is simply a straightforward C++ wrapper for the Lua C API.</p>
 
@@ -70,12 +71,12 @@ Almost every Lua API is wrapped in <code class="keyword">LuaState</code>.</p>
 <p>As you can see, many <code class="keyword">LuaState</code> methods which take indexes as parameters will use sensible defaults if they are not provided: for example, <code class="keyword">getTable</code> assumes -2 for its parameter, and <code class="keyword">setTable</code> assumes -3, since these are the most common choices.
 This reduces the number of keystrokes without (hopefully) impacting readability.</p>
 
-<h3>Using CppLua at full power</h3>
+<h3><a id="Using_CppLua_at_full_power">Using CppLua at full power</a></h3>
 
 <p>The real strength of CppLua, however, is not this slightly improved C++ version of <code class="keyword">lua_State</code>.
 Instead, including the header "cpplua.h" gives you the whole CppLua framework, that is, the ability to manipulate Lua objects directly from C++ code.</p>
 
-<p>Let's start with the usual "Hello World" example:</p>
+<p>Let's start with the usual <em>"Hello World"</em> example:</p>
 
 <pre class="code">
 <span class="dsOthers">#include &lt;cpplua.h&gt;</span>
@@ -83,7 +84,7 @@ Instead, including the header "cpplua.h" gives you the whole CppLua framework, t
 
 <span class="dsDataType">int</span> <span class="dsFunction">main</span>() {
   LuaState L;
-  LuaObject luaPr<span class="dsDataType">int</span> = L.<span class="dsFunction">global</span>(<span class="dsString">"print"</span>);
+  LuaObject luaPrint = L.<span class="dsFunction">global</span>(<span class="dsString">"print"</span>);
   <span class="dsFunction">luaPrint</span>(<span class="dsString">"Hello World"</span>);
 
   <span class="dsKeyword">return</span> <span class="dsDecVal">0</span>;
@@ -109,16 +110,16 @@ Instead, including the header "cpplua.h" gives you the whole CppLua framework, t
   <span class="dsKeyword">for</span>(<span class="dsDataType">int</span> i = <span class="dsDecVal">0</span>; i &lt; <span class="dsDecVal">10</span>; i++)
     table[i] = i*i;
   table[<span class="dsString">"hello"</span>] = -<span class="dsFloat">1.8</span>;
-  LuaObject table<span class="dsDecVal">2</span> = L.<span class="dsFunction">emptyTable</span>();
-  table[table<span class="dsDecVal">2</span>] = <span class="dsString">"A table index"</span>;
-  table[<span class="dsString">"x"</span>] = table<span class="dsDecVal">2</span>;
-  table<span class="dsDecVal">2</span>[<span class="dsDecVal">0</span>] = <span class="dsDecVal">3</span>;
+  LuaObject table2 = L.<span class="dsFunction">emptyTable</span>();
+  table[table2] = <span class="dsString">"A table index"</span>;
+  table[<span class="dsString">"x"</span>] = table2;
+  table2[<span class="dsDecVal">0</span>] = <span class="dsDecVal">3</span>;
   
   <span class="dsFunction">assert</span>(<span class="dsDecVal">9</span> , table[table[<span class="dsString">"x"</span>][<span class="dsDecVal">0</span>]]);
 }
 </pre>
 
-<h3>Handling member functions</h3>
+<h3><a id="Handling_member_functions">Handling member functions</a></h3>
 
 
 </body>
