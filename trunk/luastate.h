@@ -58,7 +58,9 @@ class LuaProxyGlobal;
 class LuaProxyEmptyTable;
 template <typename T> class LuaProxyPrimitive;
 template <typename T, typename Function> class PushMethod;
+template <typename Function> class PushFunction;
 template <typename T, typename Function> class LuaMethod;
+template <typename Function> class LuaFunction;
 
 class LuaState {
   bool collectState;
@@ -95,6 +97,14 @@ public:
     LuaMethod<T, Function> res(this);
     pushLightUserdata(&res);
     PushMethod<T, Function>::apply(this, obj, f);
+    setTable(cpptableIndex);
+    return res;
+  }
+  template <typename Function>
+  LuaFunction<Function> function(Function f) {
+    LuaFunction<Function> res(this);
+    pushLightUserdata(&res);
+    PushFunction<Function>::apply(this, f);
     setTable(cpptableIndex);
     return res;
   }

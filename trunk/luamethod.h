@@ -1,8 +1,9 @@
 #ifndef LUAMETHOD_H
 #define LUAMETHOD_H
 
-#include "luaobject.h"
 #include <stdlib.h>
+#include "luaobject.h"
+#include "functioncall.h"
 
 namespace cpplua {
 
@@ -15,9 +16,7 @@ public:
   LuaMethod(LuaState* L) : LuaObject(L) {}
   
   RetVal operator()() {
-    push();
-    getState()->pcall(0, 1, 0);
-    return LuaTraits<RetVal>::pop(getState());
+    return FunctionCall<RetVal, 0>::apply(getState(), *this);
   }
 };
 
@@ -27,9 +26,7 @@ public:
   LuaMethod(LuaState* L) : LuaObject(L) {}
   
   RetVal operator()() {
-    push();
-    getState()->pcall(0, 1, 0);
-    return LuaTraits<RetVal>::pop(getState());
+    return FunctionCall<RetVal, 1>::apply(getState(), *this, getState());
   }
 };
 
@@ -39,10 +36,7 @@ public:
   LuaMethod(LuaState* L) : LuaObject(L) {}
   
   RetVal operator()(const Arg1& arg1) {
-    push();
-    LuaTraits<Arg1>::push(getState(), arg1);
-    getState()->pcall(1, 1, 0);
-    return LuaTraits<RetVal>::pop(getState());
+    return FunctionCall<RetVal, 1>::apply(getState(), *this, arg1);
   }
 };
 
@@ -52,10 +46,28 @@ public:
   LuaMethod(LuaState* L) : LuaObject(L) {}
   
   RetVal operator()(const Arg1& arg1) {
-    push();
-    LuaTraits<Arg1>::push(getState(), arg1);
-    getState()->pcall(1, 1, 0);
-    return LuaTraits<RetVal>::pop(getState());
+    return FunctionCall<RetVal, 2>::apply(getState(), *this, getState(), arg1);
+  }
+};
+
+
+template <typename T, typename RetVal, typename Arg1, typename Arg2>
+class LuaMethod<T, RetVal(T::*)(Arg1, Arg2)> : public LuaObject {
+public:
+  LuaMethod(LuaState* L) : LuaObject(L) {}
+  
+  RetVal operator()(const Arg1& arg1, const Arg2& arg2) {
+    return FunctionCall<RetVal, 2>::apply(getState(), *this, arg1, arg2);
+  }
+};
+
+template <typename T, typename RetVal, typename Arg1, typename Arg2>
+class LuaMethod<T, RetVal(T::*)(LuaState*,Arg1, Arg2)> : public LuaObject {
+public:
+  LuaMethod(LuaState* L) : LuaObject(L) {}
+  
+  RetVal operator()(const Arg1& arg1, const Arg2& arg2) {
+    return FunctionCall<RetVal, 2>::apply(getState(), *this, getState(), arg1, arg2);
   }
 };
 

@@ -24,12 +24,12 @@ struct RetrieveFirstArgument {
   }
 };
 
-template <>
-struct RetrieveFirstArgument<LuaState*> {
-  static LuaState* apply(LuaState* L) {
-    return L;
-  }
-};
+// template <>
+// struct RetrieveFirstArgument<LuaState*> {
+//   static LuaState* apply(LuaState* L) {
+//     return L;
+//   }
+// };
 
 
 template <typename RetVal>
@@ -147,9 +147,35 @@ template <typename RetVal, typename Arg1>
 struct GeneralFunction<RetVal(*)(Arg1)> {
   static int apply(lua_State* l) {
     LuaState L(l);
-    RetVal(*f)() = *(L.template toUserdata<RetVal(*)()>(lua_upvalueindex(1)));
-    RetVal res = f();
+    RetVal(*f)(Arg1) = *(L.template toUserdata<RetVal(*)(Arg1)>(lua_upvalueindex(1)));
+    Arg1 arg1 = RetrieveFirstArgument<Arg1>::apply(&L);
+    RetVal res = f(arg1);
     return ReturnValues<RetVal>::apply(&L, res);
+  }
+};
+
+template <typename RetVal, typename Arg1, typename Arg2>
+struct GeneralFunction<RetVal(*)(Arg1, Arg2)> {
+  static int apply(lua_State* l) {
+    LuaState L(l);
+    RetVal(*f)(Arg1, Arg2) = *(L.template toUserdata<RetVal(*)(Arg1, Arg2)>(lua_upvalueindex(1)));
+    Arg1 arg1 = RetrieveFirstArgument<Arg1>::apply(&L);
+    Arg2 arg2 = LuaTraits<Arg2>::pop(&L);    
+    RetVal res = f(arg1, arg2);
+    return ReturnValue<RetVal>::apply(&L, res);
+  }
+};
+
+template <typename RetVal, typename Arg1, typename Arg2, typename Arg3>
+struct GeneralFunction<RetVal(*)(Arg1, Arg2, Arg3)> {
+  static int apply(lua_State* l) {
+    LuaState L(l);
+    RetVal(*f)(Arg1, Arg2, Arg3) = *(L.template toUserdata<RetVal(*)(Arg1,Arg2,Arg3)>(lua_upvalueindex(1)));
+    Arg1 arg1 = RetrieveFirstArgument<Arg1>::apply(&L);
+    Arg2 arg2 = LuaTraits<Arg2>::pop(&L);
+    Arg3 arg3 = LuaTraits<Arg3>::pop(&L);
+    RetVal res = f(arg1, arg2, arg3);
+    return ReturnValue<RetVal>::apply(&L, res);
   }
 };
 
