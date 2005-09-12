@@ -32,6 +32,20 @@ using namespace std;
 
 namespace cpplua {
 
+// BEGIN LowLevelFunctionCall
+/**
+  * Handle low level (lua-related) details of
+  * function calling.
+  */
+class LowLevelFunctionCall {
+public:
+  static int protectedCall(LuaState* L, int nArgs, int nRetVals) {
+    return L->pcall(nArgs, nRetVals, 0); // TODO: make that a little safer
+  }
+};
+// END
+
+//BEGIN FunctionCall
 /**
   * Template class to call lua functions.
   * Its static @a apply function pushes a lua
@@ -93,6 +107,7 @@ struct FunctionCall<RetVal, 3> {
     return LuaTraits<RetVal>::pop(L);
   }
 };
+//END FunctionCall
 
 };
 

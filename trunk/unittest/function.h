@@ -13,7 +13,8 @@ using namespace cpplua;
 
 class FunctionTest : public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE(FunctionTest);
-  CPPUNIT_TEST(globalFunction);
+//  CPPUNIT_TEST(globalFunction);
+  CPPUNIT_TEST(luaObjects);
   CPPUNIT_TEST_SUITE_END();
 private:
   LuaState* L;
@@ -21,7 +22,11 @@ public:
   void setUp();
   void tearDown();
   
+  // global functions
   void globalFunction();
+  
+  // functions called as generic LuaObjects
+  void luaObjects();
 };
 
 #endif
