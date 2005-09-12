@@ -6,6 +6,7 @@
 #include "luastate.h"
 #ifdef _DEBUG
 #include <iostream>
+using namespace std;
 #endif
 
 
@@ -73,7 +74,7 @@ void PushMethod<T, Function>::apply(LuaState* L, const T& obj, Function f) {
 
 template <typename Function>
 struct PushFunction {
-  static void apply(LuaState*, Function);
+  static void apply(LuaState* L, Function f);
 };
 
 template <typename Function>
@@ -82,7 +83,7 @@ void PushFunction<Function>::apply(LuaState* L, Function f) {
     L->newUserdata(sizeof(Function))
   );
   *ptmf = f;
-  L->pushCClosure(GeneralFunction<Function>::apply, 2);
+  L->pushCClosure(GeneralFunction<Function>::apply, 1);
 }
 
 // General Method
@@ -146,10 +147,13 @@ struct GeneralFunction<RetVal(*)()> {
 template <typename RetVal, typename Arg1>
 struct GeneralFunction<RetVal(*)(Arg1)> {
   static int apply(lua_State* l) {
+    cerr << "inside apply with 1 argument" << endl;
     LuaState L(l);
     RetVal(*f)(Arg1) = *(L.template toUserdata<RetVal(*)(Arg1)>(lua_upvalueindex(1)));
     Arg1 arg1 = RetrieveFirstArgument<Arg1>::apply(&L);
+    cerr << "first argument = " << arg1 << endl;
     RetVal res = f(arg1);
+    cerr << "retval = " << res << endl;
     return ReturnValues<RetVal>::apply(&L, res);
   }
 };
@@ -162,7 +166,7 @@ struct GeneralFunction<RetVal(*)(Arg1, Arg2)> {
     Arg1 arg1 = RetrieveFirstArgument<Arg1>::apply(&L);
     Arg2 arg2 = LuaTraits<Arg2>::pop(&L);    
     RetVal res = f(arg1, arg2);
-    return ReturnValue<RetVal>::apply(&L, res);
+    return ReturnValues<RetVal>::apply(&L, res);
   }
 };
 
@@ -175,7 +179,7 @@ struct GeneralFunction<RetVal(*)(Arg1, Arg2, Arg3)> {
     Arg2 arg2 = LuaTraits<Arg2>::pop(&L);
     Arg3 arg3 = LuaTraits<Arg3>::pop(&L);
     RetVal res = f(arg1, arg2, arg3);
-    return ReturnValue<RetVal>::apply(&L, res);
+    return ReturnValues<RetVal>::apply(&L, res);
   }
 };
 

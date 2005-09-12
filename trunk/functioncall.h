@@ -25,8 +25,21 @@ SOFTWARE.
 #include "luastate.h"
 #include "luaiobject.h"
 
+#ifdef _DEBUG
+#include <iostream>
+using namespace std;
+#endif
+
 namespace cpplua {
 
+/**
+  * Template class to call lua functions.
+  * Its static @a apply function pushes a lua
+  * function\ and its arguments on the stack, then
+  * calls it.
+  * @param RetVal type of the return value.
+  * @param n      number of arguments to push
+  */
 template<typename RetVal, int n>
 struct FunctionCall {};
 
@@ -44,7 +57,13 @@ struct FunctionCall<RetVal, 1> {
   template <typename Arg1>
   static RetVal apply(LuaState* L, const LuaIObject& f, const Arg1& arg1) {
     f.push();
+    
+    // debug
+    cerr << "inside FunctionCall" << endl;
+    cerr << L->typeName() << " on stack" << endl;
+    
     LuaTraits<Arg1>::push(L, arg1);
+
     L->pcall(1, 1, 0);
     return LuaTraits<RetVal>::pop(L);
   }

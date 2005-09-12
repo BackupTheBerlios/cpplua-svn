@@ -32,3 +32,14 @@ void MethodTest::method() {
   L->doString("temp = sixtimes(5)");
   CPPUNIT_ASSERT(L->global("temp") == 30);
 }
+
+void MethodTest::registering() {
+  A a(6);
+  
+  L->global("f") = L->method(a, &A::square);
+  L->global("g") = L->method(a, &A::times);
+  L->doString("x = f()");
+  CPPUNIT_ASSERT(L->global("x") == 36);
+  L->doString("x = g(11)");
+  CPPUNIT_ASSERT(L->global("x") == 66);
+}

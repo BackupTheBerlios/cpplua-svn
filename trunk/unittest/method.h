@@ -21,7 +21,11 @@ public:
   void setUp();
   void tearDown();
   
+  // retrieving and calling methods
   void method();
+  
+  // registering methods into lua
+  void registering();
 };
 
 #endif

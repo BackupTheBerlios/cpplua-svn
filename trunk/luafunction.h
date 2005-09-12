@@ -4,6 +4,11 @@
 #include "luaobject.h"
 #include "functioncall.h"
 
+#ifdef _DEBUG
+#include <iostream>
+using namespace std;
+#endif
+
 namespace cpplua {
 
 template <typename Function>
@@ -35,6 +40,7 @@ public:
   LuaFunction(LuaState* L) : LuaObject(L) {}
   
   RetVal operator()(const Arg1& arg1) {
+    cerr << "calling a function of 1 argument: " << arg1 << endl;
     return FunctionCall<RetVal, 1>::apply(getState(), *this, arg1);
   }
 };

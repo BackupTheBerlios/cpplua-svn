@@ -13,8 +13,8 @@ struct LuaTraits {
     // FIXME: add LuaIObject template specialization
   }
   
-  static LuaIObject pop(LuaState* L) {
-    LuaObject res;
+  static LuaObject pop(LuaState* L) {
+    LuaObject res(L);
     L->pushLightUserdata(&res);
     L->pushValue(-2);
     L->setTable(LuaState::cpptableIndex);
