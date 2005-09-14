@@ -41,6 +41,15 @@ enum LuaType {
   LightUserDataType = LUA_TLIGHTUSERDATA,
 };
   
+template <typename T>
+struct ConstRef {
+  typedef const T& type;
+};
+
+template <typename T>
+struct ConstRef<T&> {
+  typedef T type;
+};
 
 
 #endif // COMMON_H

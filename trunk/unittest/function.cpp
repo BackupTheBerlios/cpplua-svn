@@ -12,13 +12,14 @@ const char* constant() {
 }
 
 int sum(int x, int y) {
-  return x+y;
+  return x+(y*2);
 }
 
 int setGlobal2(LuaState* L, const char* name, LuaObject obj) {
   L->pushString(name);
   obj.push();
   L->setTable(LUA_GLOBALSINDEX);
+  
   return 0;
 }
 
@@ -34,7 +35,7 @@ void FunctionTest::tearDown() {
 
 void FunctionTest::globalFunction() {
   LuaFunction<double(*)(double)> f = L->function(square);
-  CPPUNIT_ASSERT_DOUBLES_EQUAL(3.51*3.51,f(3.51), 1e-10);
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(3.51*3.51,f(3.51), 1e-5);
   
   LuaFunction<int(*)(LuaState*, const char*, LuaObject)> g = L->function(setGlobal2);
   g("hello",L->primitive("world"));
@@ -57,5 +58,5 @@ void FunctionTest::luaObjects() {
   // test 2 argument function
   // via LuaProxyGlobal
   L->global("f2") = L->function(sum);
-  CPPUNIT_ASSERT(L->global("f2")(4, 5) == 9);
+  CPPUNIT_ASSERT(L->global("f2")(4, 5) == 14);
 }

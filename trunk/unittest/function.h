@@ -13,7 +13,7 @@ using namespace cpplua;
 
 class FunctionTest : public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE(FunctionTest);
-//  CPPUNIT_TEST(globalFunction);
+  CPPUNIT_TEST(globalFunction);
   CPPUNIT_TEST(luaObjects);
   CPPUNIT_TEST_SUITE_END();
 private:

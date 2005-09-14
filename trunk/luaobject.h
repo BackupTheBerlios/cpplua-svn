@@ -40,6 +40,7 @@ class LuaObject : public LuaIObject {
 public:
   explicit LuaObject(LuaState* L);
   LuaObject(const LuaIObject&);
+  LuaObject(const LuaObject&);
   
   template <typename T>
   LuaObject& operator=(const T& obj) {

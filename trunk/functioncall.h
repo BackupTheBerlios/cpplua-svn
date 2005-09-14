@@ -99,7 +99,9 @@ struct FunctionCall<RetVal, 3> {
     LuaTraits<Arg1>::push(L, arg1);
     LuaTraits<Arg2>::push(L, arg2);
     LuaTraits<Arg3>::push(L, arg3);
-    L->pcall(3, 1, 0);
+    cerr << "before call" << endl;
+    LowLevelFunctionCall::protectedCall(L, 3, 1);
+    cerr << "ok" << endl;
     return LuaTraits<RetVal>::pop(L);
   }
 };

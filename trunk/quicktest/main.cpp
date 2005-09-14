@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <cassert>
+#include <memory>
 #include "../cpplua.h"
 
 using namespace std;
@@ -15,7 +16,15 @@ public:
   }
 };
 
+int sub(int a, int b) {
+  return a - b;
+}
+
 int square(int x) {
+  return x * x;
+}
+
+double dSquare(double x) {
   return x * x;
 }
 
@@ -27,17 +36,11 @@ int main(int argc, char** argv) {
   }
 
   {
-    LuaState L;
-    LuaObject table = L.emptyTable();
-    for(int i = 0; i < 10; i++)
-      table[i] = i*i;
-    table["hello"] = -1.8;
-    LuaObject table2 = L.emptyTable();
-    table[table2] = "A table index";
-    table["x"] = table2;
-    table2[0] = 6;
-    
-    assert(table[table["x"][0]] == 36);
+    auto_ptr<LuaState> L(new LuaState);
+
+    L->global("f") = L->function(sub);
+    L->doString("print(f(5, 2))");
+
   }
   
   delete stream;

@@ -21,6 +21,11 @@ LuaObject::LuaObject(const LuaIObject& obj)
   duplicate(obj);
 }
 
+LuaObject::LuaObject(const LuaObject& obj)
+  : LuaIObject(obj) {
+  duplicate(obj);
+}
+
 void LuaObject::push() const {
   getState()->pushObject(this);
 }

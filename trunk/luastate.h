@@ -151,7 +151,8 @@ public:
 
   template <typename Number>
   inline void pushNumber(Number n) {
-    LOG(lua_pushnumber(L, static_cast<lua_Number>(n)));
+    lua_pushnumber(L, static_cast<lua_Number>(n));
+    logger << "log_pushnumber(L, " << n << ")\n";
   }
 
   template <typename Number>
@@ -161,7 +162,8 @@ public:
 
   template <typename T>
   inline void pushLightUserdata(T* ud) {
-    LOG(lua_pushlightuserdata(L, static_cast<void*>(ud)));
+    lua_pushlightuserdata(L, static_cast<void*>(ud));
+    logger << "log_pushlightuserdata(L, " << ud << ")\n";
   }
 
   template <typename T>
@@ -170,7 +172,8 @@ public:
   }
 
   inline void pushString(const char* str) {
-    LOG(lua_pushstring(L, str));
+    lua_pushstring(L, str);
+    logger << "lua_pushstring(L, " << str << ")\n";
   }
 
   inline const char* toString(int index = -1) {
@@ -194,11 +197,13 @@ public:
   }
 
   inline void getTable(int index = -2) {
-    LOG(lua_gettable(L, index));
+    lua_gettable(L, index);
+    logger << "lua_gettable(L, " << index << ")\n";
   }
 
   inline void setTable(int index = -3) {
-    LOG(lua_settable(L, index));
+    lua_settable(L, index);
+    logger << "lua_settable(L, " << index << ")\n";
   }
   
   inline void getGlobal(const char* name) {
@@ -215,11 +220,13 @@ public:
   }
 
   inline void insert(int index) {
-    LOG(lua_insert(L, index));
+    lua_insert(L, index);
+    logger << "lua_insert(L, " << index << ")\n";
   }
 
   inline void remove(int index) {
-    LOG(lua_remove(L, index));
+    lua_remove(L, index);
+    logger << "lua_remove(L, " << index << ")\n";
   }
 
   inline bool next(int index = -2) {

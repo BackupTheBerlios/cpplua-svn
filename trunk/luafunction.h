@@ -30,7 +30,7 @@ public:
   LuaFunction(LuaState* L) : LuaObject(L) {}
   
   RetVal operator()() {
-    return FunctionCall<RetVal, 1>::apply(getState(), *this, getState());
+    return FunctionCall<RetVal, 0>::apply(getState(), *this);
   }
 };
 
@@ -50,7 +50,7 @@ public:
   LuaFunction(LuaState* L) : LuaObject(L) {}
   
   RetVal operator()(const Arg1& arg1) {
-    return FunctionCall<RetVal, 2>::apply(getState(), *this, getState(), arg1);
+    return FunctionCall<RetVal, 1>::apply(getState(), *this, arg1);
   }
 };
 
@@ -71,7 +71,7 @@ public:
   LuaFunction(LuaState* L) : LuaObject(L) {}
   
   RetVal operator()(const Arg1& arg1, const Arg2& arg2) {
-    return FunctionCall<RetVal, 3>::apply(getState(), *this, getState(), arg1, arg2);
+    return FunctionCall<RetVal, 2>::apply(getState(), *this, arg1, arg2);
   }
 };
 
