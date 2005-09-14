@@ -1,5 +1,5 @@
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
@@ -7,102 +7,17 @@ lua_pushlightuserdata(L, static_cast<void*>(ud))
 return lua_newuserdata(L, size)
 lua_pushcclosure(L, f, upvalues)
 lua_settable(L, index)
-lua_pushstring(L, str)
-lua_pushlightuserdata(L, static_cast<void*>(ud))
-lua_gettable(L, index)
-lua_settable(L, index)
-lua_pushlightuserdata(L, static_cast<void*>(ud))
-lua_pushstring(L, name)
-lua_gettable(L, LUA_GLOBALSINDEX)
-return lua_pcall(L, nArgs, nRes, errFunction)
- ---
-new LuaState at 0xbfffee10 from lua_State 0x8069dc0
-lua_newtable(L)
-lua_insert(L, index)
-return static_cast<T*>(lua_touserdata(L, index))
-lua_pushstring(L, str)
-lua_remove(L, index)
-LuaState 0xbfffee10 destroyed
-
-lua_settable(L, index)
-lua_pushlightuserdata(L, static_cast<void*>(ud))
-lua_gettable(L, index)
-lua_pushstring(L, str)
-return lua_equal(L, index1, index2)
-lua_pop(L, count)
-lua_pop(L, count)
-lua_pushlightuserdata(L, static_cast<void*>(ud))
-return lua_newuserdata(L, size)
-lua_pushcclosure(L, f, upvalues)
-lua_settable(L, index)
-lua_pushstring(L, str)
-lua_pushlightuserdata(L, static_cast<void*>(ud))
-lua_gettable(L, index)
-lua_settable(L, index)
-lua_pushlightuserdata(L, static_cast<void*>(ud))
-lua_pushstring(L, name)
-lua_gettable(L, LUA_GLOBALSINDEX)
-lua_settable(L, index)
-lua_pushlightuserdata(L, static_cast<void*>(ud))
 lua_pushlightuserdata(L, static_cast<void*>(ud))
 lua_gettable(L, index)
 lua_pushnumber(L, static_cast<lua_Number>(n))
 return lua_pcall(L, nArgs, nRes, errFunction)
- ---
-new LuaState at 0xbfffee10 from lua_State 0x8069dc0
-lua_newtable(L)
-lua_insert(L, index)
-return static_cast<T*>(lua_touserdata(L, index))
 return static_cast<Number>(lua_tonumber(L, index))
-lua_pop(L, count)
-lua_pushnumber(L, static_cast<lua_Number>(n))
-lua_remove(L, index)
-LuaState 0xbfffee10 destroyed
-
-lua_settable(L, index)
-lua_pushlightuserdata(L, static_cast<void*>(ud))
-lua_gettable(L, index)
-return static_cast<Number>(lua_tonumber(L, index))
-lua_pop(L, count)
-lua_pushlightuserdata(L, static_cast<void*>(ud))
-return lua_newuserdata(L, size)
-lua_pushcclosure(L, f, upvalues)
-lua_settable(L, index)
-lua_pushstring(L, str)
-lua_pushlightuserdata(L, static_cast<void*>(ud))
-lua_gettable(L, index)
-lua_settable(L, index)
-lua_pushlightuserdata(L, static_cast<void*>(ud))
-lua_pushstring(L, name)
-lua_gettable(L, LUA_GLOBALSINDEX)
-lua_pushnumber(L, static_cast<lua_Number>(n))
-lua_pushnumber(L, static_cast<lua_Number>(n))
-return lua_pcall(L, nArgs, nRes, errFunction)
- ---
-new LuaState at 0xbfffee10 from lua_State 0x8069dc0
-lua_newtable(L)
-lua_insert(L, index)
-return static_cast<T*>(lua_touserdata(L, index))
-return static_cast<Number>(lua_tonumber(L, index))
-lua_pop(L, count)
-return static_cast<Number>(lua_tonumber(L, index))
-lua_pop(L, count)
-lua_pushnumber(L, static_cast<lua_Number>(n))
-lua_remove(L, index)
-LuaState 0xbfffee10 destroyed
-
-lua_settable(L, index)
-lua_pushlightuserdata(L, static_cast<void*>(ud))
-lua_gettable(L, index)
-lua_pushnumber(L, static_cast<lua_Number>(n))
-return lua_equal(L, index1, index2)
-lua_pop(L, count)
 lua_pop(L, count)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
@@ -115,14 +30,14 @@ lua_pushlightuserdata(L, static_cast<void*>(ud))
 lua_gettable(L, index)
 return lua_pcall(L, nArgs, nRes, errFunction)
  ---
-new LuaState at 0xbfffee60 from lua_State 0x8069dc0
+new LuaState at 0xbfffedd0 from lua_State 0x806b428
 lua_newtable(L)
 lua_insert(L, index)
 return static_cast<T*>(lua_touserdata(L, index))
 return static_cast<T*>(lua_touserdata(L, index))
 lua_pushnumber(L, static_cast<lua_Number>(n))
 lua_remove(L, index)
-LuaState 0xbfffee60 destroyed
+LuaState 0xbfffedd0 destroyed
 
 return static_cast<Number>(lua_tonumber(L, index))
 lua_pop(L, count)
@@ -137,7 +52,7 @@ lua_gettable(L, index)
 lua_settable(L, index)
 return lua_dostring(L, str)
  ---
-new LuaState at 0xbfffed80 from lua_State 0x8069dc0
+new LuaState at 0xbfffecf0 from lua_State 0x806b428
 lua_newtable(L)
 lua_insert(L, index)
 return static_cast<T*>(lua_touserdata(L, index))
@@ -146,7 +61,7 @@ return static_cast<Number>(lua_tonumber(L, index))
 lua_pop(L, count)
 lua_pushnumber(L, static_cast<lua_Number>(n))
 lua_remove(L, index)
-LuaState 0xbfffed80 destroyed
+LuaState 0xbfffecf0 destroyed
 
 lua_pushstring(L, name)
 lua_gettable(L, LUA_GLOBALSINDEX)
@@ -155,10 +70,10 @@ return lua_equal(L, index1, index2)
 lua_pop(L, count)
 lua_pop(L, count)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
@@ -190,10 +105,10 @@ return lua_equal(L, index1, index2)
 lua_pop(L, count)
 lua_pop(L, count)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
@@ -213,10 +128,10 @@ return lua_equal(L, index1, index2)
 lua_pop(L, count)
 lua_pop(L, count)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
@@ -270,10 +185,10 @@ lua_remove(L, index)
 return static_cast<LuaType>(lua_type(L, index))
 lua_pop(L, count)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
@@ -346,10 +261,10 @@ return lua_equal(L, index1, index2)
 lua_pop(L, count)
 lua_pop(L, count)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
@@ -372,10 +287,10 @@ return lua_equal(L, index1, index2)
 lua_pop(L, count)
 lua_pop(L, count)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
@@ -419,10 +334,10 @@ return lua_equal(L, index1, index2)
 lua_pop(L, count)
 lua_pop(L, count)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
@@ -434,10 +349,10 @@ lua_gettable(L, index)
 return static_cast<Number>(lua_tonumber(L, index))
 lua_pop(L, count)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
@@ -447,10 +362,10 @@ return static_cast<Number>(lua_tonumber(L, index))
 lua_pop(L, count)
 return lua_gettop(L)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
@@ -460,10 +375,10 @@ return static_cast<T*>(lua_touserdata(L, index))
 lua_pop(L, count)
 return lua_gettop(L)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
@@ -544,10 +459,10 @@ return (lua_next(L, index) != 0)
 lua_pop(L, count)
 return lua_gettop(L)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
@@ -557,10 +472,10 @@ return lua_isnumber(L, index)
 return lua_isstring(L, index)
 lua_pop(L, count)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
@@ -569,19 +484,19 @@ return static_cast<LuaType>(lua_type(L, index))
 return lua_isnil(L, index)
 lua_pop(L, count)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
 lua_pushcfunction(L, f)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
@@ -646,10 +561,10 @@ return lua_equal(L, index1, index2)
 lua_pop(L, count)
 lua_pop(L, count)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 
  ---
-new LuaState at 0x8069938
+new LuaState at 0x8068a78
 luaopen_base(L)
 lua_newtable(L)
 lua_insert(L, index)
@@ -709,5 +624,5 @@ return lua_equal(L, index1, index2)
 lua_pop(L, count)
 lua_pop(L, count)
 lua_remove(L, index)
-LuaState 0x8069938 destroyed
+LuaState 0x8068a78 destroyed
 

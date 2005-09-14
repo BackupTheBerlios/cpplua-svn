@@ -40,7 +40,6 @@ public:
   LuaFunction(LuaState* L) : LuaObject(L) {}
   
   RetVal operator()(const Arg1& arg1) {
-    cerr << "calling a function of 1 argument: " << arg1 << endl;
     return FunctionCall<RetVal, 1>::apply(getState(), *this, arg1);
   }
 };

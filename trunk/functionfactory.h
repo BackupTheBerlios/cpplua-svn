@@ -147,13 +147,10 @@ struct GeneralFunction<RetVal(*)()> {
 template <typename RetVal, typename Arg1>
 struct GeneralFunction<RetVal(*)(Arg1)> {
   static int apply(lua_State* l) {
-    cerr << "inside apply with 1 argument" << endl;
     LuaState L(l);
     RetVal(*f)(Arg1) = *(L.template toUserdata<RetVal(*)(Arg1)>(lua_upvalueindex(1)));
     Arg1 arg1 = RetrieveFirstArgument<Arg1>::apply(&L);
-    cerr << "first argument = " << arg1 << endl;
     RetVal res = f(arg1);
-    cerr << "retval = " << res << endl;
     return ReturnValues<RetVal>::apply(&L, res);
   }
 };

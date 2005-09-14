@@ -72,10 +72,6 @@ struct FunctionCall<RetVal, 1> {
   static RetVal apply(LuaState* L, const LuaIObject& f, const Arg1& arg1) {
     f.push();
     
-    // debug
-    cerr << "inside FunctionCall" << endl;
-    cerr << L->typeName() << " on stack" << endl;
-    
     LuaTraits<Arg1>::push(L, arg1);
 
     L->pcall(1, 1, 0);

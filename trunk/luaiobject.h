@@ -25,6 +25,7 @@ SOFTWARE.
 
 #include "luastate.h"
 #include "luatraits.h"
+#include "functioncall.h"
 
 #ifdef _DEBUG
 #include <iostream>
@@ -40,6 +41,8 @@ using namespace std;
 }
 
 namespace cpplua {
+
+class LuaObject;
 
 /**
  * LuaIObject is a common interface for all Lua objects handled by cpplua.
@@ -81,7 +84,52 @@ public:
   
   LuaType type() const;
   const char* typeName() const;
+
+  // BEGIN operator()
+
+  /**
+    * To allow function calls such as
+    * @code
+    * L->method(A, &A::sum)(5);
+    * L->global("print")("Hello World");
+    * @endcode
+    * the only possibility (AFAIK) is defining a generic
+    * overloaded operator() as the following
+    */
+  LuaObject operator()();
   
+  /**
+    * 1 argument version of operator()
+    */
+  template <typename Arg1>
+  LuaObject operator()(const Arg1& arg1) {
+    LuaObject res(getState());
+    getState()->pushLightUserdata(&res);
+    push();
+    LuaTraits<Arg1>::push(getState(), arg1);
+    LowLevelFunctionCall::protectedCall(getState(), 1, 1);
+    getState()->setTable(LuaState::cpptableIndex);
+    return res;
+  }
+
+  /**
+    * 2 argument version of operator()
+    */
+  template <typename Arg1, typename Arg2>
+  LuaObject operator()(const Arg1& arg1, const Arg2& arg2) {
+    LuaObject res(getState());
+    getState()->pushLightUserdata(&res);
+    push();
+    LuaTraits<Arg1>::push(getState(), arg1);
+    LuaTraits<Arg2>::push(getState(), arg2);
+    LowLevelFunctionCall::protectedCall(getState(), 2, 1);
+    getState()->setTable(LuaState::cpptableIndex);
+    return res;
+  }
+    
+  // END operator()  
+  
+    
   // conversion operators
   template <typename T> T toNumber() const;
   const char* toString() const;
@@ -126,4 +174,5 @@ T LuaIObject::toPrimitive() const {
 }
 
 };
+
 #endif

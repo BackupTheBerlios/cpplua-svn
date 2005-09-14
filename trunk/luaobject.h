@@ -62,41 +62,6 @@ public:
     return LuaBracket<LuaObject, T>(getState(), *this, index);
   }
   
-// BEGIN operator()
-
-  /**
-    * To allow function calls such as
-    * @code
-    * LuaObject f = L->method(A, &A::sum);
-    * L->global("print")("Hello World");
-    * @endcode
-    * the only possibility (AFAIK) is defining a general
-    * overloaded operator() as the following
-    */
-  LuaObject operator()() {
-    LuaObject res(getState());
-    getState()->pushLightUserdata(&res);
-    push();
-    LowLevelFunctionCall::protectedCall(getState(), 0, 1);
-    getState()->setTable(LuaState::cpptableIndex);
-    return res;
-  }
-  
-  /**
-    * 1 argument version of operator()
-    */
-  template <typename Arg1>
-  LuaObject operator()(const Arg1& arg1) {
-    LuaObject res(getState());
-    getState()->pushLightUserdata(&res);
-    push();
-    LuaTraits<Arg1>::push(getState(), arg1);
-    LowLevelFunctionCall::protectedCall(getState(), 1, 1);
-    getState()->setTable(LuaState::cpptableIndex);
-    return res;
-  }
-  
-// END operator()
 };
 
 };

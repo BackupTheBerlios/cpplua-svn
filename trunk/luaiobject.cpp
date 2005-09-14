@@ -1,5 +1,6 @@
 #include "luaiobject.h"
 #include "luatraits.h"  
+#include "luaobject.h"
 
 #ifdef _DEBUG
 #include <iostream>
@@ -13,6 +14,15 @@ LuaIObject::LuaIObject(LuaState* L)
 
 LuaIObject::LuaIObject(const LuaIObject& obj)
 : L(obj.getState()) {}
+
+LuaObject LuaIObject::operator()() {
+  LuaObject res(getState());
+  getState()->pushLightUserdata(&res);
+  push();
+  LowLevelFunctionCall::protectedCall(getState(), 0, 1);
+  getState()->setTable(LuaState::cpptableIndex);
+  return res;
+}
 
 #define IS(something) \
   bool LuaIObject::is##something() const { \
