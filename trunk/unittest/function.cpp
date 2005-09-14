@@ -23,6 +23,13 @@ int setGlobal2(LuaState* L, const char* name, LuaObject obj) {
   return 0;
 }
 
+// create a table t and set t[key] = value;
+LuaObject nt(LuaState* L, LuaObject key, LuaObject value) {
+  LuaObject table = L->emptyTable();
+  table[key] = value;
+  return table;
+}
+
 CPPUNIT_TEST_SUITE_REGISTRATION(FunctionTest);
 
 void FunctionTest::setUp() {
@@ -59,4 +66,10 @@ void FunctionTest::luaObjects() {
   // via LuaProxyGlobal
   L->global("f2") = L->function(sum);
   CPPUNIT_ASSERT(L->global("f2")(4, 5) == 14);
+}
+
+void FunctionTest::passingState() {
+  L->global("f") = L->function(nt);
+  L->doString("temp = f(3, \"test\")[3]");
+  CPPUNIT_ASSERT(L->global("temp") == "test");
 }

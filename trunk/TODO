@@ -1,5 +1,2 @@
-* Find the bug that makes globalFunctions unit test fail.
-* Functions as LuaObjects will have to be called with an
-  explicit LuaState* parameter, when needed. Is that
-  acceptable? Are there any workarounds?
 * Integrate the existing documentation system with Doxygen.
+* Add argument validation
