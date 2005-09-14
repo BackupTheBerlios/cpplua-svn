@@ -16,16 +16,11 @@ public:
   }
 };
 
-int sub(int a, int b) {
-  return a - b;
-}
-
-int square(int x) {
-  return x * x;
-}
-
-double dSquare(double x) {
-  return x * x;
+// create a table t and set t[key] = value;
+LuaObject nt(LuaState* L, LuaObject key, LuaObject value) {
+  LuaObject table = L->emptyTable();
+  table[key] = value;
+  return table;
 }
 
 int main(int argc, char** argv) {
@@ -38,8 +33,8 @@ int main(int argc, char** argv) {
   {
     auto_ptr<LuaState> L(new LuaState);
 
-    L->global("f") = L->function(sub);
-    L->doString("print(f(5, 2))");
+    L->global("f") = L->function(nt);
+    L->doString("t = f(5, 7); print(t); print(t[5])");
 
   }
   
