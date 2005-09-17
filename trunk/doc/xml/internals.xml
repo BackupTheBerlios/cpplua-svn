@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="documentation.xsl"?>
+<documentation>
+<meta/>
+
+<title>CppLua internals</title>
+
+<chapter>The CppLua table</chapter>
+Lua API does not provide direct means by which a user can obtain a reference to a lua object on the stack. There is a clear reason for this limitation: lua objects can be garbage-collected when there are no more references to them, if popping a value from the stack and storing it in a C variable were possible, one could end up having references to garbarge-collected 
+
+
+</documentation>

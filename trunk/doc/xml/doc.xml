@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<?xml-stylesheet type="text/xsl" href="../documentation.xsl"?>
+<?xml-stylesheet type="text/xsl" href="documentation.xsl"?>
 <documentation>
+<meta/>
 
-<title>CppLua Documentation</title>
+<title>CppLua Cookbook</title>
 
 <p>CppLua is a C++ framework to interoperate with Lua programming language in an expressive and object-oriented way.
 CppLua proposes itself as an alternative to code wrapper generators such as <link href="http://www.swig.org">SWIG</link> or <link href="http://www.tecgraf.puc-rio.br/~celes/tolua/">tolua</link>.
 CppLua is somewhat like a <link href="http://www.boost.org/libs/python/doc/">Boost::Python</link> for Lua, although it currently misses many advanced (and frequently used) features of the Boost library.</p>
 
-<chapter>CppLua Cookbook</chapter>
-<section>Using <code>LuaState</code></section>
+<chapter>Using <code>LuaState</code></chapter>
 
 <p>CppLua can be used at two levels. At the first level it is simply a straightforward C++ wrapper for the Lua C API.</p>
 
@@ -64,7 +64,7 @@ int main() {
 <p>As you can see, many <code>LuaState</code> methods which take indexes as parameters will use sensible defaults if they are not provided: for example, <code>getTable</code> assumes -2 for its parameter, and <code>setTable</code> assumes -3, since these are the most common choices.
 This reduces the number of keystrokes without (hopefully) impacting readability.</p>
 
-<section>Using CppLua at full power</section>
+<chapter>Using CppLua at full power</chapter>
 
 <p>The real strength of CppLua, however, is not this slightly improved C++ version of <code>lua_State</code>.
 Instead, including the header "cpplua.h" gives you the whole CppLua framework, that is, the ability to manipulate Lua objects directly from C++ code.</p>
@@ -86,7 +86,7 @@ int main() {
 
 <p>As you see, no stack handling is explicitly performed. The first line simply defines a <code>LuaState</code> as in the previous examples. You always need to create a <code>LuaState</code> before starting to use CppLua.</p>
 
-<p>The second line access the Lua global object named "print" and stores it in the <code>LuaObject</code> <code keyword="0">luaPrint</code>. A <code>LuaObject</code> is a bridge between Lua and C++ worlds; you can think of it as a C++ reference to a Lua object. Since Lua functions are first class citizens, it is perfectly legal to store one in a <code>LuaObject</code>.</p>
+<p>The second line access the Lua global object named <code keyword="0">print</code> and stores it in the <code>LuaObject</code> <code keyword="0">luaPrint</code>. A <code>LuaObject</code> is a bridge between Lua and C++ worlds; you can think of it as a C++ reference to a Lua object. Since Lua functions are first class citizens, it is perfectly legal to store one in a <code>LuaObject</code>.</p>
 
 <p>The third line calls the function, passing the string "Hello World" as a parameter. Nothing hard to understand, here.</p>
 
@@ -112,7 +112,7 @@ int main() {
 }
 </code>
 
-<section>Handling member functions</section>
+<chapter>Handling member functions</chapter>
 
 <p>CppLua provides a facility to treat member functions (<em>methods</em>, in the following) as ordinary global functions. Here is an example:</p>
 
@@ -151,7 +151,5 @@ dummy.add(y)
 <p>would result in <code keyword="0">10 + y</code> being returned. If we think of the <code keyword="0">add</code> method as a function taking two arguments, a <code keyword="0">Dummy*</code> and an <code keyword="0">int</code>, fixing a <code keyword="0">Dummy</code> instance has the effect of <em>currying</em> the function, thus producing one with one integer parameter only.</p>
 
 <p>This can be achieved in CppLua using <code keyword="0">method</code>, and passing a reference to a fixed <code keyword="0">Dummy</code> instance and a pointer to member function, as you can see in the example code.</p>
-
-<p>
 
 </documentation>

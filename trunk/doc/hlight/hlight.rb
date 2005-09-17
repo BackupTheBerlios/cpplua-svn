@@ -344,7 +344,8 @@ module HLight
     end
     
     def syntax_file(language)
-      @custom_files[language] or File.join(@syntax_dir, language + ".xml")
+      File.join(File.dirname(__FILE__),@custom_files[language]) or 
+        File.join(@syntax_dir, language + ".xml")
     end
     
     def highlight!(document)
