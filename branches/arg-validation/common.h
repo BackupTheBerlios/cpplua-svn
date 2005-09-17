@@ -23,6 +23,9 @@ SOFTWARE.
 #ifndef COMMON_H
 #define COMMON_H
 
+#include <stdexcept>
+#include <string>
+
 extern "C" {
 #include <lua.h>
 #include <lualib.h>
@@ -40,16 +43,14 @@ enum LuaType {
   ThreadType = LUA_TTHREAD, 
   LightUserDataType = LUA_TLIGHTUSERDATA,
 };
-  
-template <typename T>
-struct ConstRef {
-  typedef const T& type;
+
+//BEGIN Exceptions
+
+class cpplua_error : public std::runtime_error {
+public:
+  cpplua_error(const std::string& msg) : std::runtime_error(msg) {}
 };
 
-template <typename T>
-struct ConstRef<T&> {
-  typedef T type;
-};
-
+//END
 
 #endif // COMMON_H

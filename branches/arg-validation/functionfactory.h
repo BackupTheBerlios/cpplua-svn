@@ -2,6 +2,7 @@
 #define FUNCTION_FACTORY_H
 
 #include <vector>
+#include <sstream>
 #include "luatraits.h"
 #include "luastate.h"
 #ifdef _DEBUG
@@ -15,6 +16,25 @@ namespace cpplua {
 typedef std::vector<LuaObject> LuaCollection;
 template <typename T, typename Function> struct GeneralMethod;
 template <typename Function> struct GeneralFunction;
+
+//BEGIN Validation
+
+class ArgumentNumberError : public cpplua_error {
+private:
+  static std::string msg(int expected, int given) {
+    std::ostringstream os;
+    os << "wrong number of arguments"
+       << "\n\texpected: " << expected
+       << "\n\tgiven:    " << given;
+    return os.str();
+  }
+public:
+  ArgumentNumberError(int expected, int given)
+  : cpplua_error(msg(expected, given))
+  {}
+};
+
+//END Validation
 
 // metafunctions
 
@@ -148,10 +168,21 @@ struct GeneralMethod<T, RetVal(T::*)(Arg1, Arg2, Arg3)> {
 
 template <typename Function> struct GeneralFunction {};
 
+#define VALIDATE(n) \
+{ \
+  int nArgs = L.getTop() - 1; \
+  if (nArgs != (n)) { \
+    ArgumentNumberError* exception = new ArgumentNumberError((n), nArgs); \
+    L.pushLightUserdata(exception); \
+    L.error(); \
+  } \
+}
+
 template <typename RetVal>
 struct GeneralFunction<RetVal(*)()> {
   static int apply(lua_State* l) {
     LuaState L(l);
+    VALIDATE(0);    
     RetVal(*f)() = *(L.template toUserdata<RetVal(*)()>(lua_upvalueindex(1)));
     RetVal res = f();
     return ReturnValues<RetVal>::apply(&L, res);
@@ -162,6 +193,7 @@ template <typename RetVal, typename Arg1>
 struct GeneralFunction<RetVal(*)(Arg1)> {
   static int apply(lua_State* l) {
     LuaState L(l);
+    VALIDATE(1);
     RetVal(*f)(Arg1) = *(L.template toUserdata<RetVal(*)(Arg1)>(lua_upvalueindex(1)));
     Arg1 arg1 = RetrieveFirstArgument<Arg1>::apply(&L);
     RetVal res = f(arg1);
@@ -173,6 +205,7 @@ template <typename RetVal, typename Arg1, typename Arg2>
 struct GeneralFunction<RetVal(*)(Arg1, Arg2)> {
   static int apply(lua_State* l) {
     LuaState L(l);
+    VALIDATE(2);
     RetVal(*f)(Arg1, Arg2) = *(L.template toUserdata<RetVal(*)(Arg1, Arg2)>(lua_upvalueindex(1)));
     Arg2 arg2 = LuaTraits<Arg2>::pop(&L);
     Arg1 arg1 = RetrieveFirstArgument<Arg1>::apply(&L);
@@ -185,6 +218,7 @@ template <typename RetVal, typename Arg1, typename Arg2, typename Arg3>
 struct GeneralFunction<RetVal(*)(Arg1, Arg2, Arg3)> {
   static int apply(lua_State* l) {
     LuaState L(l);
+    VALIDATE(3);
     RetVal(*f)(Arg1, Arg2, Arg3) = *(L.template toUserdata<RetVal(*)(Arg1,Arg2,Arg3)>(lua_upvalueindex(1)));
     Arg3 arg3 = LuaTraits<Arg3>::pop(&L);
     Arg2 arg2 = LuaTraits<Arg2>::pop(&L);        
@@ -193,26 +227,6 @@ struct GeneralFunction<RetVal(*)(Arg1, Arg2, Arg3)> {
     return ReturnValues<RetVal>::apply(&L, res);
   }
 };
-
-/* if C++ had variable argument list
-
-template <typename RetVal, multiple typename Args>
-struct GeneralFunction<RetVal(*)(multiple Args)> {
-  static int apply(lua_State* l) {
-    LuaState L(l);
-    multiple Args args;
-    RetVal(*f)(Args) = *(L.template toUserdata<RetVal(*)(multiple Args)>(lua_upvalueindex(1)));
-    if (sizeof(Args) > 0) {
-      args[1] = RetrieveFirstArgument<Args[1]>::apply(&L);
-      for(int i = 2; i < sizeof(Args); i++)
-        args[i] = LuaTraits<Args[i]>::pop(&L);
-    }
-    RetVal res = f(multiple args);
-    return ReturnValues<RetVal>::apply(&L, res);
-  }
-};
-
-*/
 
 };
 

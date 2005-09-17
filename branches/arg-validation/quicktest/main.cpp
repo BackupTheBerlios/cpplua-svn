@@ -23,6 +23,14 @@ LuaObject nt(LuaState* L, LuaObject key, LuaObject value) {
   return table;
 }
 
+int test(int x, const char* y) {
+  cout << "I'm here!!" << endl;
+  if (y)
+    return x;
+  else
+    return 0;
+}
+
 int main(int argc, char** argv) {
   ofstream* stream = 0;
   if (argc > 1) {
@@ -30,13 +38,18 @@ int main(int argc, char** argv) {
     LuaState::setLoggerStream(stream);
   }
 
+  try
   {
     auto_ptr<LuaState> L(new LuaState);
 
-    L->global("f") = L->function(nt);
-    L->doString("t = f(5, 7); print(t); print(t[5])");
-
+    L->global("test") = L->function(test);
+    L->global("test")(34, "ratta");
   }
+  catch(cpplua_error e) {
+    cerr << "ratta!" << endl;
+    cerr << e.what() << endl;
+  }
+
   
   delete stream;
   return 0;
