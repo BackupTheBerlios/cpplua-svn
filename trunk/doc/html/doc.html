@@ -115,12 +115,49 @@ Instead, including the header "cpplua.h" gives you the whole CppLua framework, t
   table[<span class="dsString">"x"</span>] = table2;
   table2[<span class="dsDecVal">0</span>] = <span class="dsDecVal">3</span>;
   
-  <span class="dsFunction">assert</span>(<span class="dsDecVal">9</span> , table[table[<span class="dsString">"x"</span>][<span class="dsDecVal">0</span>]]);
+  <span class="dsFunction">assert</span>(table[table[<span class="dsString">"x"</span>][<span class="dsDecVal">0</span>]] == <span class="dsDecVal">9</span>);
 }
 </pre>
 
 <h3><a id="Handling_member_functions">Handling member functions</a></h3>
 
+<p>CppLua provides a facility to treat member functions (<em>methods</em>, in the following) as ordinary global functions. Here is an example:</p>
+
+<pre class="code">
+<span class="dsOthers">#include &lt;cpplua.h&gt;</span>
+<span class="dsKeyword">using</span> <span class="dsKeyword">namespace</span> cpplua;
+
+<span class="dsKeyword">class</span> Dummy {
+  <span class="dsDataType">int</span> x;
+<span class="dsKeyword">public</span>:
+  <span class="dsFunction">Dummy</span>(<span class="dsDataType">int</span> x) : <span class="dsFunction">x</span>(x) {}
+  
+  <span class="dsDataType">int</span> <span class="dsFunction">add</span>(<span class="dsDataType">int</span> y) {
+    <span class="dsKeyword">return</span> x+y;
+  }
+};
+
+<span class="dsDataType">int</span> <span class="dsFunction">main</span>() {
+  LuaState L;
+  
+  Dummy <span class="dsFunction">dummy</span>(<span class="dsDecVal">10</span>);
+  L.<span class="dsFunction">global</span>(<span class="dsString">"f"</span>) = L.<span class="dsFunction">method</span>(dummy, &amp;Dummy::<span class="dsFunction">add</span>);
+  L.<span class="dsFunction">doString</span>(<span class="dsString">"temp = f(5)"</span>);
+  <span class="dsFunction">assert</span>(L.<span class="dsFunction">global</span>(<span class="dsString">"temp"</span>) == <span class="dsDecVal">15</span>);
+}
+</pre>
+
+<p>First, a <code>Dummy</code> class is created. This class has an incapsulated integer <code>x</code> and an <code>add</code> method which simply sums its argument to <code>x</code>.</p>
+
+<p>In <code>main</code> we create an instance of the <code>Dummy</code> class, setting its private member to 10. If <code>y</code> is any integer variable, calling</p>
+
+<pre class="code">
+dummy.<span class="dsFunction">add</span>(y)
+</pre>
+
+<p>would result in <code>10 + y</code> being returned. If we think of the <code>add</code> method as a function taking two arguments, a <code>Dummy*</code> and an <code>int</code>, fixing a <code>Dummy</code> instance has the effect of <em>currying</em> the function, thus producing one with one integer parameter only.</p>
+
+<p>This can be achieved in CppLua using <code>method</code>, and passing a reference to a fixed <code>Dummy</code> instance and a pointer to member function, as you can see in the example code.</p>
 
 </body>
 </html>

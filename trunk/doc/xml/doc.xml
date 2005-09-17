@@ -108,11 +108,50 @@ int main() {
   table["x"] = table2;
   table2[0] = 3;
   
-  assert(9 , table[table["x"][0]]);
+  assert(table[table["x"][0]] == 9);
 }
 </code>
 
 <section>Handling member functions</section>
 
+<p>CppLua provides a facility to treat member functions (<em>methods</em>, in the following) as ordinary global functions. Here is an example:</p>
+
+<code block="1">
+#include &lt;cpplua.h&gt;
+using namespace cpplua;
+
+class Dummy {
+  int x;
+public:
+  Dummy(int x) : x(x) {}
+  
+  int add(int y) {
+    return x+y;
+  }
+};
+
+int main() {
+  LuaState L;
+  
+  Dummy dummy(10);
+  L.global("f") = L.method(dummy, &amp;Dummy::add);
+  L.doString("temp = f(5)");
+  assert(L.global("temp") == 15);
+}
+</code>
+
+<p>First, a <code keyword="0">Dummy</code> class is created. This class has an incapsulated integer <code keyword="0">x</code> and an <code keyword="0">add</code> method which simply sums its argument to <code keyword="0">x</code>.</p>
+
+<p>In <code keyword="0">main</code> we create an instance of the <code keyword="0">Dummy</code> class, setting its private member to 10. If <code keyword="0">y</code> is any integer variable, calling</p>
+
+<code block="1">
+dummy.add(y)
+</code>
+
+<p>would result in <code keyword="0">10 + y</code> being returned. If we think of the <code keyword="0">add</code> method as a function taking two arguments, a <code keyword="0">Dummy*</code> and an <code keyword="0">int</code>, fixing a <code keyword="0">Dummy</code> instance has the effect of <em>currying</em> the function, thus producing one with one integer parameter only.</p>
+
+<p>This can be achieved in CppLua using <code keyword="0">method</code>, and passing a reference to a fixed <code keyword="0">Dummy</code> instance and a pointer to member function, as you can see in the example code.</p>
+
+<p>
 
 </documentation>
