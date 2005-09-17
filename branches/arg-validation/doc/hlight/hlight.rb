@@ -304,7 +304,8 @@ module HLight
         
         unless matched
           # if no rule matches
-          c = scanner.scan_until(/.\b|\s|$/)
+          c = scanner.scan(/\w+(\b|\s)/)
+          c ||= scanner.scan(/./)
           n = c.size
           warn "consuming '#{c}' (size = #{n})" if $DEBUG
           matches.add_match(pointer, n, @rules.contexts[current_context].attribute)
@@ -343,7 +344,8 @@ module HLight
     end
     
     def syntax_file(language)
-      @custom_files[language] or File.join(@syntax_dir, language + ".xml")
+      File.join(File.dirname(__FILE__),@custom_files[language]) or 
+        File.join(@syntax_dir, language + ".xml")
     end
     
     def highlight!(document)

@@ -9,8 +9,8 @@
 <xsl:template match="/documentation">
     <html>
     <head>
-    <link rel="stylesheet" type="text/css" href="doc.css"/>
-    <link rel="stylesheet" type="text/css" href="code.css"/>
+    <link rel="stylesheet" type="text/css" href="../doc.css"/>
+    <link rel="stylesheet" type="text/css" href="../code.css"/>
     <title>
     <xsl:value-of select="title"/>
     </title>
@@ -32,6 +32,7 @@
 
 <xsl:template match="title">
 <h1>
+<img src="cpplua.gif" alt="cpplua" border="0"/>
 <xsl:call-template name="anchor"/>
 </h1>
 </xsl:template>
