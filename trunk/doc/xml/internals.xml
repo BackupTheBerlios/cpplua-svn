@@ -5,8 +5,45 @@
 
 <title>CppLua internals</title>
 
-<chapter>The CppLua table</chapter>
-Lua API does not provide direct means by which a user can obtain a reference to a lua object on the stack. There is a clear reason for this limitation: lua objects can be garbage-collected when there are no more references to them, if popping a value from the stack and storing it in a C variable were possible, one could end up having references to garbarge-collected 
+<p>This documents describes how CppLua is made internally, which programming techniques have been used, what were our motivations and goals, what problems we encountered and how we solved them.</p>
 
+<p>If you are interested in the making process of CppLua, please read further. If you just need a brief introduction to the framework, try <link missing="1">the cookbook</link>, instead.</p>
+
+<chapter>Introduction</chapter>
+
+<p>The Lua API does not provide direct means by which a user can obtain a reference to a Lua object.
+There is a clear reason for this limitation: Lua objects can be garbage-collected when there are no more references to them; if popping a value from the stack and storing it in a C variable were possible, one could end up having references to objects that do not exist anymore, since Lua can't keep track of references in C code.</p>
+
+<p>Instead, Lua provides C programmers with a <em>virtual stack</em>, that is, a stack-like structure that holds all references to Lua objects, so that they can be manipulated from inside C code without ever leaving the Lua domain, thus preventing them to be collected, as long as references to them continue to exist.</p>
+
+<p>Lua objects don't exist in C code, though. You can't assign them to C variables, you can't pass them to C functions, and you can't store them for later use unless you put them somewhere in the stack (that's not completely true, see <link missing="1">Lua references</link>).</p>
+
+<p>One way to overcome this limitation is to use the internal representation of objects of the Lua compiler, instructing the garbage collector upon objects creation and destruction. Wrapping everything inside C++ classes could make this approach completely transparent for a user, so that seems quite a feasible way to go to obtain a powerful and flexible C++ API. Actually, that can be simply described as <em>redefining a Lua API from scratch</em>, this time with C++ in mind.</p>
+
+<p>Unfortunately, taking this route requires a lot of understanding of the internal mechanisms of Lua, feels a bit inelegant (just because we have the code of the &quot;private&quot; part of a library, it doesn't mean that making use of it is always a good idea) and could cause maintenance problems upon each new Lua release, since the internals are likely to change noticeably from time to time.</p>
+
+<p>Not wanting to rely upon Lua internals, the only choice left is to build a framework that works <em>on the top</em> on the Lua stack. That means that the framework communicates with Lua using the usual API calls, and hides all low level details to the user, encapsulating its functionalities in C++ classes.</p>
+
+<p>We lose in performance, we gain in modularity. I think it's worth the sacrifice.</p>
+
+<chapter>What is a <code>LuaObject</code>?</chapter>
+
+<p>Once we're convinced that using the stack is the way to go, let's state a little more precisely what we want to achieve.</p>
+
+<p>Our goal is to have the stack functionality encapsulated in a C++ class - let's call it <code>LuaObject</code> - with reference semantics. That means that an instance of a <code>LuaObject</code> contains the information to uniquely identify a Lua object, and behaves just like a C++ reference in assignments and as a function parameter.</p>
+
+<p>That gives you all the power of C++ when dealing with Lua objects. For example, you can take a collection of complex Lua tables and store it as a <code keyword="0">std::vector&lt;LuaObject&gt;</code>, while using the raw C API you had to use a container Lua table and manipulate it via the stack (quite painful, for nontrivial operations).</p>
+
+<p>But... how can all that be done? We said that references to Lua objects cannot be exported into C, so how can something like a <code>LuaObject</code> exist at all?</p>
+
+<p>The solution of this riddle is very simple: a <code>LuaObject</code> doesn't keep a direct reference to its corresponding Lua object (it couldn't), but instead it holds a key for a global table, handled by the CppLua framework, in which that objects is stored. The table itself resides in the stack, in a fixed position.</p>
+
+<p>That's the main idea behind CppLua: a global table. Objects referenced by <code>LuaObject</code> instances just live there; they are pushed and popped on the stack when needed, all without direct user intervention, and they never get garbage-collected until the <code>LuaObject</code> destructor frees that reference.</p>
+
+<section>The global table</section>
+
+<p>The global table is created once and for all in the <code>LuaState</code> constructor as an empty table. When a new Lua object appears in the C++ domain, for example when a global is retrieved, and is stored in a <code>LuaObject</code>, an entry is added in the table, referencing the object.</p>
+
+<p>What is the key, you may ask. Well, one could reasonably choose to adopt a incremental numbering scheme, but there is a simpler choice: just use the LuaObject address (as a <em>userdata</em>)! This  trick makes <code>LuaObject</code> a completely dummy class: it only references its parent <code>LuaState</code>, and the linking between the C++ and Lua worlds is done entirely in the global table.</p>
 
 </documentation>
