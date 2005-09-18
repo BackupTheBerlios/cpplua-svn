@@ -85,6 +85,12 @@
 </a>
 </xsl:template>
 
+<xsl:template match="link[@missing=1]">
+<span class="missing-link">
+<xsl:apply-templates/>
+</span>
+</xsl:template>
+
 <xsl:template match="em">
 <em><xsl:apply-templates/></em>
 </xsl:template>

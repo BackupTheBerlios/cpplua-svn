@@ -16,6 +16,7 @@ class FunctionTest : public CppUnit::TestFixture {
   CPPUNIT_TEST(globalFunction);
   CPPUNIT_TEST(luaObjects);
   CPPUNIT_TEST(passingState);
+  CPPUNIT_TEST(validation);
   CPPUNIT_TEST_SUITE_END();
 private:
   LuaState* L;
@@ -31,6 +32,9 @@ public:
   
   // using the state inside a registered function
   void passingState();
+  
+  // validation
+  void validation();
 };
 
 #endif

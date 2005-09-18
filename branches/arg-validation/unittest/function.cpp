@@ -73,3 +73,19 @@ void FunctionTest::passingState() {
   L->doString("temp = f(3, \"test\")[3]");
   CPPUNIT_ASSERT(L->global("temp") == "test");
 }
+
+void FunctionTest::validation() {
+  L->global("f") = L->function(constant);
+
+  L->doString("f(47)");  
+  return;
+  
+  CPPUNIT_ASSERT_THROW(L->doString("f(37)"), cpplua_error);
+  CPPUNIT_ASSERT_THROW(L->doString("f(\"hello\", 8)"), cpplua_error);
+  CPPUNIT_ASSERT_THROW(L->global("f")(10), cpplua_error);
+  
+  L->global("g") = L->function(square);
+  CPPUNIT_ASSERT_THROW(L->global("g")(), cpplua_error);
+  CPPUNIT_ASSERT_THROW(L->global("g")(10, 11), cpplua_error);
+  CPPUNIT_ASSERT_THROW(L->doString("g()"), cpplua_error);
+}

@@ -36,10 +36,11 @@ public:
 
 //END Validation
 
-// metafunctions
+//BEGIN Metafunctions
 
 template <typename Arg>
 struct RetrieveFirstArgument {
+  static const int argCount = 1;
   static Arg apply(LuaState* L) {
     return LuaTraits<Arg>::pop(L);
   }
@@ -47,6 +48,7 @@ struct RetrieveFirstArgument {
 
 template <>
 struct RetrieveFirstArgument<LuaState*> {
+  static const int argCount = 0;
   static LuaState* apply(LuaState* L) {
     return L;
   }
@@ -60,18 +62,8 @@ struct ReturnValues {
     return 1;
   }
 };
-/*
-template <>
-struct ReturnValues<LuaCollection> {
-  static int apply(LuaState* L, const LuaCollection& collection) {
-    LuaCollection::const_iterator cend = collection.end();
-    for(LuaCollection::iterator i = collection.begin(); i != cend; ++i)
-      LuaTraits<LuaObject>::push(*i);
-    return collection.size();
-  }
-};*/
 
-
+//END Metafunctions
 
 // Push Method
 
@@ -182,7 +174,7 @@ template <typename RetVal>
 struct GeneralFunction<RetVal(*)()> {
   static int apply(lua_State* l) {
     LuaState L(l);
-    VALIDATE(0);    
+    VALIDATE(0);
     RetVal(*f)() = *(L.template toUserdata<RetVal(*)()>(lua_upvalueindex(1)));
     RetVal res = f();
     return ReturnValues<RetVal>::apply(&L, res);
@@ -193,7 +185,7 @@ template <typename RetVal, typename Arg1>
 struct GeneralFunction<RetVal(*)(Arg1)> {
   static int apply(lua_State* l) {
     LuaState L(l);
-    VALIDATE(1);
+    VALIDATE(RetrieveFirstArgument<Arg1>::argCount);
     RetVal(*f)(Arg1) = *(L.template toUserdata<RetVal(*)(Arg1)>(lua_upvalueindex(1)));
     Arg1 arg1 = RetrieveFirstArgument<Arg1>::apply(&L);
     RetVal res = f(arg1);
@@ -205,7 +197,7 @@ template <typename RetVal, typename Arg1, typename Arg2>
 struct GeneralFunction<RetVal(*)(Arg1, Arg2)> {
   static int apply(lua_State* l) {
     LuaState L(l);
-    VALIDATE(2);
+    VALIDATE(1 + RetrieveFirstArgument<Arg1>::argCount);
     RetVal(*f)(Arg1, Arg2) = *(L.template toUserdata<RetVal(*)(Arg1, Arg2)>(lua_upvalueindex(1)));
     Arg2 arg2 = LuaTraits<Arg2>::pop(&L);
     Arg1 arg1 = RetrieveFirstArgument<Arg1>::apply(&L);
@@ -218,7 +210,7 @@ template <typename RetVal, typename Arg1, typename Arg2, typename Arg3>
 struct GeneralFunction<RetVal(*)(Arg1, Arg2, Arg3)> {
   static int apply(lua_State* l) {
     LuaState L(l);
-    VALIDATE(3);
+    VALIDATE(2 + RetrieveFirstArgument<Arg1>::argCount);
     RetVal(*f)(Arg1, Arg2, Arg3) = *(L.template toUserdata<RetVal(*)(Arg1,Arg2,Arg3)>(lua_upvalueindex(1)));
     Arg3 arg3 = LuaTraits<Arg3>::pop(&L);
     Arg2 arg2 = LuaTraits<Arg2>::pop(&L);        
