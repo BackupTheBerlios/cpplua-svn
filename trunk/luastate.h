@@ -269,8 +269,11 @@ public:
   inline bool equal(int index1 = -2, int index2 = -1) {
     LOG(return lua_equal(L, index1, index2));
   }
-  
 
+  inline void error() {
+    LOG(lua_error(L));
+  };  
+  
   inline int pcall(int nArgs, int nRes, int errFunction) {
     LOG(return lua_pcall(L, nArgs, nRes, errFunction));
   }
