@@ -28,7 +28,9 @@ SOFTWARE.
 using namespace std;
 #endif // _DEBUG
 
+#include <cstring>
 #include "common.h"
+#include "lowlevel.h"
 
 #ifdef _DEBUG
 #define LOG(x) logger << #x << "\n"; x;
@@ -113,12 +115,19 @@ public:
     global(name) = method(obj, f);
   }
     
+  inline int doString(const char* str) {
+    loadBuffer(str);
+    LowLevelFunctionCall::protectedCall(this, 0, 0);
+  }
+  
   void printTop() {
     lua_getglobal(L, "print");
     lua_pushvalue(L, -2);
     lua_pcall(L, 1, 0, 0);
   }  
-  
+
+  //BEGIN Wrappers  
+    
   // basic libraries
   inline void openBase() {
     LOG(luaopen_base(L));
@@ -140,7 +149,6 @@ public:
     LOG(luaopen_math(L));
   }
 
-  // wrappers
   inline void pushNil() {
     LOG(lua_pushnil(L));
   }
@@ -278,8 +286,8 @@ public:
     LOG(return lua_pcall(L, nArgs, nRes, errFunction));
   }
   
-  inline int doString(const char* str) {
-    LOG(return lua_dostring(L, str));
+  inline void loadBuffer(const char* str) {
+    LOG(luaL_loadbuffer(L, str, strlen(str), "buffer"));
   }
   
 };

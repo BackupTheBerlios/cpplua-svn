@@ -77,9 +77,6 @@ void FunctionTest::passingState() {
 void FunctionTest::validation() {
   L->global("f") = L->function(constant);
 
-  L->doString("f(47)");  
-  return;
-  
   CPPUNIT_ASSERT_THROW(L->doString("f(37)"), cpplua_error);
   CPPUNIT_ASSERT_THROW(L->doString("f(\"hello\", 8)"), cpplua_error);
   CPPUNIT_ASSERT_THROW(L->global("f")(10), cpplua_error);

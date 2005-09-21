@@ -32,34 +32,6 @@ using namespace std;
 
 namespace cpplua {
 
-// BEGIN LowLevelFunctionCall
-/**
-  * Handle low level (lua-related) details of
-  * function calling and error handling.
-  */
-class LowLevelFunctionCall {
-public:
-  static void protectedCall(LuaState* L, int nArgs, int nRetVals) {
-    // No need for an error handler function.
-    // The stack needs to be unwound before
-    // any C++ error handling mechanism can
-    // take place.
-    if(L->pcall(nArgs, nRetVals, 0)) {
-      // retrieve exception from the stack
-      cpplua_error* exc_pointer = L->toUserdata<cpplua_error>();
-      L->pop();
-      
-      // copy it
-      cpplua_error exception = *exc_pointer;
-      delete exc_pointer;
-      
-      // and finally, throw it!
-      throw exception;
-    }
-  }
-};
-// END
-
 //BEGIN FunctionCall
 /**
   * Template class to call lua functions.

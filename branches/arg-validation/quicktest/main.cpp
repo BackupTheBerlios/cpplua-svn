@@ -31,6 +31,10 @@ int test(int x, const char* y) {
     return 0;
 }
 
+const char* constant() {
+  return "all your base are belong to us";
+}
+
 int main(int argc, char** argv) {
   ofstream* stream = 0;
   if (argc > 1) {
@@ -42,8 +46,8 @@ int main(int argc, char** argv) {
   {
     auto_ptr<LuaState> L(new LuaState);
 
-    L->global("test") = L->function(test);
-    L->global("test")(34, "ratta");
+    L->global("f") = L->function(constant);
+    L->doString("f(10)");
   }
   catch(cpplua_error e) {
     cerr << "ratta!" << endl;
