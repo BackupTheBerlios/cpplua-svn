@@ -46,8 +46,9 @@ int main(int argc, char** argv) {
   {
     auto_ptr<LuaState> L(new LuaState);
 
-    L->global("f") = L->function(constant);
-    L->doString("f(10)");
+    LuaFunction<LuaObject(*)(LuaState*, LuaObject, LuaObject)> f = L->function(nt);
+    LuaObject t = f(L->primitive(3), L->primitive(4));
+    
   }
   catch(cpplua_error e) {
     cerr << "ratta!" << endl;
