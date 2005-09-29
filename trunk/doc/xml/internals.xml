@@ -24,7 +24,7 @@ There is a clear reason for this limitation: Lua objects can be garbage-collecte
 
 <p>Not wanting to rely upon Lua internals, the only choice left is to build a framework that works <em>on the top</em> on the Lua stack. That means that the framework communicates with Lua using the usual API calls, and hides all low level details to the user, encapsulating its functionalities in C++ classes.</p>
 
-<p>We lose in performance, we gain in modularity. I think it's worth the sacrifice.</p>
+<!--<p>We lose in performance, we gain in modularity. I think it's worth the sacrifice.</p>-->
 
 <chapter>What is a <code>LuaObject</code>?</chapter>
 

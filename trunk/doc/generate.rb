@@ -1,16 +1,33 @@
 #!/usr/bin/ruby
+require 'rubygems'
+require_gem 'rake'
+require 'rake'
 require 'hlight/hlight'
 
-Dir['xml/*.xml'].each do |doc_file|
-  base = File.basename(doc_file, File.extname(doc_file))
-  temp_file = File.join("temp",base + ".xml")
-  output_file = File.join("html", base + ".html")
-  
-  warn "generating #{temp_file}..."
-  File.open(temp_file, 'w') do |output|
-    HLight.main(File.new(doc_file), output, 'hlight/config.yaml')
-  end
+$doc = Dir['xml/*.xml']
 
-  warn "generating #{output_file}..."
-  `xsltproc documentation.xsl #{temp_file} > #{output_file}`
+def transform(file, prefix, extension)
+  File.join(prefix,File.basename(file, File.extname(file))+'.'+extension)
+end
+
+rule( /^temp\/.*\.xml$/ => [
+  proc {|doc| transform(doc, 'xml', 'xml')}
+]) do |t|
+  warn "generating #{t.name}"
+  File.open(t.name, 'w') do |output|
+    HLight.main(File.new(t.source), output, 'hlight/config.yaml')
+  end
+end
+
+rule( /^html\/.*\.html/ => [
+  proc {|doc| transform(doc, 'temp', 'xml')}
+]) do |t|
+  warn "generating #{t.name}"
+  `xsltproc documentation.xsl #{t.source} > #{t.name}`
+end
+
+task :default => $doc.map{|doc| transform(doc, 'html', 'html')}
+
+if $0 == __FILE__
+  Task["default"].invoke
 end
