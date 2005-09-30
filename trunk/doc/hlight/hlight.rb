@@ -344,8 +344,11 @@ module HLight
     end
     
     def syntax_file(language)
-      File.join(File.dirname(__FILE__),@custom_files[language]) or 
-        File.join(@syntax_dir, language + ".xml")
+      if base = @custom_files[language]
+        File.join(File.dirname(__FILE__), base)
+      else
+        File.join(@syntax_dir, language + '.xml')
+      end
     end
     
     def highlight!(document)
@@ -364,6 +367,7 @@ module HLight
         code = code_block.text
         
         # perform highlighting
+        warn "performing highlighting (rules = #{rules[language].inspect})" if $DEBUG
         hl = Highlighter.new(rules[language])
         data = hl.highlight(code)
         lines = code.split("\n")

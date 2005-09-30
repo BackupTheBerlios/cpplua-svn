@@ -1,2 +1,3 @@
 * Integrate the existing documentation system with Doxygen.
 * Add argument validation
+* In hlight handle colors specified in the syntax file.

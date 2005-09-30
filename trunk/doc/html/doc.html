@@ -5,12 +5,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" href="../doc.css" />
     <link rel="stylesheet" type="text/css" href="../code.css" />
-    <title>CppLua Cookbook</title>
+    <title>Getting Started</title>
   </head>
   <body>
 
 
-<h1><img src="cpplua.gif" alt="cpplua" border="0" /><a id="CppLua_Cookbook">CppLua Cookbook</a></h1>
+<h1><img src="cpplua.gif" alt="cpplua" border="0" /><a id="Getting_Started">Getting Started</a></h1>
+
+<h3><a id="Introduction">Introduction</a></h3>
 
 <p>CppLua is a C++ framework to interoperate with Lua programming language in an expressive and object-oriented way.
 CppLua proposes itself as an alternative to code wrapper generators such as <a href="http://www.swig.org">SWIG</a> or <a href="http://www.tecgraf.puc-rio.br/~celes/tolua/">tolua</a>.
@@ -73,8 +75,7 @@ This reduces the number of keystrokes without (hopefully) impacting readability.
 
 <h2><a id="Using_CppLua_at_full_power">Using CppLua at full power</a></h2>
 
-<p>The real strength of CppLua, however, is not this slightly improved C++ version of <code class="keyword">lua_State</code>.
-Instead, including the header "cpplua.h" gives you the whole CppLua framework, that is, the ability to manipulate Lua objects directly from C++ code.</p>
+<p>CppLua, however, is much more than a C++ version of <code class="keyword">lua_State</code>. Infact, including the header <code>"cpplua.h"</code> gives you the whole CppLua framework, that is, the ability to manipulate Lua objects directly from C++ code.</p>
 
 <p>Let's start with the usual <em>"Hello World"</em> example:</p>
 
@@ -147,7 +148,7 @@ Instead, including the header "cpplua.h" gives you the whole CppLua framework, t
 }
 </pre>
 
-<p>First, a <code>Dummy</code> class is created. This class has an incapsulated integer <code>x</code> and an <code>add</code> method which simply sums its argument to <code>x</code>.</p>
+<p>First, a <code>Dummy</code> class is created. This class has an encapsulated integer <code>x</code> and an <code>add</code> method which simply sums its argument to <code>x</code>.</p>
 
 <p>In <code>main</code> we create an instance of the <code>Dummy</code> class, setting its private member to 10. If <code>y</code> is any integer variable, calling</p>
 
@@ -158,6 +159,36 @@ dummy.<span class="dsFunction">add</span>(y)
 <p>would result in <code>10 + y</code> being returned. If we think of the <code>add</code> method as a function taking two arguments, a <code>Dummy*</code> and an <code>int</code>, fixing a <code>Dummy</code> instance has the effect of <em>currying</em> the function, thus producing one with one integer parameter only.</p>
 
 <p>This can be achieved in CppLua using <code>method</code>, and passing a reference to a fixed <code>Dummy</code> instance and a pointer to member function, as you can see in the example code.</p>
+
+<h2><a id="Accessing_LuaState_in_functions">Accessing <code class="keyword">LuaState</code> in functions</a></h2>
+
+<p>The ability to register (almost) any kind of function and method to Lua may seem wonderful, but suppose you want to register a function <code>dummyTable</code> which creates a new table with just one value where this value and the corresponding key are passed as arguments to the function.</p>
+
+<p>What should the signature of <code>dummyTable</code> be like? Something like</p>
+
+<pre class="code">
+LuaObject <span class="dsFunction">dummyTable</span>(LuaObject key, LuaObject value)
+</pre>
+
+<p>won't do, because we don't have access to the <code class="keyword">LuaState</code> inside the function body.
+For this reason, CppLua behaves differently when you register a function (or method) whose first argument is a <code class="keyword">LuaState*</code>: the first argument is passed automatically by CppLua upon function calls, so that you can (and should, indeed) ignore it as long as function calling is concerned. You can of course use it in the function definition.</p>
+
+<p>Thus, a possible implementation of <code>dummyTable</code> is</p>
+
+<pre class="code">
+LuaObject <span class="dsFunction">dummyTable</span>(LuaState* L, LuaObject key, LuaObject value) {
+  LuaObject res = L-&gt;<span class="dsFunction">emptyTable</span>();
+  res[key] = value;
+  <span class="dsKeyword">return</span> res;
+}
+</pre>
+
+<p>and can be used as follows in Lua code:</p>
+
+<pre class="code">
+t = dummyTable(<span class="dsBaseN">3</span>, <span class="dsString">"Hello world"</span>)
+print(t[<span class="dsBaseN">3</span>])
+</pre>
 
 </body>
 </html>

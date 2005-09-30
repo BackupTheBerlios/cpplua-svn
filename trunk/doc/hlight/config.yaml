@@ -2,5 +2,5 @@
 syntax dir: /usr/kde/3.3/share/apps/katepart/syntax
 default language: cpp
 custom: 
-  latex: /usr/share/apps/katepart/syntax/latex.xml
+  lua: lua.xml
   cpp: cpp.xml

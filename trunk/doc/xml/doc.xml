@@ -3,7 +3,9 @@
 <documentation>
 <meta/>
 
-<title>CppLua Cookbook</title>
+<title>Getting Started</title>
+
+<section>Introduction</section>
 
 <p>CppLua is a C++ framework to interoperate with Lua programming language in an expressive and object-oriented way.
 CppLua proposes itself as an alternative to code wrapper generators such as <link href="http://www.swig.org">SWIG</link> or <link href="http://www.tecgraf.puc-rio.br/~celes/tolua/">tolua</link>.
@@ -66,8 +68,7 @@ This reduces the number of keystrokes without (hopefully) impacting readability.
 
 <chapter>Using CppLua at full power</chapter>
 
-<p>The real strength of CppLua, however, is not this slightly improved C++ version of <code>lua_State</code>.
-Instead, including the header "cpplua.h" gives you the whole CppLua framework, that is, the ability to manipulate Lua objects directly from C++ code.</p>
+<p>CppLua, however, is much more than a C++ version of <code>lua_State</code>. Infact, including the header <code keyword="0">"cpplua.h"</code> gives you the whole CppLua framework, that is, the ability to manipulate Lua objects directly from C++ code.</p>
 
 <p>Let's start with the usual <em>"Hello World"</em> example:</p>
 
@@ -140,7 +141,7 @@ int main() {
 }
 </code>
 
-<p>First, a <code keyword="0">Dummy</code> class is created. This class has an incapsulated integer <code keyword="0">x</code> and an <code keyword="0">add</code> method which simply sums its argument to <code keyword="0">x</code>.</p>
+<p>First, a <code keyword="0">Dummy</code> class is created. This class has an encapsulated integer <code keyword="0">x</code> and an <code keyword="0">add</code> method which simply sums its argument to <code keyword="0">x</code>.</p>
 
 <p>In <code keyword="0">main</code> we create an instance of the <code keyword="0">Dummy</code> class, setting its private member to 10. If <code keyword="0">y</code> is any integer variable, calling</p>
 
@@ -151,5 +152,35 @@ dummy.add(y)
 <p>would result in <code keyword="0">10 + y</code> being returned. If we think of the <code keyword="0">add</code> method as a function taking two arguments, a <code keyword="0">Dummy*</code> and an <code keyword="0">int</code>, fixing a <code keyword="0">Dummy</code> instance has the effect of <em>currying</em> the function, thus producing one with one integer parameter only.</p>
 
 <p>This can be achieved in CppLua using <code keyword="0">method</code>, and passing a reference to a fixed <code keyword="0">Dummy</code> instance and a pointer to member function, as you can see in the example code.</p>
+
+<chapter>Accessing <code>LuaState</code> in functions</chapter>
+
+<p>The ability to register (almost) any kind of function and method to Lua may seem wonderful, but suppose you want to register a function <code keyword="0">dummyTable</code> which creates a new table with just one value where this value and the corresponding key are passed as arguments to the function.</p>
+
+<p>What should the signature of <code keyword="0">dummyTable</code> be like? Something like</p>
+
+<code block="1">
+LuaObject dummyTable(LuaObject key, LuaObject value)
+</code>
+
+<p>won't do, because we don't have access to the <code>LuaState</code> inside the function body.
+For this reason, CppLua behaves differently when you register a function (or method) whose first argument is a <code>LuaState*</code>: the first argument is passed automatically by CppLua upon function calls, so that you can (and should, indeed) ignore it as long as function calling is concerned. You can of course use it in the function definition.</p>
+
+<p>Thus, a possible implementation of <code keyword="0">dummyTable</code> is</p>
+
+<code block="1">
+LuaObject dummyTable(LuaState* L, LuaObject key, LuaObject value) {
+  LuaObject res = L->emptyTable();
+  res[key] = value;
+  return res;
+}
+</code>
+
+<p>and can be used as follows in Lua code:</p>
+
+<code block="1" lang="lua">
+t = dummyTable(3, "Hello world")
+print(t[3])
+</code>
 
 </documentation>
