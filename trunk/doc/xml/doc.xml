@@ -7,7 +7,7 @@
 
 <section>Introduction</section>
 
-<p>CppLua is a C++ framework to interoperate with Lua programming language in an expressive and object-oriented way.
+<p>CppLua is a C++ framework to interoperate with the Lua programming language in an expressive and object-oriented way.
 CppLua proposes itself as an alternative to code wrapper generators such as <link href="http://www.swig.org">SWIG</link> or <link href="http://www.tecgraf.puc-rio.br/~celes/tolua/">tolua</link>.
 CppLua is somewhat like a <link href="http://www.boost.org/libs/python/doc/">Boost::Python</link> for Lua, although it currently misses many advanced (and frequently used) features of the Boost library.</p>
 

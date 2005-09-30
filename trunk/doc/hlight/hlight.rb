@@ -33,6 +33,16 @@ module HLight
       
       alias each each_rule
     end
+    
+    class ItemData
+      attr_reader :style, :color, :bold, :italic
+      def initialize(style, color = nil, bold = nil, italic = nil)
+        @style = style
+        @color = color
+        @bold = (bold == "1")
+        @italic = (italic == "1")
+      end
+    end
   
     attr_reader :contexts, :itemdata
     def initialize(file)
@@ -64,7 +74,13 @@ module HLight
       # read itemdata
       @itemdata = {}
       @rules.elements["itemDatas"].each_element("itemData") do |item|
-        @itemdata[item.attribute("name").value] = item.attribute("defStyleNum").value
+        @itemdata[item.attribute("name").value] = ItemData.new(
+          *%w(defStyleNum color bold italic).map do |attr_name|
+            if attr = item.attribute(attr_name)
+              attr.value
+            end
+          end
+        )
       end
     end
   end
@@ -374,13 +390,24 @@ module HLight
         data.zip(lines).each do |match_list, line|
           match_list.each do |match|
             matched_text = line[match.first...match.last]
-            style = rules[language].itemdata[match.attribute]
+            itemdata = rules[language].itemdata[match.attribute]
             
-            if style == "dsNormal"
+            if itemdata.style == "dsNormal"
               hl_block.add_text(matched_text)
             else
-              hl_element = REXML::Element.new("hl", hl_block)
-              hl_element.add_attributes({"class" => style})
+              hl_element = nil
+
+              style = []
+              style += "color: #{itemdata.color}" if itemdata.color
+              style += "font-weigth: bold" if itemdata.bold
+              style += "font-style: italic" if itemdata.italic
+              if style.empty?
+                hl_element = REXML::Element.new("hl", hl_block)
+                hl_element.add_attributes("class" => itemdata.style)
+              else
+                hl_element = REXML::Element.new("custom-hl", hl_block)
+                hl_element.add_attributes("style" => style.join(" ")) unless style.empty?
+              end
               hl_element.add_text(matched_text)
             end
           end

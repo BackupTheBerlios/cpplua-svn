@@ -19,8 +19,8 @@
 # SOFTWARE.
 
 CC=g++
-CFLAGS=-g -ggdb -Wall -I/usr/include/lua50
-LDFLAGS=-L.. -lcpplua -lcppunit
+CFLAGS=-g -ggdb -Wall `pkg-config --cflags lua`
+LDFLAGS=-L.. -lcpplua
 DEBUG=-D_DEBUG
 SRC=$(wildcard *.cpp)
 OBJ=$(SRC:%.cpp=%.o)
@@ -44,4 +44,3 @@ $(TARGET): $(OBJ)
 .%.dep: %.cpp
 	$(CC) -MM $(CFLAGS) $< >$@
 
--include $(DEPS)

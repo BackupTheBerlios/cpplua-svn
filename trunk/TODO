@@ -1,3 +1,23 @@
 * Integrate the existing documentation system with Doxygen.
 * Add argument validation
 * In hlight handle colors specified in the syntax file.
+* Add support for multiple return values and multiple assignment,
+  possibly with a clean syntax. Consider
+    (L["a"], L["b"]) = L["f"]("how", L["t"]["x"], 14);
+  That corresponds to the Lua statement:
+    a,b = f("how", t.x, 14)
+  and to the C code:
+    lua_pushstring("t");
+    lua_gettable(L, LUA_GLOBALSINDEX);
+    lua_pushstring("b");
+    lua_pushstring("a");
+    lua_pushstring(L, "f");
+    lua_gettable(L, LUA_GLOBALSINDEX);
+    lua_pushstring(L, "how");
+    lua_pushstring(L, "x");
+    lua_gettable(L, -6);
+    lua_pushnumber(L, 14);
+    lua_call(L, 3, 2);
+    lua_insert(L, -3);
+    lua_settable(L, LUA_GLOBALSINDEX);
+    lua_settable(L, LUA_GLOBALSINDEX);

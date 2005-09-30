@@ -29,5 +29,14 @@ end
 task :default => $doc.map{|doc| transform(doc, 'html', 'html')}
 
 if $0 == __FILE__
+  while arg = ARGV.shift
+    case arg
+    when "-a","--all"
+      Dir['xml/*.xml'].each do |xml_file|
+        `touch #{xml_file}`
+      end
+    end
+  end
+    
   Task["default"].invoke
 end
