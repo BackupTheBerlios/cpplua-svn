@@ -126,7 +126,22 @@ public:
     getState()->setTable(LuaState::cpptableIndex);
     return res;
   }
-    
+  
+  /**
+   * 3 argument version of operator()
+   */
+  template <typename Arg1, typename Arg2, typename Arg3>
+  LuaObject operator()(const Arg1& arg1, const Arg2& arg2, const Arg3& arg3) {
+    LuaObject res(getState());
+    getState()->pushLightUserdata(&res);
+    push();
+    LuaTraits<Arg1>::push(getState(), arg1);
+    LuaTraits<Arg2>::push(getState(), arg2);
+    LuaTraits<Arg3>::push(getState(), arg3);
+    LowLevelFunctionCall::protectedCall(getState(), 3, 1);
+    getState()->setTable(LuaState::cpptableIndex);
+    return res;
+  }    
   // END operator()  
   
     

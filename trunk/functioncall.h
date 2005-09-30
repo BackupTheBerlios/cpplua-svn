@@ -32,24 +32,11 @@ using namespace std;
 
 namespace cpplua {
 
-// BEGIN LowLevelFunctionCall
-/**
-  * Handle low level (lua-related) details of
-  * function calling.
-  */
-class LowLevelFunctionCall {
-public:
-  static int protectedCall(LuaState* L, int nArgs, int nRetVals) {
-    return L->pcall(nArgs, nRetVals, 0); // TODO: make that a little safer
-  }
-};
-// END
-
 //BEGIN FunctionCall
 /**
   * Template class to call lua functions.
   * Its static @a apply function pushes a lua
-  * function\ and its arguments on the stack, then
+  * function and its arguments on the stack, then
   * calls it.
   * @param RetVal type of the return value.
   * @param n      number of arguments to push
@@ -61,7 +48,7 @@ template <typename RetVal>
 struct FunctionCall<RetVal, 0> {
   static RetVal apply(LuaState* L, const LuaIObject& f) {
     f.push();
-    L->pcall(0, 1, 0);
+    LowLevelFunctionCall::protectedCall(L, 0, 1);
     return LuaTraits<RetVal>::pop(L);
   }
 };
@@ -71,10 +58,8 @@ struct FunctionCall<RetVal, 1> {
   template <typename Arg1>
   static RetVal apply(LuaState* L, const LuaIObject& f, const Arg1& arg1) {
     f.push();
-    
     LuaTraits<Arg1>::push(L, arg1);
-
-    L->pcall(1, 1, 0);
+    LowLevelFunctionCall::protectedCall(L, 1, 1);
     return LuaTraits<RetVal>::pop(L);
   }
 };
@@ -86,7 +71,7 @@ struct FunctionCall<RetVal, 2> {
     f.push();
     LuaTraits<Arg1>::push(L, arg1);
     LuaTraits<Arg2>::push(L, arg2);
-    L->pcall(2, 1, 0);
+    LowLevelFunctionCall::protectedCall(L, 2, 1);
     return LuaTraits<RetVal>::pop(L);
   }
 };
@@ -99,9 +84,7 @@ struct FunctionCall<RetVal, 3> {
     LuaTraits<Arg1>::push(L, arg1);
     LuaTraits<Arg2>::push(L, arg2);
     LuaTraits<Arg3>::push(L, arg3);
-    cerr << "before call" << endl;
     LowLevelFunctionCall::protectedCall(L, 3, 1);
-    cerr << "ok" << endl;
     return LuaTraits<RetVal>::pop(L);
   }
 };
