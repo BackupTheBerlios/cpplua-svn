@@ -1,0 +1,11 @@
+#include "<%= @name %>.h"
+
+CPPUNIT_TEST_SUITE_REGISTRATION(<%= @name.capitalize %>Test);
+
+void <%= @name.capitalize %>Test::setUp() {
+  L = new LuaState();
+}
+
+void <%= @name.capitalize %>Test::tearDown() {
+  delete L;
+}

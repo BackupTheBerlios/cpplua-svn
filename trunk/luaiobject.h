@@ -43,6 +43,7 @@ using namespace std;
 namespace cpplua {
 
 class LuaObject;
+class LuaProxyMetatable;
 
 /**
  * LuaIObject is a common interface for all Lua objects handled by cpplua.
@@ -84,7 +85,9 @@ public:
   
   LuaType type() const;
   const char* typeName() const;
-
+  void setMetatable(const LuaIObject& mt);
+  LuaProxyMetatable getMetatable() const;
+  
   // BEGIN operator()
 
   /**

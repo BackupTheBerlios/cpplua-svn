@@ -28,4 +28,16 @@ void LuaProxyEmptyTable::push() const {
   getState()->newTable();
 }
 
+// LuaProxyMetatable
+
+LuaProxyMetatable::LuaProxyMetatable(LuaState* L, const LuaIObject& table)
+: LuaIObject(L)
+, table(table) {} 
+
+void LuaProxyMetatable::push() const {
+  table.push();
+  getState()->getMetatable();
+  getState()->remove(-2);
+}
+
 };

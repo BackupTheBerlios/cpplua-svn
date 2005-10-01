@@ -6,6 +6,7 @@
 namespace cpplua {
 
 class LuaState;
+template <typename Table, typename Key> class LuaBracket;
 
 class LuaProxyGlobal : public LuaIObject {
   const char* name;
@@ -61,6 +62,20 @@ template <typename T>
 void LuaProxyPrimitive<T>::push() const {
   LuaTraits<T>::push(getState(), data);
 }
+
+/**********/
+
+class LuaProxyMetatable : public LuaIObject {
+  const LuaIObject& table;
+public:
+  LuaProxyMetatable(LuaState* L, const LuaIObject& table);
+  virtual void push() const;
+  
+  template <typename T>
+  LuaBracket<LuaProxyMetatable, T> operator[](const T& key) const {
+    return LuaBracket<LuaProxyMetatable, T>(getState(), *this, key);
+  }
+};
 
 };
 

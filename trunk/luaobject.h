@@ -24,8 +24,8 @@ SOFTWARE.
 #define LUAOBJECT_H
 
 #include "luaiobject.h"
-#include "luabracket.h"
 #include "functioncall.h"
+#include "luabracket.h"
 
 #ifdef _DEBUG
 #include <iostream>
@@ -54,15 +54,13 @@ public:
     duplicate(obj);
     return *this;
   }
-  
-  
+
   void push() const;
   
   template <typename T>
-  LuaBracket<LuaObject, T> operator[](const T& index) const {
-    return LuaBracket<LuaObject, T>(getState(), *this, index);
-  }
-  
+  LuaBracket<LuaObject, T> operator[](const T& key) const {
+    return LuaBracket<LuaObject, T>(getState(), *this, key);
+  }  
 };
 
 };

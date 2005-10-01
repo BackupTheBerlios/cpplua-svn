@@ -1,6 +1,7 @@
 #include "luaiobject.h"
 #include "luatraits.h"  
 #include "luaobject.h"
+#include "luaproxy.h"
 
 #ifdef _DEBUG
 #include <iostream>
@@ -46,6 +47,16 @@ const char* LuaIObject::typeName() const {
 
 const char* LuaIObject::toString() const {
   STACK_OPERATION(const char*, getState()->toString());
+}
+
+void LuaIObject::setMetatable(const LuaIObject& mt) {
+  push();
+  mt.push();
+  L->setMetatable();
+}
+
+LuaProxyMetatable LuaIObject::getMetatable() const {
+  return LuaProxyMetatable(getState(), *this);
 }
 
 };

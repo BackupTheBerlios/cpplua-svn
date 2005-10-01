@@ -291,6 +291,14 @@ public:
     LOG(luaL_loadbuffer(L, str, strlen(str), "buffer"));
   }
   
+  inline void setMetatable(int index = -2) {
+    LOG(lua_setmetatable(L, index));
+  }
+  
+  inline void getMetatable(int index = -1) {
+    LOG(lua_getmetatable(L, index));
+  }
+  
 };
 
 // template implementations
