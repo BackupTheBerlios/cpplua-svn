@@ -29,12 +29,12 @@ SOFTWARE.
 namespace cpplua {
 
 template <typename Table, typename Key>
-class LuaBracket : public LuaIObject {
+class LuaBracket : public LuaLValue {
   const Table& table;
   const Key& key;
 public:
   explicit LuaBracket(LuaState* L, const Table& table, const Key& key) : 
-    LuaIObject(L),
+    LuaLValue(L),
     table(table),
     key(key)
   {}
@@ -56,6 +56,11 @@ public:
     getState()->pop();
     
     return *this;
+  }
+  
+  // implementation of LuaLValue
+  virtual void assign(const LuaIObject& other) {
+    *this = other;
   }
   
   template <typename Key2>

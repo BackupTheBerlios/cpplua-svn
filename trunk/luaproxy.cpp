@@ -5,7 +5,7 @@ namespace cpplua {
 // LuaProxyGlobal
 
 LuaProxyGlobal::LuaProxyGlobal(LuaState* L, const char* name)
-: LuaIObject(L)
+: LuaLValue(L)
 , name(name) {
 }
 

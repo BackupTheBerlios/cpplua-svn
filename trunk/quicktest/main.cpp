@@ -11,7 +11,7 @@ class A {
   int a;
 public:
   A(int a) : a(a) {}
-  int sum(int x) {
+  int sum(int x) const {
     return x + a;
   }
 };
@@ -28,6 +28,12 @@ double dSquare(double x) {
   return x * x;
 }
 
+LuaObject identityIndex(LuaObject table, LuaObject key) {
+  return key;
+}
+
+#define LG(x) L->global(#x)
+
 int main(int argc, char** argv) {
   ofstream* stream = 0;
   if (argc > 1) {
@@ -36,13 +42,14 @@ int main(int argc, char** argv) {
   }
 
   {
-    auto_ptr<LuaState> L(new LuaState);
-
-    L->global("f") = L->function(sub);
-    L->doString("print(f(5, 2))");
-
+    auto_ptr<LuaState> L(new LuaState);  
+    
+    LuaTuple<1> t(L->global("x"));
+    
   }
   
   delete stream;
   return 0;
 }
+
+#undef LG

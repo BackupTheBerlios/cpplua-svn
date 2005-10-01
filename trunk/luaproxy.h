@@ -8,7 +8,7 @@ namespace cpplua {
 class LuaState;
 template <typename Table, typename Key> class LuaBracket;
 
-class LuaProxyGlobal : public LuaIObject {
+class LuaProxyGlobal : public LuaLValue {
   const char* name;
 private:
   template <typename T>
@@ -20,6 +20,10 @@ public:
   LuaProxyGlobal& operator=(const LuaProxyGlobal& other);
   template <typename T>
   LuaProxyGlobal& operator=(const T& other);
+  
+  virtual void assign(const LuaIObject& other) {
+    *this = other;
+  }
 };
 
 template <typename T>

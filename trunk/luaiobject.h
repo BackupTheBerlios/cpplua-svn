@@ -65,10 +65,6 @@ public:
   explicit LuaIObject(LuaState* L);
   LuaIObject(const LuaIObject&);
   virtual void push() const = 0;
-
-  LuaIObject& operator=(const LuaIObject&) {
-    return *this;
-  }
     
   /**
   * Default implementation for equality
@@ -190,6 +186,14 @@ T LuaIObject::toPrimitive() const {
   push();
   return LuaTraits<T>::pop(getState());
 }
+
+//BEGIN LuaLValue
+class LuaLValue : public LuaIObject {
+public:
+  LuaLValue(LuaState* L) : LuaIObject(L) {}
+  virtual void assign(const LuaIObject& other) = 0;
+};
+//END LuaLValue
 
 };
 

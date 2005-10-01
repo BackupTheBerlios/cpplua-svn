@@ -11,5 +11,6 @@
 
 #include "functionfactory.h"
 #include "functioncall.h"
+#include "luatuple.h"
 
 #endif

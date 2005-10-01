@@ -21,7 +21,7 @@ public:
 };
 
 template <typename T, typename RetVal>
-class LuaMethod<T, RetVal(T::*)(LuaState*)> : public LuaObject {
+class LuaMethod<T, RetVal(T::*)(LuaState*) const> : public LuaObject {
 public:
   LuaMethod(LuaState* L) : LuaObject(L) {}
   
