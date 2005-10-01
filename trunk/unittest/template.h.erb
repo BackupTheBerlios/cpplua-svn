@@ -12,7 +12,7 @@
 using namespace cpplua;
 
 class <%= @name.capitalize %>Test : public CppUnit::TestFixture {
-  CPPUNIT_TEST_SUITE(MethodTest);
+  CPPUNIT_TEST_SUITE(<%= @name.capitalize %>Test);
   CPPUNIT_TEST_SUITE_END();
 private:
   LuaState* L;
