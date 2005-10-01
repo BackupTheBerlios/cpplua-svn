@@ -41,6 +41,7 @@ module HLight
         @color = color
         @bold = (bold == "1")
         @italic = (italic == "1")
+        warn "itemdata #{@style} initialized with color=#{@color}" if @color and $DEBUG
       end
     end
   
@@ -74,13 +75,15 @@ module HLight
       # read itemdata
       @itemdata = {}
       @rules.elements["itemDatas"].each_element("itemData") do |item|
-        @itemdata[item.attribute("name").value] = ItemData.new(
+        id = ItemData.new(
           *%w(defStyleNum color bold italic).map do |attr_name|
             if attr = item.attribute(attr_name)
               attr.value
             end
           end
         )
+        warn "adding itemdata #{item.attribute("name").value} -> #{id.inspect}" if $DEBUG
+        @itemdata[item.attribute("name").value] = id 
       end
     end
   end
@@ -383,7 +386,6 @@ module HLight
         code = code_block.text
         
         # perform highlighting
-        warn "performing highlighting (rules = #{rules[language].inspect})" if $DEBUG
         hl = Highlighter.new(rules[language])
         data = hl.highlight(code)
         lines = code.split("\n")
@@ -391,25 +393,31 @@ module HLight
           match_list.each do |match|
             matched_text = line[match.first...match.last]
             itemdata = rules[language].itemdata[match.attribute]
-            
-            if itemdata.style == "dsNormal"
-              hl_block.add_text(matched_text)
-            else
-              hl_element = nil
 
-              style = []
-              style += "color: #{itemdata.color}" if itemdata.color
-              style += "font-weigth: bold" if itemdata.bold
-              style += "font-style: italic" if itemdata.italic
-              if style.empty?
-                hl_element = REXML::Element.new("hl", hl_block)
-                hl_element.add_attributes("class" => itemdata.style)
-              else
-                hl_element = REXML::Element.new("custom-hl", hl_block)
-                hl_element.add_attributes("style" => style.join(" ")) unless style.empty?
-              end
+            # preparing style clause
+            style = []
+            style << "color: #{itemdata.color}" if itemdata.color
+            style << "font-weigth: bold" if itemdata.bold
+            style << "font-style: italic" if itemdata.italic
+
+            # nested function
+            add_element = lambda do |name, attributes|
+              hl_element = REXML::Element.new(name, hl_block)
+              hl_element.add_attributes(attributes)
               hl_element.add_text(matched_text)
             end
+            
+            # setup element
+            if style.empty?
+              if itemdata.style == "dsNormal"
+                hl_block.add_text(matched_text)
+              else
+                add_element["hl", {"class" => itemdata.style}]
+              end
+            else
+              add_element["hl-custom", {"style" => style.join("; ")}]
+            end
+
           end
           hl_block.add_text("\n")
         end

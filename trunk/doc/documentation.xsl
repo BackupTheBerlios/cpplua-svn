@@ -76,6 +76,15 @@
 </span>
 </xsl:template>
 
+<xsl:template match="code[@block=1]/hl-custom">
+<span>
+<xsl:attribute name="style">
+<xsl:value-of select="@style"/>
+</xsl:attribute>
+<xsl:apply-templates/>
+</span>
+</xsl:template>
+
 <xsl:template match="link">
 <a>
 <xsl:attribute name="href">

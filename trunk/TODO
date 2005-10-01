@@ -1,6 +1,6 @@
 * Integrate the existing documentation system with Doxygen.
 * Add argument validation
-* In hlight handle colors specified in the syntax file.
+* In hlight handle colors specified in the syntax file. *DONE*
 * Add support for multiple return values and multiple assignment,
   possibly with a clean syntax. Consider
     (L["a"], L["b"]) = L["f"]("how", L["t"]["x"], 14);
