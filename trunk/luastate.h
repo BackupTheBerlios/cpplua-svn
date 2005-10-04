@@ -110,13 +110,25 @@ public:
     setTable(cpptableIndex);
     return res;
   }
+  template <typename Function>
+  LuaState& reg(const char* name, Function f) {
+    global(name) = function(f);
+    return *this;
+  }
+  
   template <typename T, typename Function>
   void registerMethod(const char* name, const T& obj, Function f) {
     global(name) = method(obj, f);
   }
     
-  inline int doString(const char* str) {
+  int doString(const char* str) {
     loadBuffer(str);
+    LowLevelFunctionCall::protectedCall(this, 0, 0);
+    return 0;
+  }
+  
+  int doFile(const char* filename) {
+    loadFile(filename);
     LowLevelFunctionCall::protectedCall(this, 0, 0);
     return 0;
   }
@@ -289,6 +301,10 @@ public:
   
   inline void loadBuffer(const char* str) {
     LOG(luaL_loadbuffer(L, str, strlen(str), "buffer"));
+  }
+  
+  inline void loadFile(const char* filename) {
+    LOG(luaL_loadfile(L, filename));
   }
   
   inline void setMetatable(int index = -2) {

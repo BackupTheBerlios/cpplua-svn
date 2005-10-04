@@ -16,20 +16,14 @@ public:
   }
 };
 
-int sub(int a, int b) {
-  return a - b;
+int test() {
+  return 37;
 }
 
-int square(int x) {
-  return x * x;
-}
-
-double dSquare(double x) {
-  return x * x;
-}
-
-LuaObject identityIndex(LuaObject table, LuaObject key) {
-  return key;
+int sum(int a, int b, const char* msg) {
+  int res = a + b;
+  cout << msg << " " << res << endl;
+  return res;
 }
 
 #define LG(x) L->global(#x)
@@ -42,10 +36,13 @@ int main(int argc, char** argv) {
   }
 
   {
-    auto_ptr<LuaState> L(new LuaState);  
+    auto_ptr<LuaState> L(new LuaState);
     
-    LuaTuple<1> t(L->global("x"));
+    (*L)
+      .reg("test", test)
+    ;
     
+    L->doFile("test.lua");
   }
   
   delete stream;
