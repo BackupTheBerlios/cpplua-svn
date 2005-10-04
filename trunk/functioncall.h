@@ -48,7 +48,7 @@ template <typename RetVal>
 struct FunctionCall<RetVal, 0> {
   static RetVal apply(LuaState* L, const LuaIObject& f) {
     f.push();
-    LowLevelFunctionCall::protectedCall(L, 0, 1);
+    LowLevel::protectedCall(L, 0, 1);
     return LuaTraits<RetVal>::pop(L);
   }
 };
@@ -59,7 +59,7 @@ struct FunctionCall<RetVal, 1> {
   static RetVal apply(LuaState* L, const LuaIObject& f, const Arg1& arg1) {
     f.push();
     LuaTraits<Arg1>::push(L, arg1);
-    LowLevelFunctionCall::protectedCall(L, 1, 1);
+    LowLevel::protectedCall(L, 1, 1);
     return LuaTraits<RetVal>::pop(L);
   }
 };
@@ -71,7 +71,7 @@ struct FunctionCall<RetVal, 2> {
     f.push();
     LuaTraits<Arg1>::push(L, arg1);
     LuaTraits<Arg2>::push(L, arg2);
-    LowLevelFunctionCall::protectedCall(L, 2, 1);
+    LowLevel::protectedCall(L, 2, 1);
     return LuaTraits<RetVal>::pop(L);
   }
 };
@@ -84,7 +84,7 @@ struct FunctionCall<RetVal, 3> {
     LuaTraits<Arg1>::push(L, arg1);
     LuaTraits<Arg2>::push(L, arg2);
     LuaTraits<Arg3>::push(L, arg3);
-    LowLevelFunctionCall::protectedCall(L, 3, 1);
+    LowLevel::protectedCall(L, 3, 1);
     return LuaTraits<RetVal>::pop(L);
   }
 };

@@ -20,7 +20,7 @@ LuaObject LuaIObject::operator()() {
   LuaObject res(getState());
   getState()->pushLightUserdata(&res);
   push();
-  LowLevelFunctionCall::protectedCall(getState(), 0, 1);
+  LowLevel::protectedCall(getState(), 0, 1);
   getState()->setTable(LuaState::cpptableIndex);
   return res;
 }

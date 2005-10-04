@@ -1,9 +1,14 @@
 #include "lowlevel.h"
 #include "luastate.h"
 
+#ifdef _DEBUG
+#include <iostream>
+using namespace std;
+#endif
+
 namespace cpplua {
 
-void LowLevelFunctionCall::protectedCall(LuaState* L, int nArgs, int nRetVals) {
+void LowLevel::protectedCall(LuaState* L, int nArgs, int nRetVals) {
   // No need for an error handler function.
   // The stack needs to be unwound before
   // any C++ error handling mechanism can
@@ -24,13 +29,22 @@ void LowLevelFunctionCall::protectedCall(LuaState* L, int nArgs, int nRetVals) {
       // and finally, throw it!
       throw exception;
     }
-    else {
-      // Assume the error is a string.
-      // Throw a generic cpplua exception.
-      cpplua_error exception(L->toString());
-      L->pop();
-      throw exception;
-    }
+    else
+      handleError(L);
+  }
+}
+
+void LowLevel::handleError(LuaState* L) {
+  if (L->isString()) {
+    // Throw a generic cpplua exception.
+    cpplua_error exception(L->toString());
+    L->pop();
+    throw exception;
+  }
+  else {
+    cpplua_error exception("unknown error");
+    L->pop();
+    throw exception;
   }
 }
 

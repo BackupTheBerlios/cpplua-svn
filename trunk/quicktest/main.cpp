@@ -26,8 +26,6 @@ int sum(int a, int b, const char* msg) {
   return res;
 }
 
-#define LG(x) L->global(#x)
-
 int main(int argc, char** argv) {
   ofstream* stream = 0;
   if (argc > 1) {
@@ -35,6 +33,7 @@ int main(int argc, char** argv) {
     LuaState::setLoggerStream(stream);
   }
 
+  try
   {
     auto_ptr<LuaState> L(new LuaState);
     
@@ -43,6 +42,9 @@ int main(int argc, char** argv) {
     ;
     
     L->doFile("test.lua");
+  }
+  catch(cpplua_error error) {
+    cout << error.what() << endl;
   }
   
   delete stream;

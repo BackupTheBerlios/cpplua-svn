@@ -106,7 +106,7 @@ public:
     getState()->pushLightUserdata(&res);
     push();
     LuaTraits<Arg1>::push(getState(), arg1);
-    LowLevelFunctionCall::protectedCall(getState(), 1, 1);
+    LowLevel::protectedCall(getState(), 1, 1);
     getState()->setTable(LuaState::cpptableIndex);
     return res;
   }
@@ -121,7 +121,7 @@ public:
     push();
     LuaTraits<Arg1>::push(getState(), arg1);
     LuaTraits<Arg2>::push(getState(), arg2);
-    LowLevelFunctionCall::protectedCall(getState(), 2, 1);
+    LowLevel::protectedCall(getState(), 2, 1);
     getState()->setTable(LuaState::cpptableIndex);
     return res;
   }
@@ -137,7 +137,7 @@ public:
     LuaTraits<Arg1>::push(getState(), arg1);
     LuaTraits<Arg2>::push(getState(), arg2);
     LuaTraits<Arg3>::push(getState(), arg3);
-    LowLevelFunctionCall::protectedCall(getState(), 3, 1);
+    LowLevel::protectedCall(getState(), 3, 1);
     getState()->setTable(LuaState::cpptableIndex);
     return res;
   }    

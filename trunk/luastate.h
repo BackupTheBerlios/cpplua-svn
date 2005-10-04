@@ -123,13 +123,13 @@ public:
     
   int doString(const char* str) {
     loadBuffer(str);
-    LowLevelFunctionCall::protectedCall(this, 0, 0);
+    LowLevel::protectedCall(this, 0, 0);
     return 0;
   }
   
   int doFile(const char* filename) {
     loadFile(filename);
-    LowLevelFunctionCall::protectedCall(this, 0, 0);
+    LowLevel::protectedCall(this, 0, 0);
     return 0;
   }
   
@@ -300,11 +300,14 @@ public:
   }
   
   inline void loadBuffer(const char* str) {
+    //TODO Handle errors
     LOG(luaL_loadbuffer(L, str, strlen(str), "buffer"));
   }
   
   inline void loadFile(const char* filename) {
-    LOG(luaL_loadfile(L, filename));
+    LOG(int res = luaL_loadfile(L, filename));
+    if (res)
+      LowLevel::handleError(this);
   }
   
   inline void setMetatable(int index = -2) {
