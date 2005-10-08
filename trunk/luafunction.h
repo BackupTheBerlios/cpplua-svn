@@ -75,6 +75,16 @@ public:
   }
 };
 
+template <typename RetVal, typename Arg1, typename Arg2, typename Arg3>
+class LuaFunction<RetVal(*)(Arg1, Arg2, Arg3)>: public LuaObject {
+public:
+  LuaFunction(LuaState* L) : LuaObject(L) {}
+  
+  RetVal operator()(const Arg1& arg1, const Arg2& arg2, const Arg3& arg3) {
+    return FunctionCall<RetVal, 3>::apply(getState(), *this, arg1, arg2, arg3);
+  }
+};
+
 
 };
 

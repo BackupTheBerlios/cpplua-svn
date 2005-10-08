@@ -160,12 +160,12 @@ struct GeneralMethod<T, RetVal(T::*)(Arg1, Arg2, Arg3)> {
 
 template <typename Function> struct GeneralFunction {};
 
-#define VALIDATE(n) \
+#define VALIDATE(N) \
 { \
+  int n = (N); \
   int nArgs = L.getTop() - 1; \
-  if (nArgs != (n)) { \
-    ArgumentNumberError* exception = new ArgumentNumberError((n), nArgs); \
-    L.pushLightUserdata(exception); \
+  if (nArgs != n) { \
+    L.pushString(ArgumentNumberError(n, nArgs).what()); \
     L.error(); \
   } \
 }

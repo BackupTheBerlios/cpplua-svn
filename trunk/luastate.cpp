@@ -104,13 +104,11 @@ LuaState::~LuaState() {
   * Retrieve a global object
   */
 LuaProxyGlobal LuaState::global(const char* name) {
-//   LuaObject res(this);
-//   pushLightUserdata<LuaObject>(&res);
-//   getGlobal(name);  
-//   setTable(cpptableIndex);
-//   
-//   return res;
   return LuaProxyGlobal(this, name);
+}
+
+LuaProxyGlobal LuaState::operator[](const char* name) {
+  return global(name);
 }
 
 LuaProxyEmptyTable LuaState::emptyTable() {

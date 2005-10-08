@@ -43,7 +43,9 @@ public:
     : os(os) {}
   template <typename T>
   Logger& operator<<(const T& obj) {
+#ifndef NO_LOG
     os << obj;
+#endif    
     return *this;
   }
 };
@@ -77,6 +79,7 @@ public:
   static void setLoggerStream(std::ostream* stream) {
     loggerStream = stream;
   }
+  inline Logger& getLogger() { return logger; }
 #endif
   static const int cpptableIndex = 1;
   LuaState();
@@ -86,6 +89,8 @@ public:
   lua_State* getInternalState() { return L; }
   
   LuaProxyGlobal global(const char* name);
+  LuaProxyGlobal operator[](const char* name); // alias for global
+  
   void pushObject(const LuaIObject*);
   LuaProxyEmptyTable emptyTable();
   template <typename T> LuaProxyPrimitive<T> primitive(const T& val);
@@ -173,7 +178,7 @@ public:
   template <typename Number>
   inline void pushNumber(Number n) {
     lua_pushnumber(L, static_cast<lua_Number>(n));
-    logger << "log_pushnumber(L, " << n << ")\n";
+    logger << "lua_pushnumber(L, " << n << ")\n";
   }
 
   template <typename Number>
@@ -184,7 +189,7 @@ public:
   template <typename T>
   inline void pushLightUserdata(T* ud) {
     lua_pushlightuserdata(L, static_cast<void*>(ud));
-    logger << "log_pushlightuserdata(L, " << ud << ")\n";
+    logger << "lua_pushlightuserdata(L, " << ud << ")\n";
   }
 
   template <typename T>

@@ -1,4 +1,4 @@
-#include <iostream>
+ #include <iostream>
 #include <fstream>
 #include <cassert>
 #include <memory>
@@ -6,6 +6,8 @@
 
 using namespace std;
 using namespace cpplua;
+
+#define LUA_EXPORT extern "C"
 
 class A {
   int a;
@@ -20,10 +22,30 @@ int test() {
   return 37;
 }
 
-int sum(int a, int b, const char* msg) {
-  int res = a + b;
-  cout << msg << " " << res << endl;
-  return res;
+int sum(int a, int b) {
+  return a + b;
+}
+
+LuaObject createTable(LuaState* L) {
+  return L->emptyTable();
+}
+
+LUA_EXPORT int luaopen_test2(lua_State* l) {
+  lua_newtable(l);
+  return 1;
+}
+
+LUA_EXPORT int luaopen_test(lua_State* l) {
+  try {
+     LuaState(l).reg("sum", sum)
+                .reg("create_table", createTable)
+                ;
+  }
+  catch(cpplua_error error) {
+    cout << error.what() << endl;
+    return 0;
+  }
+  return 1;
 }
 
 int main(int argc, char** argv) {
@@ -36,12 +58,9 @@ int main(int argc, char** argv) {
   try
   {
     auto_ptr<LuaState> L(new LuaState);
-    
-    (*L)
-      .reg("test", test)
-    ;
-    
-    L->doFile("test.lua");
+
+    L->global("f0") = L->function(test);
+    cout << L->global("f0")().toNumber<int>() << endl;
   }
   catch(cpplua_error error) {
     cout << error.what() << endl;
@@ -50,5 +69,3 @@ int main(int argc, char** argv) {
   delete stream;
   return 0;
 }
-
-#undef LG

@@ -21,6 +21,11 @@ public:
   template <typename T>
   LuaProxyGlobal& operator=(const T& other);
   
+  template <typename T>
+  LuaBracket<LuaProxyGlobal, T> operator[](const T& key) const {
+    return LuaBracket<LuaProxyGlobal, T>(getState(), *this, key);
+  }
+  
   virtual void assign(const LuaIObject& other) {
     *this = other;
   }

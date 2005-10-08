@@ -29,6 +29,9 @@ TARGET=test
 
 all: $(TARGET)
 
+lib: $(OBJ)
+	$(CC) -shared -o $(TARGET).so $(OBJ) $(LDFLAGS)
+
 clean:
 	-rm -f *.o *.so *~
 
@@ -37,7 +40,7 @@ distclean:
 
 $(TARGET): $(OBJ)
 	$(CC) -o $@ $(OBJ) $(LDFLAGS)
-
+  
 %.o : %.cpp
 	$(CC) $(DEBUG) $(CFLAGS) -c -o $@ $<
 
