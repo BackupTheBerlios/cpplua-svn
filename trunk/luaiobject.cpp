@@ -2,6 +2,7 @@
 #include "luatraits.h"  
 #include "luaobject.h"
 #include "luaproxy.h"
+#include "luaproxycall.h"
 
 #ifdef _DEBUG
 #include <iostream>
@@ -17,12 +18,7 @@ LuaIObject::LuaIObject(const LuaIObject& obj)
 : L(obj.getState()) {}
 
 LuaObject LuaIObject::operator()() {
-  LuaObject res(getState());
-  getState()->pushLightUserdata(&res);
-  push();
-  LowLevel::protectedCall(getState(), 0, 1);
-  getState()->setTable(LuaState::cpptableIndex);
-  return res;
+  return LuaProxyFunctionCall0(getState(), *this);
 }
 
 #define IS(something) \

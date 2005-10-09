@@ -40,10 +40,18 @@ using namespace std;
   return res; \
 }
 
+#define CPPLUA_ADD_INDEX_FUNCTION(T) \
+  template <typename _Key> \
+  LuaBracket<T, _Key> operator[](const _Key& _key) { \
+    return LuaBracket<T, _Key>(getState(), *this, _key); \
+  }
+
 namespace cpplua {
 
 class LuaObject;
 class LuaProxyMetatable;
+template <typename Arg1> class LuaProxyFunctionCall1;
+template <typename Arg1, typename Arg2> class LuaProxyFunctionCall2;
 
 /**
  * LuaIObject is a common interface for all Lua objects handled by cpplua.
@@ -85,50 +93,18 @@ public:
   LuaProxyMetatable getMetatable() const;
   
   // BEGIN operator()
-
-  /**
-    * To allow function calls such as
-    * @code
-    * L->method(A, &A::sum)(5);
-    * L->global("print")("Hello World");
-    * @endcode
-    * the only possibility (AFAIK) is defining a generic
-    * overloaded operator() as the following
-    */
   LuaObject operator()();
   
-  /**
-    * 1 argument version of operator()
-    */
   template <typename Arg1>
   LuaObject operator()(const Arg1& arg1) {
-    LuaObject res(getState());
-    getState()->pushLightUserdata(&res);
-    push();
-    LuaTraits<Arg1>::push(getState(), arg1);
-    LowLevel::protectedCall(getState(), 1, 1);
-    getState()->setTable(LuaState::cpptableIndex);
-    return res;
-  }
-
-  /**
-    * 2 argument version of operator()
-    */
-  template <typename Arg1, typename Arg2>
-  LuaObject operator()(const Arg1& arg1, const Arg2& arg2) {
-    LuaObject res(getState());
-    getState()->pushLightUserdata(&res);
-    push();
-    LuaTraits<Arg1>::push(getState(), arg1);
-    LuaTraits<Arg2>::push(getState(), arg2);
-    LowLevel::protectedCall(getState(), 2, 1);
-    getState()->setTable(LuaState::cpptableIndex);
-    return res;
+    return LuaProxyFunctionCall1<Arg1>(getState(), *this, arg1);
   }
   
-  /**
-   * 3 argument version of operator()
-   */
+  template <typename Arg1, typename Arg2>
+  LuaObject operator()(const Arg1& arg1, const Arg2& arg2) {
+    return LuaProxyFunctionCall2<Arg1, Arg2>(getState(), *this, arg1, arg2);
+  }
+
   template <typename Arg1, typename Arg2, typename Arg3>
   LuaObject operator()(const Arg1& arg1, const Arg2& arg2, const Arg3& arg3) {
     LuaObject res(getState());

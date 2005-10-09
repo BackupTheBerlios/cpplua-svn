@@ -2,6 +2,7 @@
 #define LUAPROXY_H
 
 #include "luaiobject.h"
+#include "luaproxycall.h"
 
 namespace cpplua {
 
@@ -21,10 +22,7 @@ public:
   template <typename T>
   LuaProxyGlobal& operator=(const T& other);
   
-  template <typename T>
-  LuaBracket<LuaProxyGlobal, T> operator[](const T& key) const {
-    return LuaBracket<LuaProxyGlobal, T>(getState(), *this, key);
-  }
+  CPPLUA_ADD_INDEX_FUNCTION(LuaProxyGlobal);
   
   virtual void assign(const LuaIObject& other) {
     *this = other;

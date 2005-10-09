@@ -32,6 +32,7 @@ template <typename Table, typename Key>
 class LuaBracket : public LuaLValue {
   const Table& table;
   const Key& key;
+  typedef LuaBracket<Table,Key> bracketType;
 public:
   explicit LuaBracket(LuaState* L, const Table& table, const Key& key) : 
     LuaLValue(L),
@@ -48,7 +49,7 @@ public:
   
   
   template <typename T>
-  LuaBracket<Table, Key> operator=(const T& obj) {
+  bracketType operator=(const T& obj) {
     LuaTraits<Table>::push(getState(), table);
     LuaTraits<Key>::push(getState(), key);
     LuaTraits<T>::push(getState(), obj);
@@ -62,16 +63,8 @@ public:
   virtual void assign(const LuaIObject& other) {
     *this = other;
   }
-  
-  template <typename Key2>
-  LuaBracket <
-    LuaBracket<Table, Key>,
-    Key2
-  > 
-  operator[](const Key2& key2) {
-    return LuaBracket< LuaBracket<Table, Key>, Key2 >(getState(), *this, key2);
-  }
-     
+
+  CPPLUA_ADD_INDEX_FUNCTION(bracketType);
 };
 
 };

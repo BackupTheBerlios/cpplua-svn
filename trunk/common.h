@@ -32,6 +32,8 @@ extern "C" {
 #include <lauxlib.h>
 }
 
+namespace cpplua {
+
 enum LuaType {
   NilType = LUA_TNIL,
   NumberType = LUA_TNUMBER, 
@@ -52,5 +54,7 @@ public:
 };
 
 //END
+
+}; // namespace cpplua
 
 #endif // COMMON_H
