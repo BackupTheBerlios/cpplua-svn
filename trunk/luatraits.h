@@ -92,8 +92,11 @@ struct LuaTraits<const char*> {
 struct LuaTraitsMetaFunction {
   template <typename T>
   struct apply {
-    static void value(LuaState* L, const T& x) {
-      LuaTraits<T>::push(L, x);
+    typedef typename boost::remove_const< 
+      typename boost::remove_reference<T>::type 
+    >::type RealT;
+    static void value(LuaState* L, const RealT& x) {
+      LuaTraits<RealT>::push(L, x);
     }
   };
 };

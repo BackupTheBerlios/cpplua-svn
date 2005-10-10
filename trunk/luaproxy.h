@@ -3,6 +3,7 @@
 
 #include "luaiobject.h"
 #include "luaproxycall.h"
+#include "functionfactory.h"
 
 namespace cpplua {
 
@@ -78,9 +79,21 @@ public:
   LuaProxyMetatable(LuaState* L, const LuaIObject& table);
   virtual void push() const;
   
-  template <typename T>
-  LuaBracket<LuaProxyMetatable, T> operator[](const T& key) const {
-    return LuaBracket<LuaProxyMetatable, T>(getState(), *this, key);
+  CPPLUA_ADD_INDEX_FUNCTION(LuaProxyMetatable);
+};
+
+/**********/
+
+template <typename Function>
+class LuaProxyFunction : public LuaIObject {
+  Function f;
+public:
+  LuaProxyFunction(LuaState* L, Function f)
+  : LuaIObject(L)
+  , f(f) {}
+  
+  virtual void push() const {
+    PushFunction<Function>::apply(getState(), f);
   }
 };
 

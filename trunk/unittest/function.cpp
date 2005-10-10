@@ -41,10 +41,10 @@ void FunctionTest::tearDown() {
 }
 
 void FunctionTest::globalFunction() {
-  LuaFunction<double(*)(double)> f = L->function(square);
-  CPPUNIT_ASSERT_DOUBLES_EQUAL(3.51*3.51,f(3.51), 1e-5);
+  LuaObject f = L->function(square);
+  CPPUNIT_ASSERT_DOUBLES_EQUAL(3.51*3.51,f(3.51).toNumber<double>(), 1e-5);
   
-  LuaFunction<int(*)(LuaState*, const char*, LuaObject)> g = L->function(setGlobal2);
+  LuaObject g = L->function(setGlobal2);
   g("hello",L->primitive("world"));
   CPPUNIT_ASSERT(L->global("hello") == "world");
 }
