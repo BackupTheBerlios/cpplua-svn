@@ -23,6 +23,7 @@ SOFTWARE.
 #ifndef LUAIOBJECT_H
 #define LUAIOBJECT_H
 
+#include <boost/tuple/tuple.hpp>
 #include "luastate.h"
 #include "luatraits.h"
 #include "functioncall.h"
@@ -50,8 +51,7 @@ namespace cpplua {
 
 class LuaObject;
 class LuaProxyMetatable;
-template <typename Arg1> class LuaProxyFunctionCall1;
-template <typename Arg1, typename Arg2> class LuaProxyFunctionCall2;
+template <typename ArgTuple> class LuaProxyFunctionCall;
 
 /**
  * LuaIObject is a common interface for all Lua objects handled by cpplua.
@@ -91,31 +91,31 @@ public:
   const char* typeName() const;
   void setMetatable(const LuaIObject& mt);
   LuaProxyMetatable getMetatable() const;
+
+  /**
+    * Low level call: accept a tuple as argument list
+    */
+  template <typename Tuple>
+  LuaObject call(const Tuple& args) {
+    return LuaProxyFunctionCall<Tuple>(getState(), *this, args);
+  }
   
   // BEGIN operator()
   LuaObject operator()();
   
   template <typename Arg1>
   LuaObject operator()(const Arg1& arg1) {
-    return LuaProxyFunctionCall1<Arg1>(getState(), *this, arg1);
+    return call(make_tuple(arg1));
   }
   
   template <typename Arg1, typename Arg2>
   LuaObject operator()(const Arg1& arg1, const Arg2& arg2) {
-    return LuaProxyFunctionCall2<Arg1, Arg2>(getState(), *this, arg1, arg2);
+    return call(make_tuple(arg1, arg2));
   }
 
   template <typename Arg1, typename Arg2, typename Arg3>
   LuaObject operator()(const Arg1& arg1, const Arg2& arg2, const Arg3& arg3) {
-    LuaObject res(getState());
-    getState()->pushLightUserdata(&res);
-    push();
-    LuaTraits<Arg1>::push(getState(), arg1);
-    LuaTraits<Arg2>::push(getState(), arg2);
-    LuaTraits<Arg3>::push(getState(), arg3);
-    LowLevel::protectedCall(getState(), 3, 1);
-    getState()->setTable(LuaState::cpptableIndex);
-    return res;
+    return call(make_tuple(arg1, arg2, arg3));
   }    
   // END operator()  
   

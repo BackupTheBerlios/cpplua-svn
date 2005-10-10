@@ -1,6 +1,7 @@
 #ifndef LUATRAITS_H
 #define LUATRAITS_H
 
+#include <boost/type_traits.hpp>
 #include "luaiobject.h"
 #include "luastate.h"
 
@@ -85,6 +86,19 @@ struct LuaTraits<const char*> {
     return res;
   }
 };
+
+// BEGIN LuaTraits metafunction interface
+
+struct LuaTraitsMetaFunction {
+  template <typename T>
+  struct apply {
+    static void value(LuaState* L, const T& x) {
+      LuaTraits<T>::push(L, x);
+    }
+  };
+};
+
+// END LuaTraits metafunction interface
 
 };
 
