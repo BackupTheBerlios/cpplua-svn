@@ -61,7 +61,10 @@ using namespace boost;
     }
   };
   // END ApplyFunctionToTuple
-
+  
+  template <typename Function, typename X, typename Tuple>
+  struct MapHelper;
+  
   /**
     * @code
     * Map<F>::apply(x, t)
@@ -72,12 +75,21 @@ using namespace boost;
     * @endcode
     */
   template <typename Function>
-  class Map {
+  struct Map {
     template <typename X>
     class MapDetail {
       typedef typename add_reference<X>::type XRef;
       XRef x;
-    public:
+    public:      
+      template <typename T>
+      void applyHead(const T& head) {
+        Function::template apply<T>::value(x, head);
+      }
+      
+      template <typename T>
+      T transformHead() {
+        return Function::template apply<T>::value(x);
+      }
       MapDetail(XRef x)
       : x(x) {}
       
@@ -88,20 +100,79 @@ using namespace boost;
       void apply(const tuples::null_type&) {
         // do nothing
       }
-      
+
+            
       template <typename Tuple>
       void apply(const Tuple& t) {
-        
-        Function::template apply< typename tuples::element<0, Tuple>::type  >::value(x, t.get<0>());
+        applyHead(t.get_head());
         apply(t.get_tail());
       }
+      
+      template <typename Tuple>
+      Tuple transform() {
+        return MapHelper<Function, X, Tuple>::apply(this);
+      }
+      
+      template <typename Tuple>
+      void revApply(const Tuple& t) {
+        apply(t.get_tail());
+        applyHead(t.get_head());
+      }
+      
+      template <typename Tuple>
+      Tuple revTransform() {
+        return MapHelper<Function, X, Tuple>::revApply(this);
+      }
     };
-  public:
     template <typename X, typename Tuple>
     static void apply(X x, const Tuple& t) {
       MapDetail<X>(x).apply(t);
     }
+    
+    template <typename X, typename Tuple> 
+    static Tuple transform(X x) {
+      return MapDetail<X>(x).transform<Tuple>();
+    }
+    
+    template <typename X, typename Tuple>
+    static void revApply(X x, const Tuple& t) {
+      MapDetail<X>(x).revApply(t);
+    }
+    
+    template <typename X, typename Tuple>
+    static Tuple revTransform(X x) {
+      return MapDetail<X>(x).revTransform<Tuple>();
+    }
   };
+  
+  template <typename Function, typename X, typename Tuple>
+  struct MapHelper {
+    typedef typename Tuple::head_type head_type;
+    typedef typename Tuple::tail_type tail_type;
+    static Tuple apply(typename Map<Function>::template MapDetail<X>* d) {
+      head_type head = d->template transformHead<head_type>();
+      tail_type tail = d->template transform<tail_type>();
+      return tuples::cons<head_type, tail_type>(head, tail);
+    }
+    static Tuple revApply(typename Map<Function>::template MapDetail<X>* d) {
+      tail_type tail = d->template transform<tail_type>();
+      head_type head = d->template transformHead<head_type>();
+      return tuples::cons<head_type, tail_type>(head, tail);
+    }
+  };
+  
+  template <typename Function, typename X>
+  struct MapHelper<Function, X, tuple<> > {
+    static tuple<> apply(typename Map<Function>::template MapDetail<X>*) { return make_tuple(); }
+    static tuple<> revApply(typename Map<Function>::template MapDetail<X>*) { return make_tuple(); }
+  };
+  
+  template <typename Function, typename X>
+  struct MapHelper<Function, X, tuples::null_type > {
+    static tuples::null_type apply(typename Map<Function>::template MapDetail<X>*) { return tuples::null_type(); }
+    static tuples::null_type revApply(typename Map<Function>::template MapDetail<X>*) { return tuples::null_type(); }
+  };  
+  
 }; // namespace cpplua
 
 #endif // UTILS_TUPLES_H

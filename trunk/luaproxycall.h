@@ -16,7 +16,7 @@ class LuaProxyFunctionCall : public LuaIObject {
   const ArgTuple& args;
   void push(int nRetVals) const {
     function.push();
-    Map<LuaTraitsMetaFunction>::apply(getState(), args);
+    Map<LuaTraitsPush>::apply(getState(), args);
     LowLevel::protectedCall(getState(), tuples::length<ArgTuple>::value, nRetVals);
   }
 public:

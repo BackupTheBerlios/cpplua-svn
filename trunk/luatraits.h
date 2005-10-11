@@ -89,14 +89,23 @@ struct LuaTraits<const char*> {
 
 // BEGIN LuaTraits metafunction interface
 
-struct LuaTraitsMetaFunction {
+struct LuaTraitsPush {
   template <typename T>
   struct apply {
-    typedef typename boost::remove_const< 
-      typename boost::remove_reference<T>::type 
-    >::type RealT;
+    typedef typename boost::remove_const<
+      typename boost::remove_reference<T>::type
+    >::type RealT;  
     static void value(LuaState* L, const RealT& x) {
       LuaTraits<RealT>::push(L, x);
+    }
+  };
+};
+
+struct LuaTraitsPop {
+  template <typename T>
+  struct apply {
+    static T value(LuaState* L) {
+      return LuaTraits<T>::pop(L);
     }
   };
 };

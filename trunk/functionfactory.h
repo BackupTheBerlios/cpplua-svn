@@ -5,6 +5,7 @@
 #include <sstream>
 #include "luatraits.h"
 #include "luastate.h"
+#include "utils/traits.h"
 #ifdef _DEBUG
 #include <iostream>
 using namespace std;
@@ -60,6 +61,29 @@ struct ReturnValues {
   static int apply(LuaState* L, const RetVal& retVal) {
     LuaTraits<RetVal>::push(L, retVal);
     return 1;
+  }
+};
+
+template <typename ArgTuple>
+struct RetrieveArguments {
+  typedef typename ArgTuple::head_type Arg0;
+  typedef typename ArgTuple::tail_type OtherArgs;
+
+  static const int argCount = RetrieveFirstArgument<Arg0>::argCount +
+                              tuples::length<OtherArgs>::value;
+  static ArgTuple apply(LuaState* L) {
+    OtherArgs otherArgs = Map<LuaTraitsPop>::template revTransform<LuaState*, OtherArgs>(L);
+    Arg0 arg0 = RetrieveFirstArgument<Arg0>::apply(L);
+    return tuples::cons<Arg0, OtherArgs>(arg0, otherArgs);
+  };
+};
+
+template <>
+struct RetrieveArguments< tuple<> > {
+  static const int argCount = 0;
+  static tuple<> apply(LuaState* ) {
+    // do nothing
+    return make_tuple();
   }
 };
 
@@ -158,6 +182,31 @@ struct GeneralMethod<T, RetVal(T::*)(Arg1, Arg2, Arg3)> {
 
 // General Function
 
+template <typename Function> struct GeneralFunction {
+  typedef FunctionTraits< typename remove_pointer <Function>::type > f_traits;
+  typedef typename f_traits::result_type RetVal;
+  typedef typename f_traits::args_type ArgTuple;
+  
+  static int apply(lua_State* l) {
+    LuaState L(l);
+    
+    // validation
+    const int n = RetrieveArguments<ArgTuple>::argCount;
+    {
+      const int nArgs = L.getTop() - 1;
+      if (nArgs != n) {
+        L.pushString(ArgumentNumberError(n, nArgs).what());
+        L.error();
+      }
+    }    
+    
+    Function f = *(L.template toUserdata<Function>(lua_upvalueindex(1)));
+    ArgTuple args = RetrieveArguments<ArgTuple>::apply(&L);
+    RetVal res = ApplyFunctionToTuple<Function, ArgTuple>::apply(f, args);
+    return ReturnValues<RetVal>::apply(&L, res);
+  }
+};
+/*
 template <typename Function> struct GeneralFunction {};
 
 #define VALIDATE(N) \
@@ -219,6 +268,8 @@ struct GeneralFunction<RetVal(*)(Arg1, Arg2, Arg3)> {
     return ReturnValues<RetVal>::apply(&L, res);
   }
 };
+
+#undef VALIDATE*/
 
 };
 
