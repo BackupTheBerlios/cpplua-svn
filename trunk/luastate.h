@@ -99,14 +99,6 @@ public:
   LuaProxyPrimitive<const char*> primitive(const char (& val)[size]) {
     return LuaProxyPrimitive<const char*>(this, val);
   }
-  template <typename T, typename Function>
-  LuaMethod<T, Function> method(const T& obj, Function f) {
-    LuaMethod<T, Function> res(this);
-    pushLightUserdata(&res);
-    PushMethod<T, Function>::apply(this, obj, f);
-    setTable(cpptableIndex);
-    return res;
-  }
   template <typename Function>
   LuaProxyFunction<Function> function(Function f) {
     return LuaProxyFunction<Function>(this, f);
@@ -116,12 +108,7 @@ public:
     global(name) = function(f);
     return *this;
   }
-  
-  template <typename T, typename Function>
-  void registerMethod(const char* name, const T& obj, Function f) {
-    global(name) = method(obj, f);
-  }
-    
+      
   int doString(const char* str) {
     loadBuffer(str);
     LowLevel::protectedCall(this, 0, 0);
