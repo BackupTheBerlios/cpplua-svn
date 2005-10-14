@@ -26,6 +26,10 @@ int sum(int a, int b) {
   return a + b;
 }
 
+int doSum(A* x, int y) {
+  return x->sum(y);
+}
+
 LuaObject createTable(LuaState* L) {
   return L->emptyTable();
 }
@@ -57,10 +61,16 @@ int main(int argc, char** argv) {
 
   try
   {
-    auto_ptr<LuaState> L(new LuaState);
+    LuaState L;
 
-    L->global("f0") = L->function(test);
-    cout << L->global("f0")().toNumber<int>() << endl;
+    LuaObject a = L["A"] = L.emptyTable();
+    a.setMetatable(a);
+    a["sum"] = L(mem_fun(&A::sum));
+    
+    A x(10);
+    L["x"] = L.primitive(&x);
+    
+    L.doFile("test.lua");
   }
   catch(cpplua_error error) {
     cout << error.what() << endl;

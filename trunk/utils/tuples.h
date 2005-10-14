@@ -8,27 +8,6 @@ namespace cpplua {
   
 using namespace boost;
 
-//   // BEGIN FunctionSignature
-//   template <typename RetVal, typename Tuple>
-//   struct FunctionSignature {};
-//   template <typename RetVal>
-//   struct FunctionSignature<RetVal, tuple<> > {
-//     typedef RetVal(*)() value;
-//   }
-//   template <typename RetVal, typename Arg0>
-//   struct FunctionSignature<RetVal, tuple<Arg0> > {
-//     typedef RetVal(*)(Arg0) value;
-//   }  
-//   template <typename RetVal, typename Arg0, typename Arg1>
-//   struct FunctionSignature<RetVal, tuple<Arg0, Arg1> > {
-//     typedef RetVal(*)(Arg0, Arg1) value;
-//   }
-//   template <typename RetVal, typename Arg0, typename Arg1, typename Arg2>
-//   struct FunctionSignature<RetVal, tuple<Arg0, Arg1, Arg2> > {
-//     typedef RetVal(*)(Arg0, Arg1, Arg2) value;
-//   }
-//   // END
-
   // BEGIN ApplyFunctionToTuple
   template <typename Function, typename Tuple>
   struct ApplyFunctionToTuple {};

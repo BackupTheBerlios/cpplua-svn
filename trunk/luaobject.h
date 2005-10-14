@@ -24,7 +24,6 @@ SOFTWARE.
 #define LUAOBJECT_H
 
 #include "luaiobject.h"
-#include "functioncall.h"
 #include "luabracket.h"
 
 #ifdef _DEBUG

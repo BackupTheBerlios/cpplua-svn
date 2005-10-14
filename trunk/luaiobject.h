@@ -26,7 +26,6 @@ SOFTWARE.
 #include <boost/tuple/tuple.hpp>
 #include "luastate.h"
 #include "luatraits.h"
-#include "functioncall.h"
 
 #ifdef _DEBUG
 #include <iostream>

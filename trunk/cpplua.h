@@ -8,6 +8,5 @@
 #include "luaproxy.h"
 
 #include "functionfactory.h"
-#include "functioncall.h"
 
 #endif
