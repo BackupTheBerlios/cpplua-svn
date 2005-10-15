@@ -20,6 +20,9 @@ template <typename Function> struct GeneralFunction;
 
 //BEGIN Validation
 
+/**
+  * @brief Raised when argument numbers don't match.
+  */
 class ArgumentNumberError : public cpplua_error {
 private:
   static std::string msg(int expected, int given) {
@@ -37,8 +40,11 @@ public:
 
 //END Validation
 
-//BEGIN Metafunctions
+//BEGIN Retrieve First Argument
 
+/**
+  * Retrieve a real argument from the stack.
+  */
 template <typename Arg>
 struct RetrieveFirstArgument {
   static const int argCount = 1;
@@ -47,6 +53,9 @@ struct RetrieveFirstArgument {
   }
 };
 
+/**
+  * Retrieve a LuaState* argument from the stack.
+  */
 template <>
 struct RetrieveFirstArgument<LuaState*> {
   static const int argCount = 0;
@@ -55,6 +64,7 @@ struct RetrieveFirstArgument<LuaState*> {
   }
 };
 
+//END RetrieveFirstArgument
 
 template <typename RetVal>
 struct ReturnValues {

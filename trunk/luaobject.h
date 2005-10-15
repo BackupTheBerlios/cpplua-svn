@@ -35,25 +35,41 @@ namespace cpplua {
 
 class LuaState;
 
+/**
+  * @brief A reference to a Lua object
+  * 
+  * A LuaObject is the basic building block of CppLua. 
+  * Every Lua object can be held by reference in a C++ 
+  * variable of type LuaObject. 
+  * CppLua keeps track of the various LuaObjects using
+  * a global table at the bottom of the LuaStack.
+  */
 class LuaObject : public LuaIObject {
 public:
   explicit LuaObject(LuaState* L);
   LuaObject(const LuaIObject&);
   LuaObject(const LuaObject&);
-  
+
+  /**
+    * @brief Assignment with reference semantics.
+    */
   template <typename T>
   LuaObject& operator=(const T& obj) {
     duplicate(obj);
     return *this;
   }
-  // for some reasons I'd like to understand
-  // the compiler doesn't call the template
-  // assignment operator when T = LuaObject
+
+  /**
+    * @brief Assignment with reference semantics.
+    */  
   LuaObject& operator=(const LuaObject& obj) {
     duplicate(obj);
     return *this;
   }
 
+  /**
+    * @brief Push the object on the Lua stack.
+    */
   void push() const;
   
   template <typename T>

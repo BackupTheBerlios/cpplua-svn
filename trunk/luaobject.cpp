@@ -9,7 +9,7 @@ namespace cpplua {
 
 /**
   * Create an empty object. 
-  * This constructor whould only be used
+  * This constructor should only be used
   * internally by cpplua.
   */
 LuaObject::LuaObject(LuaState* L)

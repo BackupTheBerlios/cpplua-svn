@@ -41,6 +41,14 @@ const char* LuaIObject::typeName() const {
   STACK_OPERATION(const char*, getState()->typeName());
 }
 
+int LuaIObject::toInteger() const {
+  STACK_OPERATION(int, getState()->toNumber<int>());
+}
+
+double LuaIObject::toDouble() const {
+  STACK_OPERATION(double, getState()->toNumber<double>());
+}
+
 const char* LuaIObject::toString() const {
   STACK_OPERATION(const char*, getState()->toString());
 }

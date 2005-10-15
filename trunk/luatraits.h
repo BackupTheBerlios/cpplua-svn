@@ -2,6 +2,7 @@
 #define LUATRAITS_H
 
 #include <boost/type_traits.hpp>
+#include <boost/mpl/if.hpp>
 #include "luaiobject.h"
 #include "luastate.h"
 
@@ -11,7 +12,6 @@ template <typename T>
 struct LuaTraits {
   static void push(LuaState*, const T& obj) {
     obj.push();
-    // FIXME: add LuaIObject template specialization
   }
   
   static LuaObject pop(LuaState* L) {

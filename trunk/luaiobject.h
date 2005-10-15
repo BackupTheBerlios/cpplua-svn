@@ -53,15 +53,24 @@ class LuaProxyMetatable;
 template <typename ArgTuple> class LuaProxyFunctionCall;
 
 /**
- * LuaIObject is a common interface for all Lua objects handled by cpplua.
+ * @brief LuaIObject is a common interface for all Lua objects handled by cpplua.
  */
 class LuaIObject {
   LuaState* L;
 protected:
+  /**
+    * @brief Retrieve state pointer.
+    */
   inline LuaState* getState() const {
     return L;
   }
 
+  /**
+    * @brief Duplicate object in the global table.
+    * 
+    * Create another entry in the global table pointing
+    * to this very object.
+    */
   template <typename T>
   void duplicate(const T& src) {
     getState()->pushLightUserdata(this);  
@@ -71,11 +80,18 @@ protected:
 public:
   explicit LuaIObject(LuaState* L);
   LuaIObject(const LuaIObject&);
+  
+  /**
+    * @brief Push an object on the Lua stack.
+    * 
+    * The implementation of this function defines the semantics
+    * of a LuaIObject subclass .
+    */
   virtual void push() const = 0;
     
   /**
-  * Default implementation for equality
-  */
+    * Default implementation for equality
+    */
   template <typename T> bool operator==(const T& obj) const;
   template <typename T> bool operator!=(const T& obj) const;
   
@@ -92,7 +108,9 @@ public:
   LuaProxyMetatable getMetatable() const;
 
   /**
-    * Low level call: accept a tuple as argument list
+    * @brief Low level call
+    *
+    * Accept a tuple as argument list.
     */
   template <typename Tuple>
   LuaObject call(const Tuple& args) {
@@ -120,6 +138,8 @@ public:
   
     
   // conversion operators
+  int toInteger() const;
+  double toDouble() const;
   template <typename T> T toNumber() const;
   const char* toString() const;
   template <typename T> T* toUserdata() const;
@@ -128,6 +148,11 @@ public:
 
 // template implementations
 
+/**
+  * @brief Compare objects by value
+  * 
+  * Objects are compared using @code lua_equal @endcode.
+  */
 template <typename T>
 bool LuaIObject::operator==(const T& obj) const {
   push();
@@ -163,9 +188,17 @@ T LuaIObject::toPrimitive() const {
 }
 
 //BEGIN LuaLValue
+
+/**
+  * @brief A LuaLObject is a LuaIObject with value semantics.
+  */
 class LuaLValue : public LuaIObject {
 public:
   LuaLValue(LuaState* L) : LuaIObject(L) {}
+  
+  /**
+    * @brief Assignment function.
+    */
   virtual void assign(const LuaIObject& other) = 0;
 };
 //END LuaLValue

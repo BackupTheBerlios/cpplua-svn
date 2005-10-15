@@ -6,7 +6,7 @@
 
 namespace cpplua {
 
-// BEGIN FunctionTraits
+//BEGIN FunctionTraits
 
 template <int n, typename traits>
 struct FunctionTraitsHelper {};
@@ -58,7 +58,7 @@ struct FunctionTraits {
   typedef typename FunctionTraitsHelper<traits::arity, traits>::type args_type;
 };
 
-// END FunctionTraits
+//END FunctionTraits
 
 #if 0
 // BEGIN FunctionSignature
