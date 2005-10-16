@@ -22,7 +22,7 @@ void LowLevel::protectedCall(LuaState* L, int nArgs, int nRetVals) {
     // copy it
     cpplua_error exception = *exc_pointer;
     delete exc_pointer;
-    
+        
     // and finally, throw it!
     throw exception;
   }

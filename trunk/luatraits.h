@@ -8,19 +8,29 @@
 
 namespace cpplua {
 
+/** 
+  * @brief Generic LuaTraits
+  * 
+  * Assume a LuaIObject-like interface.
+  * 
+  */
 template <typename T>
 struct LuaTraits {
   static void push(LuaState*, const T& obj) {
     obj.push();
   }
   
-  static LuaObject pop(LuaState* L) {
-    LuaObject res(L);
+  static T pop(LuaState* L) {
+    T res(L);
     L->pushLightUserdata(&res);
     L->pushValue(-2);
     L->setTable(LuaState::cpptableIndex);
     L->pop();
     return res;
+  }
+  
+  static LuaType type(const T& obj) {
+    return obj.type();
   }
 };
 
@@ -35,6 +45,9 @@ struct LuaTraits<T*> {
     L->pop();
     return res;
   }
+  static LuaType type(T* const &) {
+    return UserDataType;
+  }
 };
 
 // int specialization
@@ -47,6 +60,9 @@ struct LuaTraits<int> {
     int res = L->toNumber<int>();
     L->pop();
     return res;
+  }
+  static LuaType type(const int&) {
+    return NumberType;
   }
 };
 
@@ -61,6 +77,9 @@ struct LuaTraits<double> {
     L->pop();
     return res;
   }
+  static LuaType type(const int&) {
+    return NumberType;
+  }
 };
 
 // string specialization
@@ -74,6 +93,9 @@ struct LuaTraits<char[size]> {
     L->pop();
     return res;
   }
+  static LuaType type(const int&) {
+    return StringType;
+  }
 };
 
 struct LuaTraits<const char*> {
@@ -84,6 +106,9 @@ struct LuaTraits<const char*> {
     const char* res = L->toString();
     L->pop();
     return res;
+  }
+  static LuaType type(const int&) {
+    return StringType;
   }
 };
 

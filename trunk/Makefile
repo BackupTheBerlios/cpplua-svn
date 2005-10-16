@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 CC=g++
-CFLAGS=-g -ggdb -Wall `pkg-config --cflags lua`
+CFLAGS=-g -ggdb -Wall -fPIC `pkg-config --cflags lua`
 LDFLAGS=`pkg-config --libs lua`
 DEBUG=-D_DEBUG
 SRC=$(wildcard *.cpp)

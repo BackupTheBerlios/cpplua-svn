@@ -9,4 +9,6 @@
 
 #include "functionfactory.h"
 
+#include "luapredefined.h"
+
 #endif

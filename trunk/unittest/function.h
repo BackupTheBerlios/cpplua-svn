@@ -17,6 +17,7 @@ class FunctionTest : public CppUnit::TestFixture {
   CPPUNIT_TEST(luaObjects);
   CPPUNIT_TEST(passingState);
   CPPUNIT_TEST(validation);
+  CPPUNIT_TEST(validationPredefined);
   CPPUNIT_TEST_SUITE_END();
 private:
   LuaState* L;
@@ -35,6 +36,9 @@ public:
   
   // validation
   void validation();
+  
+  // validation of predefined lua types
+  void validationPredefined();
 };
 
 #endif

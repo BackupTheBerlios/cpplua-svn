@@ -18,20 +18,8 @@ public:
   }
 };
 
-int test() {
-  return 37;
-}
-
-int sum(int a, int b) {
-  return a + b;
-}
-
-int doSum(A* x, int y) {
-  return x->sum(y);
-}
-
-LuaObject createTable(LuaState* L) {
-  return L->emptyTable();
+LuaObject indexTable(LuaTable table, LuaObject key) {
+  return table[key];
 }
 
 LUA_EXPORT int luaopen_test2(lua_State* l) {
@@ -39,6 +27,7 @@ LUA_EXPORT int luaopen_test2(lua_State* l) {
   return 1;
 }
 
+#if 0
 LUA_EXPORT int luaopen_test(lua_State* l) {
   try {
      LuaState(l).reg("sum", sum)
@@ -51,6 +40,7 @@ LUA_EXPORT int luaopen_test(lua_State* l) {
   }
   return 1;
 }
+#endif
 
 int main(int argc, char** argv) {
   ofstream* stream = 0;
@@ -63,12 +53,7 @@ int main(int argc, char** argv) {
   {
     LuaState L;
 
-    LuaObject a = L["A"] = L.emptyTable();
-    a.setMetatable(a);
-    a["sum"] = L(mem_fun(&A::sum));
-    
-    A x(10);
-    L["x"] = L.primitive(&x);
+    L.reg("f", indexTable);
     
     L.doFile("test.lua");
   }
