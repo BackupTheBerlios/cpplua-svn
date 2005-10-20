@@ -30,8 +30,8 @@ LuaObject nt(LuaState* L, LuaObject key, LuaObject value) {
   return table;
 }
 
-LuaObject indexTable(LuaTable table, LuaObject key) {
-  return table[key];
+LuaObject indexTable(LuaTable table) {
+  return table;
 }
 
 CPPUNIT_TEST_SUITE_REGISTRATION(FunctionTest);
@@ -93,13 +93,11 @@ void FunctionTest::validation() {
 
 void FunctionTest::validationPredefined() {
   L->global("f") = L->function(indexTable);
-  L->doString("t = {}; t[3] = \"hello\"");
+  L->doString("t = {}");
   
-  CPPUNIT_ASSERT_THROW(L->doString("f(5,1)"), cpplua_error);
-  CPPUNIT_ASSERT_THROW(L->doString("f(\"hello\"),3"), cpplua_error);
-  CPPUNIT_ASSERT_THROW(L->doString("f(3,t)"), cpplua_error);
+  CPPUNIT_ASSERT_THROW(L->doString("f(5)"), cpplua_error);
+  CPPUNIT_ASSERT_THROW(L->doString("f(\"hello\")"), cpplua_error);
   
-  L->doString("temp = f(t,3)");
-  
-  CPPUNIT_ASSERT(L->global("temp") == "hello");
+  L->doString("temp = f(t)");
+  CPPUNIT_ASSERT(L->global("temp") == L->global("t"));
 }

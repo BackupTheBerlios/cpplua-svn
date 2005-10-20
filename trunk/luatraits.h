@@ -8,6 +8,13 @@
 
 namespace cpplua {
 
+template <typename T>
+class validation_error : public cpplua_error {
+public:
+  validation_error()
+  : cpplua_error("validation error") {}
+};
+
 /** 
   * @brief Generic LuaTraits
   * 
@@ -32,9 +39,14 @@ struct LuaTraits {
   static LuaType type(const T& obj) {
     return obj.type();
   }
+
+  static bool validate(LuaState*) {
+    return true;
+  }
 };
 
 // userdata specialization
+// FIXME: this should not be necessary
 template <typename T>
 struct LuaTraits<T*> {
   static void push(LuaState* L, T* const & obj) {
@@ -64,6 +76,9 @@ struct LuaTraits<int> {
   static LuaType type(const int&) {
     return NumberType;
   }
+  static bool validate(LuaState* L) {
+    return L->isNumber();
+  }
 };
 
 // double specialization
@@ -79,6 +94,9 @@ struct LuaTraits<double> {
   }
   static LuaType type(const int&) {
     return NumberType;
+  }
+  static bool validate(LuaState* L) {
+    return L->isNumber();
   }
 };
 
@@ -96,6 +114,9 @@ struct LuaTraits<char[size]> {
   static LuaType type(const int&) {
     return StringType;
   }
+  static bool validate(LuaState* L) {
+    return L->isString();
+  }
 };
 
 struct LuaTraits<const char*> {
@@ -109,6 +130,9 @@ struct LuaTraits<const char*> {
   }
   static LuaType type(const int&) {
     return StringType;
+  }
+  static bool validate(LuaState* L) {
+    return L->isString();
   }
 };
 
@@ -130,6 +154,17 @@ struct LuaTraitsPop {
   template <typename T>
   struct apply {
     static T value(LuaState* L) {
+      return LuaTraits<T>::pop(L);
+    }
+  };
+};
+
+struct LuaValidateAndPop {
+  template <typename T>
+  struct apply {
+    static T value(LuaState* L) {
+      if (!LuaTraits<T>::validate(L))
+	throw validation_error<T>();
       return LuaTraits<T>::pop(L);
     }
   };

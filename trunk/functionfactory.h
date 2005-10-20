@@ -125,18 +125,17 @@ template <typename Function> struct GeneralFunction {
   static int apply(lua_State* l) {
     LuaState L(l);
     
-    // validation
+    // argument number validation
     const int n = RetrieveArguments<ArgTuple>::argCount;
     {
       const int nArgs = L.getTop() - 1;
-      if (nArgs != n) {
-        L.pushString(ArgumentNumberError(n, nArgs).what());
-        L.error();
-      }
-    }    
+      if (nArgs != n)
+        L.generateError(ArgumentNumberError(n, nArgs).what());
+    }
     
     Function f = *(L.template toUserdata<Function>(lua_upvalueindex(1)));
     ArgTuple args = RetrieveArguments<ArgTuple>::apply(&L);
+    
     RetVal res = ApplyFunctionToTuple<Function, ArgTuple>::apply(f, args);
     return ReturnValues<RetVal>::apply(&L, res);
   }

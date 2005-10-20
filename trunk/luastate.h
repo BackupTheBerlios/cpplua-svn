@@ -127,6 +127,11 @@ public:
     lua_pcall(L, 1, 0, 0);
   }  
 
+  void generateError(const char* message) {
+    pushString(message);
+    error();
+  }
+  
   //BEGIN Wrappers  
     
   // basic libraries
