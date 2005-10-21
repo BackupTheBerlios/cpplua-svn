@@ -56,84 +56,34 @@ public:
 
 namespace cpplua {
 
-class LuaIObject;
-class LuaObject;
-class LuaProxyGlobal;
-class LuaProxyEmptyTable;
-template <typename T> class LuaProxyPrimitive;
-template <typename T, typename Function> class PushMethod;
-template <typename Function> class PushFunction;
-template <typename T, typename Function> class LuaMethod;
-template <typename Function> class LuaProxyFunction;
-
-class LuaState {
-  bool collectState;
+class LuaStateWrapper {
+protected:
   lua_State* L;
-  void init();
 #ifdef _DEBUG
-  Logger logger;
   static std::ostream* loggerStream;
-#endif  
+  Logger logger;
+#endif
 public:
+  LuaStateWrapper(lua_State* L)
+  : L(L) 
+#ifdef _DEBUG
+  , logger(*loggerStream)
+#endif
+  {}
+
+  LuaStateWrapper()
+#ifdef _DEBUG
+  : logger(*loggerStream)
+#endif
+  {}
+
 #ifdef _DEBUG
   static void setLoggerStream(std::ostream* stream) {
     loggerStream = stream;
   }
   inline Logger& getLogger() { return logger; }
 #endif
-  static const int cpptableIndex = 1;
-  LuaState();
-  LuaState(lua_State*);
-  ~LuaState();
 
-  lua_State* getInternalState() { return L; }
-  
-  LuaProxyGlobal global(const char* name);
-  LuaProxyGlobal operator[](const char* name); // alias for global
-  
-  void pushObject(const LuaIObject*);
-  LuaProxyEmptyTable emptyTable();
-  template <typename T> LuaProxyPrimitive<T> primitive(const T& val);
-  // special case for string literals
-  template <size_t size>
-  LuaProxyPrimitive<const char*> primitive(const char (& val)[size]) {
-    return LuaProxyPrimitive<const char*>(this, val);
-  }
-  template <typename Function>
-  LuaProxyFunction<Function> function(Function f) {
-    return LuaProxyFunction<Function>(this, f);
-  }
-  template <typename Function>
-  LuaState& reg(const char* name, Function f) {
-    global(name) = function(f);
-    return *this;
-  }
-      
-  int doString(const char* str) {
-    loadBuffer(str);
-    LowLevel::protectedCall(this, 0, 0);
-    return 0;
-  }
-  
-  int doFile(const char* filename) {
-    loadFile(filename);
-    LowLevel::protectedCall(this, 0, 0);
-    return 0;
-  }
-  
-  void printTop() {
-    lua_getglobal(L, "print");
-    lua_pushvalue(L, -2);
-    lua_pcall(L, 1, 0, 0);
-  }  
-
-  void generateError(const char* message) {
-    pushString(message);
-    error();
-  }
-  
-  //BEGIN Wrappers  
-    
   // basic libraries
   inline void openBase() {
     LOG(luaopen_base(L));
@@ -292,6 +242,85 @@ public:
     LOG(return lua_pcall(L, nArgs, nRes, errFunction));
   }
   
+  inline void setMetatable(int index = -2) {
+    LOG(lua_setmetatable(L, index));
+  }
+  
+  inline void getMetatable(int index = -1) {
+    LOG(lua_getmetatable(L, index));
+  }
+};
+
+
+class LuaIObject;
+class LuaObject;
+class LuaProxyGlobal;
+class LuaProxyEmptyTable;
+template <typename T> class LuaProxyPrimitive;
+template <typename T, typename Function> class PushMethod;
+template <typename Function> class PushFunction;
+template <typename T, typename Function> class LuaMethod;
+template <typename Function> class LuaProxyFunction;
+
+class LuaState : public LuaStateWrapper {
+  bool collectState;
+  void init();
+// #ifdef _DEBUG
+//   Logger logger;
+//   static std::ostream* loggerStream;
+// #endif  
+public:
+  static const int cpptableIndex = 1;
+  LuaState();
+  LuaState(lua_State*);
+  ~LuaState();
+
+  lua_State* getInternalState() { return L; }
+  
+  LuaProxyGlobal global(const char* name);
+  LuaProxyGlobal operator[](const char* name); // alias for global
+  
+  void pushObject(const LuaIObject*);
+  LuaProxyEmptyTable emptyTable();
+  template <typename T> LuaProxyPrimitive<T> primitive(const T& val);
+  // special case for string literals
+  template <size_t size>
+  LuaProxyPrimitive<const char*> primitive(const char (& val)[size]) {
+    return LuaProxyPrimitive<const char*>(this, val);
+  }
+  template <typename Function>
+  LuaProxyFunction<Function> function(Function f) {
+    return LuaProxyFunction<Function>(this, f);
+  }
+  template <typename Function>
+  LuaState& reg(const char* name, Function f) {
+    global(name) = function(f);
+    return *this;
+  }
+
+  int doString(const char* str) {
+    loadBuffer(str);
+    LowLevel::protectedCall(this, 0, 0);
+    return 0;
+  }
+  
+  int doFile(const char* filename) {
+    loadFile(filename);
+    LowLevel::protectedCall(this, 0, 0);
+    return 0;
+  }
+  
+  void printTop() {
+    lua_getglobal(L, "print");
+    lua_pushvalue(L, -2);
+    lua_pcall(L, 1, 0, 0);
+  }  
+
+  void generateError(const char* message) {
+    pushString(message);
+    error();
+  }
+  
   inline void loadBuffer(const char* str) {
     //TODO Handle errors
     LOG(luaL_loadbuffer(L, str, strlen(str), "buffer"));
@@ -302,15 +331,6 @@ public:
     if (res)
       LowLevel::handleError(this);
   }
-  
-  inline void setMetatable(int index = -2) {
-    LOG(lua_setmetatable(L, index));
-  }
-  
-  inline void getMetatable(int index = -1) {
-    LOG(lua_getmetatable(L, index));
-  }
-  
 };
 
 // template implementations

@@ -33,7 +33,7 @@ using namespace std;
 namespace cpplua {
 
 #ifdef _DEBUG
-std::ostream* LuaState::loggerStream = &std::cerr;
+std::ostream* LuaStateWrapper::loggerStream = &std::cerr;
 #endif
 
 void LuaState::init() {
@@ -43,9 +43,6 @@ void LuaState::init() {
 }
 
 LuaState::LuaState() 
-#ifdef _DEBUG
-  : logger(*loggerStream)
-#endif
 {
   #ifdef _DEBUG
     logger << " ---\n";
@@ -65,10 +62,7 @@ LuaState::LuaState()
  * to provide a wrapper to a lua_State.
  */
 LuaState::LuaState(lua_State* L) 
-  : L(L) 
-#ifdef _DEBUG
-  , logger(*loggerStream)
-#endif
+  : LuaStateWrapper(L) 
 {
   #ifdef _DEBUG
     logger << " ---\n";
